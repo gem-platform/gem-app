@@ -3,6 +3,9 @@ sudo: required
 env:
   DOCKER_COMPOSE_VERSION: 1.23.2
 
+notifications:
+  slack: gem-platform:qcZliEfmuv0z4QArgAEJjx8G
+
 node_js:
   - "11"
 
