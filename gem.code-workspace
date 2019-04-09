@@ -54,6 +54,11 @@
         "autoFix": true,
         "language": "typescript"
       }
+    ],
+    "cSpell.words": [
+      "Serializers",
+      "Vuetify",
+      "vuex"
     ]
   }
 }
