@@ -1,0 +1,59 @@
+{
+  "folders": [
+    {
+      "name": "Documentation",
+      "path": "doc"
+    },
+    {
+      "name": "GEM Client",
+      "path": "gem/clients/gem"
+    },
+    {
+      "name": "GEM App",
+      "path": "gem/apps/gem"
+    },
+    {
+      "name": "E2E Tests",
+      "path": "e2e"
+    }
+  ],
+  "extensions": {
+    "recommendations": [
+      "ms-python.python",
+      "mubaidr.vuejs-extension-pack",
+      "msjsdiag.debugger-for-chrome",
+      "mikestead.dotenv",
+      "PeterJausovec.vscode-docker",
+      "aaron-bond.better-comments",
+      "esbenp.prettier-vscode",
+      "njpwerner.autodocstring",
+      "samuelcolvin.jinjahtml"
+    ]
+  },
+  "settings": {
+    "files.exclude": {
+      "**/.git": true,
+      "**/.svn": true,
+      "**/.hg": true,
+      "**/CVS": true,
+      "**/.DS_Store": true,
+      "**/node_modules": true,
+      "**/coverage": true
+    },
+    "eslint.autoFixOnSave": true,
+    "eslint.validate": [
+      {
+        "autoFix": true,
+        "language": "javascript"
+      },
+      {
+        "autoFix": true,
+        "language": "vue"
+      },
+      {
+        "autoFix": true,
+        "language": "typescript"
+      }
+    ]
+  }
+}
