@@ -1,4 +1,4 @@
-const I = actor();
+// const I = actor();
 
 Given("I am an authorized user", () => {
   // From "features/authentication.feature" {"line":4,"column":5}
