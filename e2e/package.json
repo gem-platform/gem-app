@@ -1,0 +1,23 @@
+{
+  "name": "gem-e2e",
+  "version": "1.0.0",
+  "description": "GEM end-to-end tests",
+  "main": "index.js",
+  "scripts": {
+    "test": "codeceptjs run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gem-platform/gem.git"
+  },
+  "author": "Advaita Krishna dasa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gem-platform/gem/issues"
+  },
+  "homepage": "https://github.com/gem-platform/gem#readme",
+  "dependencies": {
+    "codeceptjs": "^2.0.8",
+    "puppeteer": "^1.14.0"
+  }
+}
