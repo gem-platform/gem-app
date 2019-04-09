@@ -38,7 +38,8 @@
       "**/CVS": true,
       "**/.DS_Store": true,
       "**/node_modules": true,
-      "**/coverage": true
+      "**/coverage": true,
+      "**/__pycache__": true,
     },
     "eslint.autoFixOnSave": true,
     "eslint.validate": [
