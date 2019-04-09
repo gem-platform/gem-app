@@ -20,8 +20,7 @@ import { Credentials } from "../types";
 })
 export default class LoginView extends Vue {
   get message() {
-const a = "123";
-    		return Auth.message123;
+    return Auth.message;
   }
 
   onLogin(data: Credentials) {
