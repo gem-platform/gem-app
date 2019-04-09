@@ -53,9 +53,8 @@ before_install:
 
   - npm i -g npm
   - (cd e2e && npm ci)
-  - (cd gem && chmod +x ./wait.sh)
-  - (cd gem && ./wait.sh)
+  - (cd gem && chmod +x ./wait.sh && ./wait.sh)
 
 script:
-  - docker-compose exec gem-client npm run test:unit -- --coverage && npx codecov --token=$CODECOV_TOKEN
+  - (cd gem && docker-compose exec gem-client npm run test:unit -- --coverage && npx codecov --token=$CODECOV_TOKEN)
   - (cd e2e && npx codeceptjs run --tests)
