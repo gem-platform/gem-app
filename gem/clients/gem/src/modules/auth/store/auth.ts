@@ -9,13 +9,13 @@ import {
 import AuthService from "../services/auth";
 import { Credentials, User, AuthResponse } from "../types";
 
-const service = new AuthService();
-
-@Module({ namespaced: true, dynamic: true, name: "auth/data", store })
+@Module({ namespaced: true, dynamic: true, name: "auth", store })
 export default class AuthModule extends VuexModule {
   public token: string = localStorage.getItem("token") || "";
   public message: string = "";
   public user: User = { name: "" };
+
+  private service = new AuthService();
 
   @Action public async login({ username, password }: Credentials) {
     try {
@@ -23,27 +23,22 @@ export default class AuthModule extends VuexModule {
       if (username === "admin" && password === "password") {
         this.authenticationSucceeded({ token: "123", user: { name: "admin" } });
       } else {
-        this.setMessage("Wrong login/password");
-        this.authenticationFailed();
+        this.authenticationFailed("Wrong login/password");
       }
     } catch {
-      this.authenticationFailed();
+      this.authenticationFailed("Unknown error");
     }
   }
 
   @Mutation private authenticationSucceeded(result: AuthResponse) {
-    console.log(result);
     this.token = result.token;
     this.user = result.user;
     localStorage.setItem("token", result.token);
   }
 
-  @Mutation private authenticationFailed() {
+  @Mutation private authenticationFailed(message: string) {
     this.token = "";
-  }
-
-  @Mutation setMessage(msg: string) {
-    this.message = msg;
+    this.message = message;
   }
 
   get isAuthenticated(): boolean {
