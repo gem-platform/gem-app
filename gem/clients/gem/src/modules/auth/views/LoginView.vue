@@ -25,7 +25,6 @@ export default class LoginView extends Vue {
 
   onLogin(data: Credentials) {
     Auth.login(data);
-    this.$router.push("/");
   }
 }
 </script>

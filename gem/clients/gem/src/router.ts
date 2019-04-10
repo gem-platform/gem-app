@@ -40,11 +40,16 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (Auth.isAuthenticated) {
-      next();
+    if (!Auth.isAuthenticated) {
+      next("/login");
       return;
     }
-    next("/login");
+
+    if (!Auth.isUserLoaded) {
+      Auth.loadUserData().then(() => next());
+    } else {
+      next();
+    }
   } else {
     next();
   }
