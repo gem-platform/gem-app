@@ -59,6 +59,9 @@
     "cSpell.words": [
       "Serializers",
       "Vuetify",
+      "cors",
+      "pydantic",
+      "socketio",
       "vuex"
     ]
   }
