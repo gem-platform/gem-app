@@ -1,5 +1,14 @@
 .DS_Store
 node_modules
+coverage
+__pycache__
 
 # E2E
 e2e/output
+
+# CLIENTS
+/dist
+
+# LOG FILES
+npm-debug.log*
+

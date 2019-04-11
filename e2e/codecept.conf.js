@@ -2,11 +2,20 @@ exports.config = {
   output: "./output",
   helpers: {
     Puppeteer: {
-      url: "http://localhost"
+      url: "http://localhost:8080"
+    },
+    REST: {
+      endpoint: "http://localhost",
+      defaultHeaders: {
+        Auth: "11111",
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      }
     }
   },
   include: {
-    I: "./steps_file.js"
+    I: "./steps_file.js",
+    loginPage: "./pages/login.js"
   },
   mocha: {},
   bootstrap: null,
