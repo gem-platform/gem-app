@@ -1,28 +1,25 @@
-// const I = actor();
+/// <reference path="../steps.d.ts" />
+
+const I = require("../steps_file")();
+let user = {};
 
 Given("I am an authorized user", () => {
-  // From "features/authentication.feature" {"line":4,"column":5}
-  throw new Error("Not implemented yet");
+  I.amOnPage("/login");
+  user = { username: "johndoe", password: "secret", full_name: "John Doe" };
 });
 
-When("I login with valid credentials", () => {
-  // From "features/authentication.feature" {"line":5,"column":5}
-  throw new Error("Not implemented yet");
-});
-
-Then("I should be provided access to my account", () => {
-  // From "features/authentication.feature" {"line":6,"column":5}
-  throw new Error("Not implemented yet");
-});
-
-When("I login with invalid credentials", () => {
-  // From "features/authentication.feature" {"line":10,"column":5}
-  throw new Error("Not implemented yet");
+When("I login with {word} credentials", type => {
+  if (type === "valid") {
+    I.login(user.username, user.password);
+  } else if (type === "invalid") {
+    I.login(user.username, user.password + "-incorrect");
+  } else {
+    throw Error("Unknown type of credentials");
+  }
 });
 
 Then("I should be provided access to my account", () => {
-  // From "features/authentication.feature" {"line":11,"column":5}
-  throw new Error("Not implemented yet");
+  I.waitForText("Welcome back, " + user.username);
 });
 
 Given("I am a suspended user", () => {
@@ -30,12 +27,7 @@ Given("I am a suspended user", () => {
   throw new Error("Not implemented yet");
 });
 
-Then("I see a message with suspension reason", () => {
-  // From "features/authentication.feature" {"line":16,"column":5}
-  throw new Error("Not implemented yet");
-});
-
-Then("I see an error message", () => {
-  // From "features/authentication.feature" {"line":11,"column":5}
-  throw new Error("Not implemented yet");
+Then("I see an error message {string}", message => {
+  I.waitForVisible(".v-alert");
+  I.waitForText(message);
 });

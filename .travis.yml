@@ -60,4 +60,4 @@ before_install:
 
 script:
   - (cd gem && docker-compose exec gem-client npm run test:unit -- --coverage && npx codecov --token=$CODECOV_TOKEN)
-  - (cd e2e && npx codeceptjs run --tests)
+  - (cd e2e && npx codeceptjs run)
