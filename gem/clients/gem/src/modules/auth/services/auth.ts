@@ -1,11 +1,17 @@
 import Axios from "axios";
-import { User } from "../types";
+import { User, Credentials } from "../types";
 
-interface TokenResponse {
+/**
+ * Authentication token.
+ */
+export interface AuthToken {
   access_token: string;
   token_type: string;
 }
 
+/**
+ * Authentication service.
+ */
 export default class AuthService {
   /**
    * Login user using specified credentials.
@@ -13,15 +19,14 @@ export default class AuthService {
    * @param password Password.
    * @returns Access token.
    */
-  async login(username: string, password: string): Promise<TokenResponse> {
+  async login({ username, password }: Credentials): Promise<AuthToken> {
     // Set form data
     var data = new FormData();
     data.set("username", username);
     data.set("password", password);
 
     // Return token data
-    return (await Axios.post("http://localhost/token", data))
-      .data as TokenResponse;
+    return (await Axios.post("/token", data)).data as AuthToken;
   }
 
   /**
@@ -29,6 +34,6 @@ export default class AuthService {
    * @returns User's data.
    */
   async me(): Promise<User> {
-    return (await Axios.get("http://localhost/users/me")).data as User;
+    return (await Axios.get("/users/me")).data as User;
   }
 }

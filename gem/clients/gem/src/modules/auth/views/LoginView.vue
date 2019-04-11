@@ -23,8 +23,12 @@ export default class LoginView extends Vue {
     return Auth.message;
   }
 
-  onLogin(data: Credentials) {
-    Auth.login(data);
+  /**
+   * On user clicks Login button.
+   * @param credentials Credentials to login with.
+   */
+  onLogin(credentials: Credentials) {
+    Auth.login(credentials);
   }
 }
 </script>
