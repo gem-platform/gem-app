@@ -26,7 +26,7 @@ export default class AuthService {
     data.set("password", password);
 
     // Return token data
-    return (await Axios.post("/token", data)).data as AuthToken;
+    return (await Axios.post("/auth/token", data)).data as AuthToken;
   }
 
   /**
@@ -34,6 +34,6 @@ export default class AuthService {
    * @returns User's data.
    */
   async me(): Promise<User> {
-    return (await Axios.get("/users/me")).data as User;
+    return (await Axios.get("/auth/me")).data as User;
   }
 }
