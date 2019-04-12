@@ -1,18 +1,19 @@
 <template>
   <v-app>
-    <v-toolbar v-if="isAuthenticated" app>
+    <v-toolbar v-if="isAuthenticated" color="amber" flat app>
       <v-toolbar-title class="headline text-uppercase">
-        <span>Vuetify</span>
-        <span class="font-weight-light">MATERIAL DESIGN</span>
+        <span class="title ml-3 mr-5"
+          >GEM&nbsp;<span class="font-weight-light">Online</span></span
+        >
       </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn
+      <v-text-field
+        solo-inverted
         flat
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-      >
-        <span class="mr-2">Latest Release</span>
-      </v-btn>
+        hide-details
+        label="Search"
+        prepend-inner-icon="search"
+      ></v-text-field>
+      <v-spacer></v-spacer>
     </v-toolbar>
 
     <v-content>

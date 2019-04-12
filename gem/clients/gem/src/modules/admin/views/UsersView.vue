@@ -1,8 +1,16 @@
 <template>
-  <v-container fluid fill-height>
-    <v-layout>
-      <v-flex xs12 sm8 md4>Users page</v-flex>
-      <v-btn @click="onCreateClicked" data-ref="create-new-user">Create</v-btn>
+  <v-container fluid>
+    <v-layout column>
+      <v-btn
+        block
+        outline
+        color="info"
+        @click="onCreateClicked"
+        data-ref="create-new-user"
+      >
+        <v-icon dark>add</v-icon>
+        Create</v-btn
+      >
 
       <v-data-table
         :headers="headers"
