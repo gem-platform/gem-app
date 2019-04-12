@@ -14,6 +14,10 @@
         prepend-inner-icon="search"
       ></v-text-field>
       <v-spacer></v-spacer>
+      <v-toolbar-items class="hidden-sm-and-down">
+        <v-btn to="/" exact flat>Home</v-btn>
+        <v-btn to="/admin" flat>Admin</v-btn>
+      </v-toolbar-items>
     </v-toolbar>
 
     <v-content>
