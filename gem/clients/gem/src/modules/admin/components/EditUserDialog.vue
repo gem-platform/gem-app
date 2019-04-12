@@ -1,11 +1,16 @@
 <template>
-  <v-dialog v-model="visible">
+  <v-dialog
+    v-model="visible"
+    fullscreen
+    hide-overlay
+    transition="dialog-bottom-transition"
+  >
     <v-card data-ref="edit-user-dialog">
-      <v-toolbar dark color="primary">
+      <v-toolbar dark color="primary" flat>
         <v-btn icon dark @click="close" data-ref="close">
           <v-icon>close</v-icon>
         </v-btn>
-        <v-toolbar-title>Settings</v-toolbar-title>
+        <v-toolbar-title>Edit user</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items>
           <v-btn dark flat @click="save" data-ref="save-user">Save</v-btn>
