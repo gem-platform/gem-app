@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 services:
   gem-client:
     restart: on-failure:5
@@ -10,7 +10,7 @@ services:
   gem-app:
     build: ./apps/gem
     ports:
-      - "80:80"
+      - "9000:9000"
     #volumes:
     #  - ./frontend/api/app:/app
     #depends_on:

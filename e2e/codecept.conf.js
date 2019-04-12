@@ -5,9 +5,8 @@ exports.config = {
       url: "http://localhost:8080"
     },
     REST: {
-      endpoint: "http://localhost",
+      endpoint: "http://localhost:9000",
       defaultHeaders: {
-        Auth: "11111",
         "Content-Type": "application/json",
         Accept: "application/json"
       }
@@ -22,8 +21,11 @@ exports.config = {
   teardown: null,
   hooks: [],
   gherkin: {
-    features: "./features/*.feature",
-    steps: ["./step_definitions/steps.js"]
+    features: "./features/**/*.feature",
+    steps: [
+      "./step_definitions/authentication.steps.js",
+      "./step_definitions/users.steps.js"
+    ]
   },
   plugins: {
     screenshotOnFail: {
