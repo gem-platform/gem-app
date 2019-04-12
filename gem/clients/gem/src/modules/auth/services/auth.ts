@@ -1,5 +1,6 @@
 import Axios from "axios";
-import { User, Credentials } from "../types";
+import { Credentials } from "../types";
+import { User } from "@/modules/types";
 
 /**
  * Authentication token.

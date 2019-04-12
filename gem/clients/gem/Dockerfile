@@ -12,4 +12,4 @@ WORKDIR /usr/src/app
 COPY . /usr/src/app
 
 # Run app
-CMD [ "npm", "run", "serve" ]
+CMD ["npm",  "run", "serve", "--port $GEM_CLIENT_PORT"]

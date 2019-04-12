@@ -1,16 +1,14 @@
 const I = actor();
 
 module.exports = {
-  // setting locators
-  fields: {
-    username: "username",
-    password: "password"
-  },
-  submitButton: "submit",
+  usersTable: "[data-ref='users-table']",
+  createButton: "[data-ref='create-new-user']",
+  editDialog: "[data-ref='edit-user-dialog']",
+  nameInput: "[aria-label='Name']",
+  saveUserButton: "[data-ref='save-user']",
 
-  sendForm(username, password) {
-    I.fillField(this.fields.username, username);
-    I.fillField(this.fields.password, password);
-    I.click(this.submitButton);
+  submitDialog(name) {
+    I.fillField(this.nameInput, name);
+    I.click(this.saveUserButton);
   }
 };

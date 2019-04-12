@@ -1,27 +1,31 @@
-/// <reference path="../steps.d.ts" />
+/// <reference path="./steps.d.ts" />
 
-const I = require("../steps_file")();
-const usersPage = require("../pages/admin/users");
+Feature("Admin/Users");
 
-Given("I am an administrative user", () => {
-  I.amOnPage("/login")
+const usersPage = require("./pages/admin/users");
+
+BeforeSuite(I => {
+  I.wipeout("./fixtures/johndoe.js");
+});
+
+Before(I => {
+  I.amOnPage("/");
   I.login("johndoe", "secret");
   I.waitForText("Welcome");
 });
 
-When("I create a user {string}", username => {
+Scenario("I can create a new user", I => {
+  const username = "Krishna das";
+
   I.amOnPage("/admin/users");
   I.click(usersPage.createButton);
+  
   I.waitForVisible(usersPage.editDialog);
-
   within(usersPage.editDialog, function () {
     usersPage.submitDialog(username);
   })
-  
   I.waitForInvisible(usersPage.editDialog);
-});
 
-Then("I can see user {string}", username => {
   within(usersPage.usersTable, function () {
     I.see(username);
   });

@@ -20,13 +20,20 @@ docker-compose up
 
 But sometimes it is required to start GEM application on a host machine (for debugging purposes for example). So below is how to start GEM app manually:
 
+### Import all the environment variables
+
+```bash
+cd gem
+export $(cat environment.env | xargs)
+```
+
 ### Start gem-app
 
 ```bash
 cd gem/apps/gem
 pipenv install
 pipenv run
-pipenv run uvicorn main:app
+pipenv run uvicorn main:app --port $GEM_APP_PORT
 ```
 
 ### Start front-end
@@ -34,5 +41,5 @@ pipenv run uvicorn main:app
 ```bash
 cd gem/clients/gem
 npm install
-npm run serve
+npm run serve -- --port $GEM_CLIENT_PORT
 ```

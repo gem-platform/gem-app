@@ -16,6 +16,24 @@ const router = new Router({
       component: LoginView
     },
     {
+      path: "/admin",
+      name: "admin",
+      meta: {
+        requiresAuth: true
+      },
+      component: () =>
+        import(/* webpackChunkName: "admin" */ "./modules/admin/views/AdminIndexView.vue")
+    },
+    {
+      path: "/admin/users",
+      name: "admin-users",
+      meta: {
+        requiresAuth: true
+      },
+      component: () =>
+        import(/* webpackChunkName: "admin" */ "./modules/admin/views/UsersView.vue")
+    },
+    {
       path: "/",
       name: "home",
       component: HomeView,

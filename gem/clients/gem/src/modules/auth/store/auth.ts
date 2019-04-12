@@ -7,7 +7,8 @@ import {
   VuexModule
 } from "vuex-module-decorators";
 import AuthService, { AuthToken } from "../services/auth";
-import { Credentials, User, AnonymousUser } from "../types";
+import { Credentials } from "../types";
+import { AnonymousUser, User } from "@/modules/types";
 
 /** Authentication service to perform requests. */
 const service = new AuthService();

@@ -5,9 +5,8 @@ exports.config = {
       url: "http://localhost:8080"
     },
     REST: {
-      endpoint: "http://localhost",
+      endpoint: "http://localhost:9000",
       defaultHeaders: {
-        Auth: "11111",
         "Content-Type": "application/json",
         Accept: "application/json"
       }
