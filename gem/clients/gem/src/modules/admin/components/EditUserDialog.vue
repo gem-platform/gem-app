@@ -2,7 +2,7 @@
   <v-dialog v-model="visible">
     <v-card data-ref="edit-user-dialog">
       <v-toolbar dark color="primary">
-        <v-btn icon dark @click="close">
+        <v-btn icon dark @click="close" data-ref="close">
           <v-icon>close</v-icon>
         </v-btn>
         <v-toolbar-title>Settings</v-toolbar-title>
@@ -19,12 +19,14 @@
               v-model="user.full_name"
               label="Name"
               required
+              ref="name"
             ></v-text-field>
           </v-flex>
           <v-flex xs12>
             <v-text-field
               v-model="user.email"
               label="Email"
+              ref="email"
               required
             ></v-text-field>
           </v-flex>
@@ -43,13 +45,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Emit, Prop } from "vue-property-decorator";
+import { Component, Vue, Emit, Prop, Model } from "vue-property-decorator";
 import { User } from "@/modules/types.ts";
+import { AnonymousUser } from "../../types";
 
 @Component
 export default class EditUserDialog extends Vue {
-  @Prop() public readonly user!: User;
-  @Prop({ default: false }) visible: boolean = false;
+  @Prop({ default: AnonymousUser }) public readonly user!: User;
+  @Prop({ default: false }) visible: boolean;
 
   @Emit("close") close() {
     return;
