@@ -1,5 +1,5 @@
 <template>
-  <edit-dialog :visible="visible" @close="close" @save="save">
+  <edit-dialog title="Edit user" :visible="visible" @close="close" @save="save">
     <v-flex xs12>
       <v-text-field
         v-model="user.full_name"

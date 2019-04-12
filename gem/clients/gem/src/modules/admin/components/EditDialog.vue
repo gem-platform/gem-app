@@ -6,14 +6,16 @@
     transition="dialog-bottom-transition"
   >
     <v-card data-ref="edit-user-dialog">
-      <v-toolbar dark color="primary" flat>
-        <v-btn icon dark @click="close" data-ref="close">
+      <v-toolbar light color="amber" flat>
+        <v-btn icon light @click="close" data-ref="close">
           <v-icon>close</v-icon>
         </v-btn>
-        <v-toolbar-title>Edit user</v-toolbar-title>
+        <v-toolbar-title>
+          {{ title }}
+        </v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items>
-          <v-btn dark flat @click="save" data-ref="save-user">Save</v-btn>
+          <v-btn light flat @click="save" data-ref="save-user">Save</v-btn>
         </v-toolbar-items>
       </v-toolbar>
 
@@ -32,6 +34,7 @@ import { Component, Vue, Emit, Prop, Model } from "vue-property-decorator";
 @Component
 export default class EditDialog extends Vue {
   @Prop({ default: false }) visible: boolean;
+  @Prop({ default: "Edit" }) title: string;
 
   @Emit("close") close() {
     return;
