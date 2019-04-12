@@ -25,7 +25,9 @@ export default class AdminUsersModule extends VuexModule {
   ];
 
   @Mutation openEditDialog(user: User): void {
-    this.editingUser = user;
+    // make a copy. do not mutate original one
+    // original one should be mutated if user press save button
+    this.editingUser = { ...user };
     this.isEditDialogVisible = true;
   }
 
@@ -47,7 +49,10 @@ export default class AdminUsersModule extends VuexModule {
     this.users.push(user);
   }
 
-  @Mutation private userUpdated(user: User) {}
+  @Mutation private userUpdated(user: User) {
+    const original = this.users.find(x => x.id === user.id);
+    Object.assign(original, user);
+  }
 }
 
 export const AdminUsers = getModule(AdminUsersModule);
