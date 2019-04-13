@@ -8,7 +8,7 @@ Vue.use(Vuetify);
 
 describe("EditUserDialog.vue", () => {
   const user: User = {
-    id: 1,
+    oid: 1,
     username: "johndoe",
     full_name: "John Doe",
     email: "johndoe@email.com",
