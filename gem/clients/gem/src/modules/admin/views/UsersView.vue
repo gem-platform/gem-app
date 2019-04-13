@@ -39,7 +39,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import EditUserDialog from "../components/EditUserDialog.vue";
-import { AdminUsers } from "../store/index";
+import { AdminUsers } from "../store/users";
 import { User, AnonymousUser } from "@/modules/types";
 
 @Component({
