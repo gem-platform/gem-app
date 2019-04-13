@@ -15,6 +15,7 @@
       <v-data-table
         :headers="headers"
         :items="users"
+        :loading="loading"
         class="elevation-1"
         data-ref="users-table"
       >
@@ -40,7 +41,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import EditUserDialog from "../components/EditUserDialog.vue";
 import { AdminUsers } from "../store/users";
-import { User, AnonymousUser } from "@/modules/types";
+import { User, EmptyUser } from "@/modules/types";
 
 @Component({
   components: { EditUserDialog }
@@ -53,13 +54,7 @@ export default class AdminUsersView extends Vue {
 
   /** On create new user button clicked. */
   private onCreateClicked() {
-    AdminUsers.openEditDialog({
-      id: 0,
-      username: "",
-      email: "",
-      full_name: "",
-      disabled: false
-    });
+    AdminUsers.openEditDialog(EmptyUser);
   }
 
   /** On user selected in a table. */
@@ -91,6 +86,14 @@ export default class AdminUsersView extends Vue {
   /** List of users. */
   private get users(): User[] {
     return AdminUsers.users;
+  }
+
+  private get loading(): boolean {
+    return AdminUsers.isBusy;
+  }
+
+  mounted() {
+    AdminUsers.fetch();
   }
 }
 </script>
