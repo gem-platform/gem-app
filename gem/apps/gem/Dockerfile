@@ -2,7 +2,8 @@ FROM tiangolo/uvicorn-gunicorn-fastapi:python3.7-alpine3.8
 
 # Install dependencies
 RUN apk add alpine-sdk gcc openssl-dev libffi-dev && \
-    pip install pipenv --no-cache-dir
+    pip install pipenv --no-cache-dir && \
+    pip install email-validator --no-cache-dir
 
 # Install app
 COPY . /app
