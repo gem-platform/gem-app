@@ -1,3 +1,4 @@
+from uvicorn import run
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
@@ -16,3 +17,7 @@ app.add_middleware(CORSMiddleware,
                    allow_origins=['*'],
                    allow_headers=['*'],
                    allow_methods=['*'])
+
+
+if __name__ == "__main__":
+    run("main:app", host="0.0.0.0", port=9000, debug=True, reload=True)
