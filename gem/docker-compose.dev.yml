@@ -1,19 +1,8 @@
 version: "3"
 services:
   gem-client:
-    restart: on-failure:5
-    build: ./clients/gem
-    expose:
-      - 8080
-    ports:
-      - 8080:8080
-  gem-app:
-    build: ./apps/gem
-    ports:
-      - "9000:9000"
     volumes:
-      - "./apps/gem:/app"
-    #volumes:
-    #  - ./frontend/api/app:/app
-    #depends_on:
-    #  - mongo
+      - ./clients/gem:/app
+  gem-app:
+    volumes:
+      - ./apps/gem:/app
