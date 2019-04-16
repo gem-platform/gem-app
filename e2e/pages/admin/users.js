@@ -6,6 +6,13 @@ module.exports = {
   editDialog: "[data-ref='edit-user-dialog']",
   nameInput: "[aria-label='Name']",
   saveUserButton: "[data-ref='save-user']",
+  snackbar: "[data-ref='snackbar']",
+
+  navigateEditDialog() {
+    I.amOnPage("/admin/users");
+    I.click(this.createButton);
+    I.waitForVisible(this.editDialog);
+  },
 
   submitDialog(name) {
     I.fillField(this.nameInput, name);

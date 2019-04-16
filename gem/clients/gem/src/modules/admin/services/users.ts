@@ -1,8 +1,8 @@
 import { User } from "@/modules/types";
-import AdminCrudService from "./crud";
+import CrudService from "./crud";
 
 /** Users service */
-export default class AdminUsersService extends AdminCrudService<User> {
+export default class UsersService extends CrudService<User> {
   constructor() {
     super("/users");
   }

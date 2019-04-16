@@ -17,10 +17,7 @@ Before(I => {
 Scenario("I can create a new user", I => {
   const username = "Krishna das";
 
-  I.amOnPage("/admin/users");
-  I.click(usersPage.createButton);
-  
-  I.waitForVisible(usersPage.editDialog);
+  usersPage.navigateEditDialog();
   within(usersPage.editDialog, function () {
     usersPage.submitDialog(username);
   })
@@ -29,4 +26,15 @@ Scenario("I can create a new user", I => {
   within(usersPage.usersTable, function () {
     I.see(username);
   });
+});
+
+Scenario("I see snackbar message if operation was succeeded", I => {
+  const username = "Krishna das";
+
+  usersPage.navigateEditDialog();
+  within(usersPage.editDialog, function () {
+    usersPage.submitDialog(username);
+  })
+  I.waitForVisible(usersPage.snackbar);
+  I.see("User created/updated")
 });

@@ -61,6 +61,7 @@
       "Vuetify",
       "cors",
       "pydantic",
+      "snackbar",
       "socketio",
       "vuex"
     ]

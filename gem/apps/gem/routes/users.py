@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from pydantic import BaseModel
+from pydantic import BaseModel, Schema
 
 router = APIRouter()
 
@@ -9,9 +9,13 @@ fake_db = {
 class User(BaseModel):
     oid: int
     username: str
-    email: str = None
-    full_name: str = None
-    disabled: bool = None
+    email: str
+    full_name: str = Schema(
+        "",
+        title="User's full name",
+        min_length=3, max_length=64
+        )
+    disabled: bool
 
 
 @router.post("/")

@@ -15,7 +15,7 @@
       <v-data-table
         :headers="headers"
         :items="users"
-        :loading="loading"
+        :loading="fetchOperation.isInProgress"
         class="elevation-1"
         data-ref="users-table"
       >
@@ -30,9 +30,25 @@
       <edit-user-dialog
         :visible="isEditDialogVisible"
         :user="editingUser"
+        :loading="saveOperation.isInProgress"
+        :operation="saveOperation"
         @close="onCloseEditDialogClicked"
         @save="onSaveUserClicked"
       />
+
+      <v-snackbar
+        :value="isSnackbarVisible"
+        :top="true"
+        :right="true"
+        :color="snackbarColor"
+        @input="onCloseSnackbar"
+        data-ref="snackbar"
+      >
+        {{ snackbarMessage }}
+        <v-btn dark flat @click="onCloseSnackbar">
+          Close
+        </v-btn>
+      </v-snackbar>
     </v-layout>
   </v-container>
 </template>
@@ -40,8 +56,10 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import EditUserDialog from "../components/EditUserDialog.vue";
+import { Admin } from "../store/admin";
 import { AdminUsers } from "../store/users";
 import { User, EmptyUser } from "@/modules/types";
+import { Operation } from "../../types";
 
 @Component({
   components: { EditUserDialog }
@@ -69,8 +87,15 @@ export default class AdminUsersView extends Vue {
 
   /** On save user clicked */
   private async onSaveUserClicked(data: User) {
-    await AdminUsers.save(data);
+    const res = await AdminUsers.save(data);
     AdminUsers.closeEditDialog();
+    if (res) {
+      Admin.openSnackbar({ message: "User created/updated", color: "success" });
+    }
+  }
+
+  private onCloseSnackbar() {
+    Admin.closeSnackbar();
   }
 
   /** Show edit dialog or not? */
@@ -88,8 +113,24 @@ export default class AdminUsersView extends Vue {
     return AdminUsers.users;
   }
 
-  private get loading(): boolean {
-    return AdminUsers.isBusy;
+  private get saveOperation(): Operation {
+    return AdminUsers.saveOperation;
+  }
+
+  private get fetchOperation(): Operation {
+    return AdminUsers.fetchOperation;
+  }
+
+  private get snackbarMessage(): string {
+    return Admin.snackbarMessage;
+  }
+
+  private get isSnackbarVisible(): boolean {
+    return Admin.isSnackbarVisible;
+  }
+
+  private get snackbarColor(): string {
+    return Admin.snackbarColor;
   }
 
   mounted() {

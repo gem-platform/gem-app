@@ -28,3 +28,48 @@ export const EmptyUser: User = {
   full_name: "",
   disabled: false
 };
+
+export enum OperationState {
+  NotStarted,
+  InProgress,
+  Succeeded,
+  Failed
+}
+
+export class Operation {
+  state: OperationState = OperationState.NotStarted;
+  message: string = "";
+
+  clear() {
+    this.message = "";
+    this.state = OperationState.NotStarted;
+  }
+
+  start(message: string = "") {
+    this.message = message;
+    this.state = OperationState.InProgress;
+  }
+
+  succeed(message: string = "") {
+    this.message = message;
+    this.state = OperationState.Succeeded;
+  }
+
+  fail(message: string = "") {
+    this.message = message;
+    this.state = OperationState.Failed;
+  }
+
+  get isInProgress(): boolean {
+    return this.state === OperationState.InProgress;
+  }
+
+  get isSucceeded(): boolean {
+    return this.state === OperationState.Succeeded;
+  }
+}
+
+export interface SnackbarMessage {
+  message: string;
+  color: string;
+}
