@@ -41,7 +41,7 @@ import { Admin } from "../store/admin";
 export default class AdminUsersView extends Vue {
   @Emit("create") private onCreateClicked() {}
 
-  private admin() {
+  private get admin() {
     return Admin;
   }
 }
