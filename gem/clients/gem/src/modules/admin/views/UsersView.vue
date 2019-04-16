@@ -3,7 +3,6 @@
     <!-- Edit user dialog -->
     <template v-slot:edit-dialog>
       <edit-user-dialog
-        ref="editDialog"
         :visible="users.isEditDialogVisible"
         :user="users.editingUser"
         :operation="users.saveOperation"
@@ -62,6 +61,7 @@ export default class AdminUsersView extends Vue {
   }
 
   /** Table */
+
   private headers = [
     { text: "Name", value: "full_name" },
     { text: "Email", value: "email" },

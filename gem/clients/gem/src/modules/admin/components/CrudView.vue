@@ -2,16 +2,10 @@
   <v-container fluid>
     <v-layout column>
       <!-- Control panel -->
-      <v-btn
-        block
-        outline
-        color="info"
-        @click="onCreateClicked"
-        data-ref="create-new-user"
-      >
+      <v-btn block outline @click="onCreateClicked" data-ref="create-new-user">
         <v-icon dark>add</v-icon>
-        Create</v-btn
-      >
+        Create
+      </v-btn>
 
       <!-- Table -->
       <slot name="table"></slot>
@@ -21,14 +15,14 @@
 
       <!-- Snackbar for notifications -->
       <v-snackbar
-        :value="isSnackbarVisible"
+        :value="admin.isSnackbarVisible"
         :top="true"
         :left="true"
-        :color="snackbarColor"
-        @input="onCloseSnackbar"
+        :color="admin.snackbarColor"
+        @input="admin.closeSnackbar"
         data-ref="snackbar"
       >
-        {{ snackbarMessage }}
+        {{ admin.snackbarMessage }}
         <!--
         <v-btn dark flat icon @click="onCloseSnackbar">
           <v-icon>close</v-icon>
@@ -47,20 +41,8 @@ import { Admin } from "../store/admin";
 export default class AdminUsersView extends Vue {
   @Emit("create") private onCreateClicked() {}
 
-  private onCloseSnackbar() {
-    Admin.closeSnackbar();
-  }
-
-  private get snackbarMessage(): string {
-    return Admin.snackbarMessage;
-  }
-
-  private get isSnackbarVisible(): boolean {
-    return Admin.isSnackbarVisible;
-  }
-
-  private get snackbarColor(): string {
-    return Admin.snackbarColor;
+  private admin() {
+    return Admin;
   }
 }
 </script>
