@@ -119,6 +119,10 @@ export default class AdminUsersModule extends VuexModule {
     this.users = this.users.filter(x => x.oid !== user.oid);
     this.saveOperation.succeed("User deleted");
   }
+
+  get all(): User[] {
+    return this.users;
+  }
 }
 
 export const AdminUsers = getModule(AdminUsersModule);

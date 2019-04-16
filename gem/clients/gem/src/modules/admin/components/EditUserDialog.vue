@@ -41,7 +41,7 @@ import EditDialog from "./EditDialog.vue";
 
 @Component({ components: { EditDialog } })
 export default class EditUserDialog extends Vue {
-  @Prop({ default: AnonymousUser }) public readonly user!: User;
+  @Prop({ default: () => AnonymousUser }) public readonly user!: User;
   @Prop({ default: false }) visible!: boolean;
   @Prop({}) readonly operation!: Operation;
 
