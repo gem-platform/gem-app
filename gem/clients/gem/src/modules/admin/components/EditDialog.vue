@@ -20,8 +20,8 @@
             flat
             @click="save"
             data-ref="save-user"
-            :loading="operation.isInProgress"
-            :disabled="operation.isInProgress"
+            :loading="isLoading"
+            :disabled="isLoading"
             >Save</v-btn
           >
         </v-toolbar-items>
@@ -31,7 +31,7 @@
         <v-layout wrap>
           <v-flex xs12>
             <v-alert :value="isAlertVisible" :type="alertType">
-              {{ operation.message }}
+              {{ message }}
             </v-alert>
           </v-flex>
 
@@ -61,11 +61,22 @@ export default class EditDialog extends Vue {
   }
 
   private get isAlertVisible(): boolean {
+    if (this.operation === undefined) return false;
     return this.operation.message !== "" && this.showOperationSuccessAlert;
   }
 
   private get alertType(): string {
+    if (this.operation === undefined) return "error";
     return this.operation.isSucceeded ? "success" : "error";
+  }
+
+  private get isLoading() {
+    return this.operation ? this.operation.isInProgress : false;
+  }
+
+  private get message(): string {
+    if (this.operation === undefined) return "";
+    return this.operation.message;
   }
 }
 </script>
