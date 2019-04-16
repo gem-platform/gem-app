@@ -41,4 +41,13 @@ export default class CrudService<T extends Entity> {
   public async fetch(): Promise<T[]> {
     return (await Axios.get(this.url)).data;
   }
+
+  /**
+   * Remove entity.
+   * @param entity Entity to remove.
+   * @returns Removed entity.
+   */
+  public async delete(entity: T): Promise<T> {
+    return (await Axios.delete(this.url + "/" + entity.oid)).data;
+  }
 }

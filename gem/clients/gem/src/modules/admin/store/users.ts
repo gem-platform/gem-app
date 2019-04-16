@@ -72,6 +72,12 @@ export default class AdminUsersModule extends VuexModule {
     }
   }
 
+  @Action async delete(user: User): Promise<User> {
+    const result = await service.delete(user);
+    this.userDeleted(result);
+    return result;
+  }
+
   /** Users has been fetched successfully. */
   @Mutation private usersFetchingStarted() {
     this.fetchOperation.start();
@@ -106,6 +112,12 @@ export default class AdminUsersModule extends VuexModule {
     const original = this.users.find(x => x.oid === user.oid);
     Object.assign(original, user);
     this.saveOperation.succeed("User updated");
+  }
+
+  /** User has been successfully deleted. */
+  @Mutation private userDeleted(user: User) {
+    this.users = this.users.filter(x => x.oid !== user.oid);
+    this.saveOperation.succeed("User deleted");
   }
 }
 

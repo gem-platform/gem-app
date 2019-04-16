@@ -24,6 +24,14 @@
             {{ props.item.full_name }}
           </td>
           <td>{{ props.item.email }}</td>
+          <td class="justify-center layout px-0">
+            <v-icon
+              small
+              @click="onUserDeleteClicked(props.item)"
+              data-ref="delete-user"
+              >delete</v-icon
+            >
+          </td>
         </template>
       </v-data-table>
 
@@ -67,7 +75,8 @@ import { Operation } from "../../types";
 export default class AdminUsersView extends Vue {
   private headers = [
     { text: "Name", value: "full_name" },
-    { text: "Email", value: "email" }
+    { text: "Email", value: "email" },
+    { text: "Actions", align: "right", sortable: false, name: "full_name" }
   ];
 
   /** On create new user button clicked. */
@@ -96,6 +105,10 @@ export default class AdminUsersView extends Vue {
 
   private onCloseSnackbar() {
     Admin.closeSnackbar();
+  }
+
+  private onUserDeleteClicked(user: User) {
+    AdminUsers.delete(user);
   }
 
   /** Show edit dialog or not? */
