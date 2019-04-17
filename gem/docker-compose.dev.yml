@@ -1,0 +1,8 @@
+version: "3"
+services:
+  gem-client:
+    volumes:
+      - ./clients/gem:/app
+  gem-app:
+    volumes:
+      - ./apps/gem:/app
