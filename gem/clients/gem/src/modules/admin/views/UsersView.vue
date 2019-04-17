@@ -71,8 +71,8 @@ export default class AdminUsersView extends Vue {
 
   private async onSaveUserClicked(data: User) {
     const res = await UsersStore.save(data);
-    UsersStore.closeEditDialog();
     if (res) {
+      UsersStore.closeEditDialog();
       AdminStore.openSnackbar({
         message: "User created/updated",
         color: "success"

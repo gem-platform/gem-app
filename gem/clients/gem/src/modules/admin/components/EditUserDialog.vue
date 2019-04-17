@@ -36,12 +36,12 @@
 <script lang="ts">
 import { Component, Vue, Emit, Prop, Model } from "vue-property-decorator";
 import { User } from "@/modules/types.ts";
-import { AnonymousUser, Operation } from "../../types";
+import { EmptyUser, Operation } from "../../types";
 import EditDialog from "./EditDialog.vue";
 
 @Component({ components: { EditDialog } })
 export default class EditUserDialog extends Vue {
-  @Prop({ default: () => AnonymousUser }) public readonly user!: User;
+  @Prop({ default: () => EmptyUser }) public readonly user!: User;
   @Prop({ default: false }) visible!: boolean;
   @Prop({}) readonly operation!: Operation;
 

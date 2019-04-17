@@ -50,8 +50,8 @@ import { Operation } from "../../types";
 export default class EditDialog extends Vue {
   @Prop({ default: false }) visible!: boolean;
   @Prop({ default: "Edit" }) title!: string;
-  @Prop({ default: false }) readonly showOperationSuccessAlert!: boolean;
-  @Prop() operation!: Operation;
+  @Prop({ default: false }) readonly showSuccessAlert!: boolean;
+  @Prop() readonly operation!: Operation;
 
   @Emit("close") close() {
     return;
@@ -62,7 +62,9 @@ export default class EditDialog extends Vue {
 
   private get isAlertVisible(): boolean {
     if (this.operation === undefined) return false;
-    return this.operation.message !== "" && this.showOperationSuccessAlert;
+    return this.operation.isSucceeded
+      ? this.showSuccessAlert && this.operation.message !== ""
+      : this.operation.message !== "";
   }
 
   private get alertType(): string {
