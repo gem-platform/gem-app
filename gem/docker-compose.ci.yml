@@ -1,0 +1,5 @@
+version: "3"
+services:
+  gem-client:
+    volumes:
+      - ../coverage:/coverage
