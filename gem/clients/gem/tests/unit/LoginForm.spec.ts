@@ -23,14 +23,14 @@ describe("LoginForm.vue", () => {
 
   it("sends login event when login button clicked", () => {
     wrapper.setData({
-      username: "admin",
-      password: "pass"
+      password: "pass",
+      username: "admin"
     });
     submit.trigger("click");
     expect(wrapper.emitted().login).toBeTruthy();
     expect(wrapper.emitted().login[0][0]).toEqual({
-      username: "admin",
-      password: "pass"
+      password: "pass",
+      username: "admin"
     });
   });
 });

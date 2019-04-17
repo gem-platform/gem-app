@@ -1,5 +1,5 @@
 import EditUserDialog from "@/modules/admin/components/EditUserDialog.vue";
-import { OperationState, User } from "@/modules/types.ts";
+import { IUser, OperationState } from "@/modules/types.ts";
 import { mount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
@@ -9,12 +9,12 @@ import { Operation } from "@/modules/types";
 Vue.use(Vuetify);
 
 describe("EditUserDialog.vue", () => {
-  const user: User = {
-    oid: 1,
-    username: "johndoe",
-    full_name: "John Doe",
+  const user: IUser = {
+    disabled: false,
     email: "johndoe@email.com",
-    disabled: false
+    full_name: "John Doe",
+    oid: 1,
+    username: "johndoe"
   };
   const wrapper = mount(EditUserDialog, {
     propsData: { user }
@@ -46,8 +46,8 @@ describe("EditUserDialog.vue", () => {
   it("sends changed entity when save button clicked", () => {
     const changedUser = {
       ...user,
-      full_name: "changedName",
-      email: "changedEmail"
+      email: "changedEmail",
+      full_name: "changedName"
     };
 
     name.find("input").setValue("changedName");

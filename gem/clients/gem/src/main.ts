@@ -9,7 +9,7 @@ import "./plugins/axios";
 Vue.config.productionTip = false;
 
 new Vue({
+  render: h => h(App),
   router,
-  store,
-  render: h => h(App)
+  store
 }).$mount("#app");

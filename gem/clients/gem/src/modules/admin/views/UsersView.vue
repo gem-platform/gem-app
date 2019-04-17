@@ -41,7 +41,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { Operation, User } from "../../types";
+import { IUser, Operation } from "../../types";
 import { AdminStore, UsersStore } from "../store";
 
 import Crud from "../components/Crud.vue";
@@ -51,6 +51,12 @@ import EditUserDialog from "../components/EditUserDialog.vue";
   components: { Crud, EditUserDialog }
 })
 export default class AdminUsersView extends Vue {
+  private headers = [
+    { text: "Name", value: "full_name" },
+    { text: "Email", value: "email" },
+    { text: "Actions", align: "right", sortable: false, name: "full_name" }
+  ];
+
   private mounted() {
     UsersStore.fetch();
   }
@@ -59,23 +65,13 @@ export default class AdminUsersView extends Vue {
     return UsersStore;
   }
 
-  /** Table */
-
-  private headers = [
-    { text: "Name", value: "full_name" },
-    { text: "Email", value: "email" },
-    { text: "Actions", align: "right", sortable: false, name: "full_name" }
-  ];
-
-  /** Edit User dialog */
-
-  private async onSaveUserClicked(data: User) {
+  private async onSaveUserClicked(data: IUser) {
     const res = await UsersStore.save(data);
     if (res) {
       UsersStore.closeEditDialog();
       AdminStore.openSnackbar({
-        message: "User created/updated",
-        color: "success"
+        color: "success",
+        message: "User created/updated"
       });
     }
   }

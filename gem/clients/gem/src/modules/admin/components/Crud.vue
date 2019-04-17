@@ -34,12 +34,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Emit } from "vue-property-decorator";
+import { Component, Emit, Vue } from "vue-property-decorator";
 import { AdminStore } from "../store";
 
 @Component
 export default class AdminUsersView extends Vue {
-  @Emit("create") private onCreateClicked() {}
+  /** On create new entity button clicked. */
+  @Emit("create") private onCreateClicked() {
+    return undefined;
+  }
 
   private get admin() {
     return AdminStore;

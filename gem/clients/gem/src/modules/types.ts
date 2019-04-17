@@ -1,9 +1,9 @@
-export interface Entity {
+export interface IEntity {
   oid: number;
 }
 
 /** User */
-export interface User extends Entity {
+export interface IUser extends IEntity {
   oid: number;
   username: string;
   email: string;
@@ -12,12 +12,12 @@ export interface User extends Entity {
 }
 
 /** Empty user */
-export const EmptyUser: User = {
-  oid: 0,
-  username: "",
+export const EmptyUser: IUser = {
+  disabled: false,
   email: "",
   full_name: "",
-  disabled: false
+  oid: 0,
+  username: ""
 };
 
 export enum OperationState {

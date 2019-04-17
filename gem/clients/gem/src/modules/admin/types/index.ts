@@ -1,4 +1,4 @@
-export interface Snackbar {
+export interface ISnackbar {
   message: string;
   color: string;
 }

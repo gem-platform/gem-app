@@ -7,51 +7,48 @@ import { Auth } from "@/modules/auth/store/auth";
 
 Vue.use(Router);
 const router = new Router({
-  mode: "history",
   base: process.env.BASE_URL,
+  mode: "history",
   routes: [
     {
-      path: "/login",
+      component: LoginView,
       name: "login",
-      component: LoginView
+      path: "/login"
     },
     {
-      path: "/admin",
+      component: () =>
+        import(/* webpackChunkName: "admin" */ "./modules/admin/views/AdminIndexView.vue"),
+      meta: {
+        requiresAuth: true
+      },
       name: "admin",
+      path: "/admin"
+    },
+    {
+      component: () =>
+        import(/* webpackChunkName: "admin" */ "./modules/admin/views/UsersView.vue"),
       meta: {
         requiresAuth: true
       },
-      component: () =>
-        import(/* webpackChunkName: "admin" */ "./modules/admin/views/AdminIndexView.vue")
-    },
-    {
-      path: "/admin/users",
       name: "admin-users",
-      meta: {
-        requiresAuth: true
-      },
-      component: () =>
-        import(/* webpackChunkName: "admin" */ "./modules/admin/views/UsersView.vue")
+      path: "/admin/users"
     },
     {
-      path: "/",
-      name: "home",
       component: HomeView,
       meta: {
         requiresAuth: true
-      }
+      },
+      name: "home",
+      path: "/"
     },
     {
-      path: "/about",
-      name: "about",
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () =>
         import(/* webpackChunkName: "about" */ "./views/About.vue"),
       meta: {
         requiresAuth: true
-      }
+      },
+      name: "about",
+      path: "/about"
     }
   ]
 });

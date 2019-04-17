@@ -43,32 +43,36 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Emit, Prop, Model } from "vue-property-decorator";
+import { Component, Emit, Model, Prop, Vue } from "vue-property-decorator";
 import { Operation } from "../../types";
 
 @Component
 export default class EditDialog extends Vue {
-  @Prop({ default: false }) visible!: boolean;
-  @Prop({ default: "Edit" }) title!: string;
-  @Prop({ default: false }) readonly showSuccessAlert!: boolean;
-  @Prop() readonly operation!: Operation;
+  @Prop({ default: false }) public visible!: boolean;
+  @Prop({ default: "Edit" }) public title!: string;
+  @Prop({ default: false }) public readonly showSuccessAlert!: boolean;
+  @Prop() public readonly operation!: Operation;
 
-  @Emit("close") close() {
+  @Emit("close") public close() {
     return;
   }
-  @Emit("save") save() {
+  @Emit("save") public save() {
     return;
   }
 
   private get isAlertVisible(): boolean {
-    if (this.operation === undefined) return false;
+    if (this.operation === undefined) {
+      return false;
+    }
     return this.operation.isSucceeded
       ? this.showSuccessAlert && this.operation.message !== ""
       : this.operation.message !== "";
   }
 
   private get alertType(): string {
-    if (this.operation === undefined) return "error";
+    if (this.operation === undefined) {
+      return "error";
+    }
     return this.operation.isSucceeded ? "success" : "error";
   }
 
@@ -77,7 +81,9 @@ export default class EditDialog extends Vue {
   }
 
   private get message(): string {
-    if (this.operation === undefined) return "";
+    if (this.operation === undefined) {
+      return "";
+    }
     return this.operation.message;
   }
 }
