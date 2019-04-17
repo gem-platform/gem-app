@@ -57,7 +57,9 @@ before_install:
   - (cd e2e && npm ci)
   - (cd gem && chmod +x ./wait.sh && ./wait.sh)
 
-  - mkdir ./coverage
+  - ls
+  - ls ./coverage
+  # - mkdir ./coverage
 
 script:
   - (cd gem && docker-compose exec gem-client npm run test:unit -- --coverage --coverageDirectory=/coverage)
