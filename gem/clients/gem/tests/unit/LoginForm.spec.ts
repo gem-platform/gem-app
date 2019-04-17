@@ -1,7 +1,7 @@
+import LoginForm from "@/modules/auth/components/LoginForm.vue";
 import { mount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
-import LoginForm from "@/modules/auth/components/LoginForm.vue";
 
 Vue.use(Vuetify);
 

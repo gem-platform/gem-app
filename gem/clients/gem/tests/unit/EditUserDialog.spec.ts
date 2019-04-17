@@ -1,8 +1,8 @@
+import EditUserDialog from "@/modules/admin/components/EditUserDialog.vue";
+import { OperationState, User } from "@/modules/types.ts";
 import { mount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
-import EditUserDialog from "@/modules/admin/components/EditUserDialog.vue";
-import { User, OperationState } from "@/modules/types.ts";
 
 import { Operation } from "@/modules/types";
 
@@ -17,7 +17,7 @@ describe("EditUserDialog.vue", () => {
     disabled: false
   };
   const wrapper = mount(EditUserDialog, {
-    propsData: { user: user }
+    propsData: { user }
   });
   const alert = wrapper.find(".v-alert");
   const name = wrapper.find({ ref: "name" });

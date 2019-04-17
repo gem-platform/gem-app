@@ -28,8 +28,8 @@ export enum OperationState {
 }
 
 export class Operation {
-  state: OperationState;
-  message: string;
+  public state: OperationState;
+  public message: string;
 
   constructor(
     state: OperationState = OperationState.NotStarted,
@@ -39,22 +39,22 @@ export class Operation {
     this.message = message;
   }
 
-  clear() {
+  public clear() {
     this.message = "";
     this.state = OperationState.NotStarted;
   }
 
-  start(message: string = "") {
+  public start(message: string = "") {
     this.message = message;
     this.state = OperationState.InProgress;
   }
 
-  succeed(message: string = "") {
+  public succeed(message: string = "") {
     this.message = message;
     this.state = OperationState.Succeeded;
   }
 
-  fail(message: string = "") {
+  public fail(message: string = "") {
     this.message = message;
     this.state = OperationState.Failed;
   }

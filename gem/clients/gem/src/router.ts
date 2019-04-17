@@ -1,7 +1,7 @@
-import Vue from "vue";
-import Router from "vue-router";
 import LoginView from "@/modules/auth/views/LoginView.vue";
 import HomeView from "@/views/Home.vue";
+import Vue from "vue";
+import Router from "vue-router";
 
 import { Auth } from "@/modules/auth/store/auth";
 

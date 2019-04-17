@@ -1,5 +1,5 @@
-import Axios from "axios";
 import { Entity } from "@/modules/types";
+import Axios from "axios";
 
 /**
  * Admin CRUD service.

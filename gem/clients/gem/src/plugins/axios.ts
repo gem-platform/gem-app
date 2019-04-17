@@ -5,7 +5,7 @@ axios.defaults.baseURL = "http://localhost:9000";
 
 axios.interceptors.request.use(
   function(config) {
-    const token = store.state["auth"].token;
+    const token = store.state.auth.token;
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

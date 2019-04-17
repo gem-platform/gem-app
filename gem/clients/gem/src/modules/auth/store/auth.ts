@@ -1,3 +1,4 @@
+import { EmptyUser, User } from "@/modules/types";
 import store from "@/store";
 import {
   Action,
@@ -8,7 +9,6 @@ import {
 } from "vuex-module-decorators";
 import AuthService, { AuthToken } from "../services/auth";
 import { Credentials } from "../types";
-import { User, EmptyUser } from "@/modules/types";
 
 /** Authentication service to perform requests. */
 const service = new AuthService();
@@ -17,6 +17,22 @@ const emptyToken = "";
 /** Authentication storage module */
 @Module({ namespaced: true, dynamic: true, name: "auth", store })
 export default class AuthModule extends VuexModule {
+
+  /**
+   * Is user authenticated?
+   * @returns true if authenticated, otherwise false.
+   */
+  get isAuthenticated(): boolean {
+    return this.token !== emptyToken;
+  }
+
+  /**
+   * Is user data loaded?
+   * @returns true if user data loaded, otherwise false.
+   */
+  get isUserLoaded(): boolean {
+    return this.user.oid !== 0;
+  }
   /** Authentication token. Get from localStorage if user was previously authenticated. */
   public token: string = localStorage.getItem("token") || emptyToken;
 
@@ -44,7 +60,7 @@ export default class AuthModule extends VuexModule {
   }
 
   /** Logout user. */
-  @Mutation logout() {
+  @Mutation public logout() {
     this.token = "";
     localStorage.removeItem("token");
   }
@@ -57,6 +73,14 @@ export default class AuthModule extends VuexModule {
     } catch {
       console.log("Not authorized");
     }
+  }
+
+  /**
+   * User data loaded.
+   * @param user User.
+   */
+  @Mutation public userDataLoaded(user: User) {
+    this.user = user;
   }
 
   /**
@@ -77,30 +101,6 @@ export default class AuthModule extends VuexModule {
     this.token = "";
     this.message = message;
     localStorage.removeItem("token");
-  }
-
-  /**
-   * User data loaded.
-   * @param user User.
-   */
-  @Mutation userDataLoaded(user: User) {
-    this.user = user;
-  }
-
-  /**
-   * Is user authenticated?
-   * @returns true if authenticated, otherwise false.
-   */
-  get isAuthenticated(): boolean {
-    return this.token !== emptyToken;
-  }
-
-  /**
-   * Is user data loaded?
-   * @returns true if user data loaded, otherwise false.
-   */
-  get isUserLoaded(): boolean {
-    return this.user.oid !== 0;
   }
 }
 
