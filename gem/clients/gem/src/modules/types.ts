@@ -11,15 +11,6 @@ export interface User extends Entity {
   disabled: boolean;
 }
 
-/** Anonymous user */
-export const AnonymousUser: User = {
-  oid: -1,
-  username: "Anonymous",
-  email: "anonymous@mail.com",
-  full_name: "Anonymous",
-  disabled: false
-};
-
 /** Empty user */
 export const EmptyUser: User = {
   oid: 0,
@@ -67,9 +58,4 @@ export class Operation {
   get isSucceeded(): boolean {
     return this.state === OperationState.Succeeded;
   }
-}
-
-export interface SnackbarMessage {
-  message: string;
-  color: string;
 }

@@ -1,5 +1,5 @@
 <template>
-  <crud-view @create="onCreateClicked">
+  <crud @create="onCreateClicked">
     <!-- Edit user dialog -->
     <template v-slot:edit-dialog>
       <edit-user-dialog
@@ -36,28 +36,27 @@
         </template>
       </v-data-table>
     </template>
-  </crud-view>
+  </crud>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import CrudView from "../components/CrudView.vue";
+import { Operation, User } from "../../types";
+import { AdminStore, UsersStore } from "../store";
+
+import Crud from "../components/Crud.vue";
 import EditUserDialog from "../components/EditUserDialog.vue";
 
-import { AdminUsers } from "../store/users";
-import { Admin } from "../store/admin";
-import { Operation, User, EmptyUser } from "../../types";
-
 @Component({
-  components: { CrudView, EditUserDialog }
+  components: { Crud, EditUserDialog }
 })
 export default class AdminUsersView extends Vue {
   private mounted() {
-    AdminUsers.fetch();
+    UsersStore.fetch();
   }
 
   private get users() {
-    return AdminUsers;
+    return UsersStore;
   }
 
   /** Table */
@@ -71,15 +70,18 @@ export default class AdminUsersView extends Vue {
   /** Edit User dialog */
 
   private async onSaveUserClicked(data: User) {
-    const res = await AdminUsers.save(data);
-    AdminUsers.closeEditDialog();
+    const res = await UsersStore.save(data);
+    UsersStore.closeEditDialog();
     if (res) {
-      Admin.openSnackbar({ message: "User created/updated", color: "success" });
+      AdminStore.openSnackbar({
+        message: "User created/updated",
+        color: "success"
+      });
     }
   }
 
   private onCreateClicked() {
-    AdminUsers.openEditDialog(EmptyUser);
+    UsersStore.openEditDialog();
   }
 }
 </script>

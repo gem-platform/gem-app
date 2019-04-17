@@ -5,23 +5,21 @@ import {
   Mutation,
   VuexModule
 } from "vuex-module-decorators";
-import { SnackbarMessage } from "@/modules/types";
+import { Snackbar } from "../types";
 
-/** Admin storage */
+/** Admin store module */
 @Module({ namespaced: true, dynamic: true, name: "admin", store })
-export default class AdminModule extends VuexModule {
+export default class AdminStoreModule extends VuexModule {
   isSnackbarVisible: boolean = false;
-  snackbarMessage: string = "";
-  snackbarColor: string = "";
+  snackbar: Snackbar = { message: "", color: "" };
 
   /**
    * Open snackbar
-   * @param message Message.
+   * @param snackbar Message.
    */
-  @Mutation openSnackbar({ message, color }: SnackbarMessage) {
+  @Mutation openSnackbar(snackbar: Snackbar) {
     this.isSnackbarVisible = true;
-    this.snackbarMessage = message;
-    this.snackbarColor = color;
+    this.snackbar = snackbar;
   }
 
   /** Close snackbar. */
@@ -30,4 +28,4 @@ export default class AdminModule extends VuexModule {
   }
 }
 
-export const Admin = getModule(AdminModule);
+export const AdminStore = getModule(AdminStoreModule);

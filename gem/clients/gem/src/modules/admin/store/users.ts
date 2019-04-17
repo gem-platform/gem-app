@@ -6,42 +6,40 @@ import {
   Mutation,
   VuexModule
 } from "vuex-module-decorators";
-import { User, Operation } from "../../types";
-import { AnonymousUser } from "@/modules/types";
+import { User, Operation, EmptyUser } from "../../types";
 import UsersService from "../services/users";
 
 const service = new UsersService();
 
 /** Authentication storage module */
 @Module({ namespaced: true, dynamic: true, name: "admin-users", store })
-export default class AdminUsersModule extends VuexModule {
-  isBusy: boolean = false;
+export default class UsersStoreModule extends VuexModule {
   isEditDialogVisible: boolean = false;
-  editingUser: User = AnonymousUser;
+  editingUser: User = { ...EmptyUser };
   users: User[] = [];
   fetchOperation: Operation = new Operation();
   saveOperation: Operation = new Operation();
 
   /**
    * Open edit dialog.
-   * @param user User to edit in dialog.
+   * @param user User to edit in dialog (default EmptyUser).
    */
-  @Mutation openEditDialog(user: User): void {
+  @Mutation openEditDialog(user: User = EmptyUser): void {
     // make a copy. do not mutate original one
     // original one should be mutated if user press save button
     this.editingUser = { ...user };
     this.isEditDialogVisible = true;
-    this.saveOperation.clear();
   }
 
   /** Close edit dialog. */
   @Mutation closeEditDialog(): void {
     this.isEditDialogVisible = false;
+    this.saveOperation.clear();
   }
 
   @Action async fetch(): Promise<User[] | undefined> {
     try {
-      this.usersFetchingStarted();
+      this.usersFetchStarted();
       const users = await service.fetch();
       this.usersFetched(users);
       return users;
@@ -79,7 +77,7 @@ export default class AdminUsersModule extends VuexModule {
   }
 
   /** Users has been fetched successfully. */
-  @Mutation private usersFetchingStarted() {
+  @Mutation private usersFetchStarted() {
     this.fetchOperation.start();
   }
 
@@ -125,4 +123,4 @@ export default class AdminUsersModule extends VuexModule {
   }
 }
 
-export const AdminUsers = getModule(AdminUsersModule);
+export const UsersStore = getModule(UsersStoreModule);

@@ -18,11 +18,11 @@
         :value="admin.isSnackbarVisible"
         :top="true"
         :left="true"
-        :color="admin.snackbarColor"
+        :color="admin.snackbar.color"
         @input="admin.closeSnackbar"
         data-ref="snackbar"
       >
-        {{ admin.snackbarMessage }}
+        {{ admin.snackbar.message }}
         <!--
         <v-btn dark flat icon @click="onCloseSnackbar">
           <v-icon>close</v-icon>
@@ -35,14 +35,14 @@
 
 <script lang="ts">
 import { Component, Vue, Emit } from "vue-property-decorator";
-import { Admin } from "../store/admin";
+import { AdminStore } from "../store";
 
 @Component
 export default class AdminUsersView extends Vue {
   @Emit("create") private onCreateClicked() {}
 
   private get admin() {
-    return Admin;
+    return AdminStore;
   }
 }
 </script>
