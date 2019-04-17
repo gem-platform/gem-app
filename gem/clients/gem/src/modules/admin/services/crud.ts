@@ -1,10 +1,10 @@
+import { IEntity } from "@/modules/types";
 import Axios from "axios";
-import { Entity } from "@/modules/types";
 
 /**
  * Admin CRUD service.
  */
-export default class CrudService<T extends Entity> {
+export default class CrudService<T extends IEntity> {
   /** URL prefix to send request to. */
   private url: string;
 

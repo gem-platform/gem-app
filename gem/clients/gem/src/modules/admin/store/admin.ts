@@ -5,25 +5,25 @@ import {
   Mutation,
   VuexModule
 } from "vuex-module-decorators";
-import { Snackbar } from "../types";
+import { ISnackbar } from "../types";
 
 /** Admin store module */
 @Module({ namespaced: true, dynamic: true, name: "admin", store })
 export default class AdminStoreModule extends VuexModule {
-  isSnackbarVisible: boolean = false;
-  snackbar: Snackbar = { message: "", color: "" };
+  public isSnackbarVisible: boolean = false;
+  public snackbar: ISnackbar = { message: "", color: "" };
 
   /**
    * Open snackbar
    * @param snackbar Message.
    */
-  @Mutation openSnackbar(snackbar: Snackbar) {
+  @Mutation public openSnackbar(snackbar: ISnackbar) {
     this.isSnackbarVisible = true;
     this.snackbar = snackbar;
   }
 
   /** Close snackbar. */
-  @Mutation closeSnackbar() {
+  @Mutation public closeSnackbar() {
     this.isSnackbarVisible = false;
   }
 }

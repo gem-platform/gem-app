@@ -1,9 +1,9 @@
-export interface Entity {
+export interface IEntity {
   oid: number;
 }
 
 /** User */
-export interface User extends Entity {
+export interface IUser extends IEntity {
   oid: number;
   username: string;
   email: string;
@@ -12,12 +12,12 @@ export interface User extends Entity {
 }
 
 /** Empty user */
-export const EmptyUser: User = {
-  oid: 0,
-  username: "",
+export const EmptyUser: IUser = {
+  disabled: false,
   email: "",
   full_name: "",
-  disabled: false
+  oid: 0,
+  username: ""
 };
 
 export enum OperationState {
@@ -28,8 +28,8 @@ export enum OperationState {
 }
 
 export class Operation {
-  state: OperationState;
-  message: string;
+  public state: OperationState;
+  public message: string;
 
   constructor(
     state: OperationState = OperationState.NotStarted,
@@ -39,22 +39,22 @@ export class Operation {
     this.message = message;
   }
 
-  clear() {
+  public clear() {
     this.message = "";
     this.state = OperationState.NotStarted;
   }
 
-  start(message: string = "") {
+  public start(message: string = "") {
     this.message = message;
     this.state = OperationState.InProgress;
   }
 
-  succeed(message: string = "") {
+  public succeed(message: string = "") {
     this.message = message;
     this.state = OperationState.Succeeded;
   }
 
-  fail(message: string = "") {
+  public fail(message: string = "") {
     this.message = message;
     this.state = OperationState.Failed;
   }

@@ -34,21 +34,21 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Emit, Prop, Model } from "vue-property-decorator";
-import { User } from "@/modules/types.ts";
+import { IUser } from "@/modules/types.ts";
+import { Component, Emit, Model, Prop, Vue } from "vue-property-decorator";
 import { EmptyUser, Operation } from "../../types";
 import EditDialog from "./EditDialog.vue";
 
 @Component({ components: { EditDialog } })
 export default class EditUserDialog extends Vue {
-  @Prop({ default: () => EmptyUser }) public readonly user!: User;
-  @Prop({ default: false }) visible!: boolean;
-  @Prop({}) readonly operation!: Operation;
+  @Prop({ default: () => EmptyUser }) public readonly user!: IUser;
+  @Prop({ default: false }) public visible!: boolean;
+  @Prop({}) public readonly operation!: Operation;
 
-  @Emit("close") close() {
+  @Emit("close") private close() {
     return;
   }
-  @Emit("save") save() {
+  @Emit("save") private save() {
     return this.user;
   }
 }

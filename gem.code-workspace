@@ -27,7 +27,8 @@
       "aaron-bond.better-comments",
       "esbenp.prettier-vscode",
       "njpwerner.autodocstring",
-      "samuelcolvin.jinjahtml"
+      "samuelcolvin.jinjahtml",
+      "prograhammer.tslint-vue"
     ]
   },
   "settings": {
@@ -39,7 +40,7 @@
       "**/.DS_Store": true,
       "**/node_modules": true,
       "**/coverage": true,
-      "**/__pycache__": true,
+      "**/__pycache__": true
     },
     "eslint.autoFixOnSave": true,
     "eslint.validate": [

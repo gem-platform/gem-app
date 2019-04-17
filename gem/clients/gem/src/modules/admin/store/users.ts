@@ -6,7 +6,7 @@ import {
   Mutation,
   VuexModule
 } from "vuex-module-decorators";
-import { User, Operation, EmptyUser } from "../../types";
+import { EmptyUser, IUser, Operation } from "../../types";
 import UsersService from "../services/users";
 
 const service = new UsersService();
@@ -14,17 +14,17 @@ const service = new UsersService();
 /** Authentication storage module */
 @Module({ namespaced: true, dynamic: true, name: "admin-users", store })
 export default class UsersStoreModule extends VuexModule {
-  isEditDialogVisible: boolean = false;
-  editingUser: User = { ...EmptyUser };
-  users: User[] = [];
-  fetchOperation: Operation = new Operation();
-  saveOperation: Operation = new Operation();
+  public isEditDialogVisible: boolean = false;
+  public editingUser: IUser = { ...EmptyUser };
+  public users: IUser[] = [];
+  public fetchOperation: Operation = new Operation();
+  public saveOperation: Operation = new Operation();
 
   /**
    * Open edit dialog.
    * @param user User to edit in dialog (default EmptyUser).
    */
-  @Mutation openEditDialog(user: User = EmptyUser): void {
+  @Mutation public openEditDialog(user: IUser = EmptyUser): void {
     // make a copy. do not mutate original one
     // original one should be mutated if user press save button
     this.editingUser = { ...user };
@@ -32,12 +32,12 @@ export default class UsersStoreModule extends VuexModule {
   }
 
   /** Close edit dialog. */
-  @Mutation closeEditDialog(): void {
+  @Mutation public closeEditDialog(): void {
     this.isEditDialogVisible = false;
     this.saveOperation.clear();
   }
 
-  @Action async fetch(): Promise<User[] | undefined> {
+  @Action public async fetch(): Promise<IUser[] | undefined> {
     try {
       this.usersFetchStarted();
       const users = await service.fetch();
@@ -54,7 +54,7 @@ export default class UsersStoreModule extends VuexModule {
    * @param user User to save.
    * @return User.
    */
-  @Action async save(user: User): Promise<User | undefined> {
+  @Action public async save(user: IUser): Promise<IUser | undefined> {
     try {
       this.saveUserStarted();
       if (user.oid && user.oid > 0) {
@@ -70,7 +70,7 @@ export default class UsersStoreModule extends VuexModule {
     }
   }
 
-  @Action async delete(user: User): Promise<User> {
+  @Action public async delete(user: IUser): Promise<IUser> {
     const result = await service.delete(user);
     this.userDeleted(result);
     return result;
@@ -82,7 +82,7 @@ export default class UsersStoreModule extends VuexModule {
   }
 
   /** Users has been fetched successfully. */
-  @Mutation private usersFetched(users: User[]) {
+  @Mutation private usersFetched(users: IUser[]) {
     this.users = users;
     this.fetchOperation.succeed();
   }
@@ -100,25 +100,25 @@ export default class UsersStoreModule extends VuexModule {
   }
 
   /** User has been successfully created. */
-  @Mutation private userCreated(user: User) {
+  @Mutation private userCreated(user: IUser) {
     this.users.push(user);
     this.saveOperation.succeed("User created");
   }
 
   /** User has been successfully updated. */
-  @Mutation private userUpdated(user: User) {
+  @Mutation private userUpdated(user: IUser) {
     const original = this.users.find(x => x.oid === user.oid);
     Object.assign(original, user);
     this.saveOperation.succeed("User updated");
   }
 
   /** User has been successfully deleted. */
-  @Mutation private userDeleted(user: User) {
+  @Mutation private userDeleted(user: IUser) {
     this.users = this.users.filter(x => x.oid !== user.oid);
     this.saveOperation.succeed("User deleted");
   }
 
-  get all(): User[] {
+  get all(): IUser[] {
     return this.users;
   }
 }

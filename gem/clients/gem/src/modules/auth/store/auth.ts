@@ -1,3 +1,4 @@
+import { EmptyUser, IUser } from "@/modules/types";
 import store from "@/store";
 import {
   Action,
@@ -6,9 +7,8 @@ import {
   Mutation,
   VuexModule
 } from "vuex-module-decorators";
-import AuthService, { AuthToken } from "../services/auth";
-import { Credentials } from "../types";
-import { User, EmptyUser } from "@/modules/types";
+import AuthService, { IAuthToken } from "../services/auth";
+import { ICredentials } from "../types";
 
 /** Authentication service to perform requests. */
 const service = new AuthService();
@@ -17,6 +17,22 @@ const emptyToken = "";
 /** Authentication storage module */
 @Module({ namespaced: true, dynamic: true, name: "auth", store })
 export default class AuthModule extends VuexModule {
+  /**
+   * Is user authenticated?
+   * @returns true if authenticated, otherwise false.
+   */
+  get isAuthenticated(): boolean {
+    return this.token !== emptyToken;
+  }
+
+  /**
+   * Is user data loaded?
+   * @returns true if user data loaded, otherwise false.
+   */
+  get isUserLoaded(): boolean {
+    return this.user.oid !== 0;
+  }
+
   /** Authentication token. Get from localStorage if user was previously authenticated. */
   public token: string = localStorage.getItem("token") || emptyToken;
 
@@ -24,14 +40,14 @@ export default class AuthModule extends VuexModule {
   public message: string = "";
 
   /** Authenticated user data. */
-  public user: User = { ...EmptyUser };
+  public user: IUser = { ...EmptyUser };
 
   /**
    * Authenticate user using specified credentials.
    * @param credentials Credentials to login with.
    * @returns true if authentication succeeded, otherwise false.
    */
-  @Action public async login(credentials: Credentials): Promise<boolean> {
+  @Action public async login(credentials: ICredentials): Promise<boolean> {
     try {
       const token = await service.login(credentials);
       this.authenticationSucceeded(token);
@@ -44,7 +60,7 @@ export default class AuthModule extends VuexModule {
   }
 
   /** Logout user. */
-  @Mutation logout() {
+  @Mutation public logout() {
     this.token = "";
     localStorage.removeItem("token");
   }
@@ -55,15 +71,23 @@ export default class AuthModule extends VuexModule {
       const data = await service.me();
       this.userDataLoaded(data);
     } catch {
-      console.log("Not authorized");
+      this.authenticationRequired();
     }
+  }
+
+  /**
+   * User data loaded.
+   * @param user User.
+   */
+  @Mutation public userDataLoaded(user: IUser) {
+    this.user = user;
   }
 
   /**
    * Authentication succeeded.
    * @param token Authentication token.
    */
-  @Mutation private authenticationSucceeded(token: AuthToken) {
+  @Mutation private authenticationSucceeded(token: IAuthToken) {
     this.token = token.access_token;
     this.message = "";
     localStorage.setItem("token", token.access_token);
@@ -80,27 +104,10 @@ export default class AuthModule extends VuexModule {
   }
 
   /**
-   * User data loaded.
-   * @param user User.
+   * Authentication required.
    */
-  @Mutation userDataLoaded(user: User) {
-    this.user = user;
-  }
-
-  /**
-   * Is user authenticated?
-   * @returns true if authenticated, otherwise false.
-   */
-  get isAuthenticated(): boolean {
-    return this.token !== emptyToken;
-  }
-
-  /**
-   * Is user data loaded?
-   * @returns true if user data loaded, otherwise false.
-   */
-  get isUserLoaded(): boolean {
-    return this.user.oid !== 0;
+  @Mutation private authenticationRequired() {
+    this.message = "Authentication required";
   }
 }
 
