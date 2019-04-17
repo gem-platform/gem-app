@@ -2,13 +2,15 @@ import { mount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
 import EditUserDialog from "@/modules/admin/components/EditUserDialog.vue";
-import { User } from "@/modules/types.ts";
+import { User, OperationState } from "@/modules/types.ts";
+
+import { Operation } from "@/modules/types";
 
 Vue.use(Vuetify);
 
 describe("EditUserDialog.vue", () => {
   const user: User = {
-    id: 1,
+    oid: 1,
     username: "johndoe",
     full_name: "John Doe",
     email: "johndoe@email.com",
@@ -17,6 +19,7 @@ describe("EditUserDialog.vue", () => {
   const wrapper = mount(EditUserDialog, {
     propsData: { user: user }
   });
+  const alert = wrapper.find(".v-alert");
   const name = wrapper.find({ ref: "name" });
   const email = wrapper.find({ ref: "email" });
   const close = wrapper.find("[data-ref='close']");
@@ -52,5 +55,20 @@ describe("EditUserDialog.vue", () => {
     save.trigger("click");
 
     expect(wrapper.emitted().save[0][0]).toEqual(changedUser);
+  });
+
+  it("shows alert if operation is in failed state", () => {
+    wrapper.setProps({
+      operation: new Operation(OperationState.Failed, "Some error")
+    });
+    expect(alert.props().value).toBeTruthy();
+    expect(alert.text()).toContain("Some error");
+  });
+
+  it("doesn't show alert if operation succeeded", () => {
+    wrapper.setProps({
+      operation: new Operation(OperationState.Succeeded, "Success")
+    });
+    expect(alert.props().value).toBeFalsy();
   });
 });

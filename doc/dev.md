@@ -32,8 +32,7 @@ export $(cat environment.env | xargs)
 ```bash
 cd gem/apps/gem
 pipenv install
-pipenv run
-pipenv run uvicorn main:app --port $GEM_APP_PORT
+pipenv run uvicorn main:app --port $GEM_APP_PORT --reload
 ```
 
 ### Start front-end

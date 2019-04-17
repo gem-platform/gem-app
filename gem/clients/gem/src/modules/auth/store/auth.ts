@@ -8,7 +8,7 @@ import {
 } from "vuex-module-decorators";
 import AuthService, { AuthToken } from "../services/auth";
 import { Credentials } from "../types";
-import { AnonymousUser, User } from "@/modules/types";
+import { User, EmptyUser } from "@/modules/types";
 
 /** Authentication service to perform requests. */
 const service = new AuthService();
@@ -24,7 +24,7 @@ export default class AuthModule extends VuexModule {
   public message: string = "";
 
   /** Authenticated user data. */
-  public user: User = AnonymousUser;
+  public user: User = { ...EmptyUser };
 
   /**
    * Authenticate user using specified credentials.
@@ -100,7 +100,7 @@ export default class AuthModule extends VuexModule {
    * @returns true if user data loaded, otherwise false.
    */
   get isUserLoaded(): boolean {
-    return this.user !== AnonymousUser;
+    return this.user.oid !== 0;
   }
 }
 

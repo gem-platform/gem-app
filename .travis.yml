@@ -43,9 +43,8 @@ before_install:
 
   # Setup your application stack. You may need to tweak these commands if you
   # doing out-of-the-ordinary docker-compose builds.
-  - (cd gem && docker-compose pull)
-  - (cd gem && docker-compose build)
-  - (cd gem && docker-compose up -d)
+  - (cd gem && docker-compose -f ./docker-compose.yml -f ./docker-compose.ci.yml build)
+  - (cd gem && docker-compose -f ./docker-compose.yml -f ./docker-compose.ci.yml up -d)
 
   # You will want this for logging. If one of your containers does not build for
   # whatever reason it's best to report that now before your tests start
@@ -54,10 +53,11 @@ before_install:
   - docker network ls
   - (cd gem && docker-compose ps)
 
-  - npm i -g npm
+  - npm i -g npm codecov
   - (cd e2e && npm ci)
   - (cd gem && chmod +x ./wait.sh && ./wait.sh)
 
 script:
-  - (cd gem && docker-compose exec gem-client npm run test:unit -- --coverage && npx codecov --token=$CODECOV_TOKEN)
+  - (cd gem && docker-compose exec gem-client npm run test:unit -- --coverage --coverageDirectory=/coverage)
+  - (cd coverage && npx codecov --token=$CODECOV_TOKEN)
   - (cd e2e && npx codeceptjs run)

@@ -1,5 +1,11 @@
 <template>
-  <edit-dialog title="Edit user" :visible="visible" @close="close" @save="save">
+  <edit-dialog
+    title="Edit user"
+    :visible="visible"
+    :operation="operation"
+    @close="close"
+    @save="save"
+  >
     <v-flex xs12>
       <v-text-field
         v-model="user.full_name"
@@ -30,13 +36,14 @@
 <script lang="ts">
 import { Component, Vue, Emit, Prop, Model } from "vue-property-decorator";
 import { User } from "@/modules/types.ts";
-import { AnonymousUser } from "../../types";
+import { EmptyUser, Operation } from "../../types";
 import EditDialog from "./EditDialog.vue";
 
 @Component({ components: { EditDialog } })
 export default class EditUserDialog extends Vue {
-  @Prop({ default: AnonymousUser }) public readonly user!: User;
-  @Prop({ default: false }) visible: boolean;
+  @Prop({ default: () => EmptyUser }) public readonly user!: User;
+  @Prop({ default: false }) visible!: boolean;
+  @Prop({}) readonly operation!: Operation;
 
   @Emit("close") close() {
     return;
