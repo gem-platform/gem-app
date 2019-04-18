@@ -6,6 +6,10 @@
     @close="close"
     @save="save"
   >
+    <template #actions>
+      <v-btn light flat>Password</v-btn>
+    </template>
+
     <v-flex xs12 sm6>
       <v-text-field v-model="user.full_name" label="Name" required ref="name" />
     </v-flex>
@@ -46,8 +50,7 @@ export default class EditUserDialog extends Vue {
   @Prop({ default: () => EmptyUser }) public readonly user!: IUser;
   @Prop({ default: false }) public visible!: boolean;
   @Prop({}) public readonly operation!: Operation;
-  @Prop({ default: formsOfAddress })
-  public readonly formsOfAddress!: string[];
+  @Prop({ default: formsOfAddress }) public readonly formsOfAddress!: string[];
 
   @Emit("close") private close() {
     return;
