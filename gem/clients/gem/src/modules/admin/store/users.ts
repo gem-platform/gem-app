@@ -6,7 +6,7 @@ import {
   Mutation,
   VuexModule
 } from "vuex-module-decorators";
-import { EmptyUser, IUser, Operation } from "../../types";
+import { EmptyUser, IUser, Operation, OperationState } from "../../types";
 import UsersService from "../services/users";
 
 const service = new UsersService();
@@ -19,6 +19,7 @@ export default class UsersStoreModule extends VuexModule {
   public users: IUser[] = [];
   public fetchOperation: Operation = new Operation();
   public saveOperation: Operation = new Operation();
+  public deleteOperation: Operation = new Operation();
 
   /**
    * Open edit dialog.
@@ -49,6 +50,15 @@ export default class UsersStoreModule extends VuexModule {
     }
   }
 
+  @Mutation public confirmDelete(user: IUser) {
+    this.deleteOperation.data = user;
+    this.deleteOperation.state = OperationState.Confirmation;
+  }
+
+  @Mutation public closeConfirmDelete() {
+    this.deleteOperation.cancel();
+  }
+
   /**
    * Save user.
    * @param user User to save.
@@ -70,10 +80,15 @@ export default class UsersStoreModule extends VuexModule {
     }
   }
 
-  @Action public async delete(user: IUser): Promise<IUser> {
-    const result = await service.delete(user);
-    this.userDeleted(result);
-    return result;
+  @Action public async delete(user: IUser): Promise<IUser | undefined> {
+    try {
+      this.deleteUserStarted();
+      const result = await service.delete(user);
+      this.userDeleted(result);
+      return result;
+    } catch (ex) {
+      this.deleteUserFailed();
+    }
   }
 
   /** Users has been fetched successfully. */
@@ -112,10 +127,19 @@ export default class UsersStoreModule extends VuexModule {
     this.saveOperation.succeed("User updated");
   }
 
+  @Mutation private deleteUserStarted() {
+    this.deleteOperation.start();
+  }
+
   /** User has been successfully deleted. */
   @Mutation private userDeleted(user: IUser) {
     this.users = this.users.filter(x => x.oid !== user.oid);
-    this.saveOperation.succeed("User deleted");
+    this.deleteOperation.succeed("User deleted");
+  }
+
+  /** User has been successfully deleted. */
+  @Mutation private deleteUserFailed(message: string = "") {
+    this.deleteOperation.fail(message);
   }
 
   get all(): IUser[] {

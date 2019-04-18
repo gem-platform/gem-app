@@ -22,21 +22,26 @@ export const EmptyUser: IUser = {
 
 export enum OperationState {
   NotStarted,
+  Confirmation,
   InProgress,
   Succeeded,
-  Failed
+  Failed,
+  Canceled
 }
 
 export class Operation {
   public state: OperationState;
   public message: string;
+  public data: any;
 
   constructor(
     state: OperationState = OperationState.NotStarted,
-    message: string = ""
+    message: string = "",
+    data?: any
   ) {
     this.state = state;
     this.message = message;
+    this.data = data;
   }
 
   public clear() {
@@ -59,11 +64,31 @@ export class Operation {
     this.state = OperationState.Failed;
   }
 
+  public cancel() {
+    this.state = OperationState.Canceled;
+  }
+
   get isInProgress(): boolean {
     return this.state === OperationState.InProgress;
   }
 
   get isSucceeded(): boolean {
     return this.state === OperationState.Succeeded;
+  }
+
+  get isFailed(): boolean {
+    return this.state === OperationState.Succeeded;
+  }
+
+  get isConfirmationRequired(): boolean {
+    return this.state === OperationState.Confirmation;
+  }
+
+  get isStarted(): boolean {
+    return this.isConfirmationRequired || this.isInProgress;
+  }
+
+  get isInProgressOrCompleted(): boolean {
+    return this.isInProgress || this.isSucceeded || this.isFailed;
   }
 }

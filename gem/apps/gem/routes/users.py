@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from pydantic import BaseModel, Schema
 
-from db import fake_db 
+from db import fake_db
 
 router = APIRouter()
 
@@ -14,7 +14,7 @@ class User(BaseModel):
         "",
         title="User's full name",
         min_length=3, max_length=64
-        )
+    )
     disabled: bool
 
 
@@ -36,7 +36,7 @@ async def delete_user(oid: int):
     otd = fake_db[oid]
     del fake_db[oid]
     return otd
-    
+
 
 @router.get("/")
 async def fetch_users_list():
