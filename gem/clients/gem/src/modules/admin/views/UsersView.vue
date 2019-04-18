@@ -3,9 +3,9 @@
     <!-- Edit user dialog -->
     <template v-slot:edit-dialog>
       <edit-user-dialog
-        :visible="users.isEditDialogVisible"
-        :user="users.editingUser"
-        :operation="users.saveOperation"
+        :visible="ops.save.isStarted"
+        :user="ops.save.data"
+        :operation="ops.save"
         @close="users.closeEditDialog"
         @save="onSaveUserClicked"
       />
@@ -16,7 +16,7 @@
       <v-data-table
         :headers="headers"
         :items="users.all"
-        :loading="users.fetchOperation.isInProgress"
+        :loading="ops.fetch.isInProgress"
         class="elevation-1"
         data-ref="users-table"
       >
@@ -39,11 +39,11 @@
       <confirm-dialog
         action="Delete"
         title="Delete user?"
-        :visible="users.deleteOperation.isStarted"
-        :data="users.deleteOperation.data"
-        :busy="users.deleteOperation.isInProgress"
-        :canCancel="!users.deleteOperation.isInProgressOrCompleted"
-        @cancel="users.deleteOperation.cancel()"
+        :data="ops.delete.data"
+        :visible="ops.delete.isStarted"
+        :busy="ops.delete.isInProgress"
+        :canCancel="!ops.delete.isInProgressOrCompleted"
+        @cancel="users.cancelDelete()"
         @confirm="onDeleteConfirmed"
       >
         <template v-slot:default="{ data = { full_name: '' } }">
@@ -75,6 +75,10 @@ export default class AdminUsersView extends Vue {
 
   private mounted() {
     UsersStore.fetch();
+  }
+
+  private get ops() {
+    return UsersStore.operations;
   }
 
   private get users() {
