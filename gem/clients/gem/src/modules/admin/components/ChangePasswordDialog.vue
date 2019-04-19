@@ -1,20 +1,28 @@
 <template>
-  <v-dialog
-    v-model="visible"
-    max-width="400"
-    ref="dialog"
-    data-ref="confirm-dialog"
-  >
+  <v-dialog v-model="visible" max-width="400" ref="dialog">
     <v-card>
       <!-- Header -->
-      <v-card-title class="headline">{{ title }}</v-card-title>
+      <v-card-title class="headline">Change password</v-card-title>
 
-      <!-- Content -->
-      <v-card-text>
-        <slot :data="data">
-          Would you like to delete this?
-        </slot>
-      </v-card-text>
+      <v-container grid-list-md>
+        <v-layout wrap>
+          <v-flex xs12>
+            <v-alert :value="error !== ''" ref="error">
+              {{ error }}
+            </v-alert>
+          </v-flex>
+
+          <v-flex xs12>
+            <v-text-field
+              v-model="password"
+              label="New Password"
+              required
+              type="password"
+              ref="password"
+            />
+          </v-flex>
+        </v-layout>
+      </v-container>
 
       <!-- Actions -->
       <v-card-actions>
@@ -35,7 +43,7 @@
           @click="confirm"
           data-ref="confirm"
         >
-          {{ action }}
+          Change
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -48,23 +56,19 @@ import { Operation } from "../../types";
 
 @Component
 export default class ConfirmDialog extends Vue {
-  /** Title */
-  @Prop({ default: "Perform action?" }) public title!: string;
-
-  /** Action name */
-  @Prop({ default: "Confirm" }) public action!: string;
-
   /** Is dialog visible? */
-  @Prop({ default: false }) public visible!: boolean;
-
-  /** Entity data. */
-  @Prop({ default: () => {} }) public data!: any;
+  @Prop({ default: true }) public visible!: boolean;
 
   /** Is busy? Disable 'delete' and 'cancel' buttons if so. */
   @Prop({ default: false }) public busy!: boolean;
 
   /** Can cancel operation? Disable 'cancel' button. */
   @Prop({ default: true }) public canCancel!: boolean;
+
+  /** Error message. */
+  @Prop({ default: "" }) public error!: string;
+
+  private password: string = "";
 
   /** Cancel operation. */
   @Emit("cancel") private cancel(): void {
@@ -73,7 +77,7 @@ export default class ConfirmDialog extends Vue {
 
   /** Confirm operation. */
   @Emit("confirm") private confirm(): any {
-    return this.data;
+    return { password: this.password };
   }
 }
 </script>

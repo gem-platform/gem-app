@@ -11,6 +11,11 @@ export interface IUser extends IEntity {
   disabled: boolean;
 }
 
+export interface IChangePassword {
+  user: IUser;
+  password: string;
+}
+
 /** Empty user */
 export const EmptyUser: IUser = {
   disabled: false,

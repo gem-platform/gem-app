@@ -8,6 +8,7 @@
         :operation="ops.save"
         @close="users.closeEditDialog"
         @save="onSaveUserClicked"
+        @change-password="onUserChangePassword"
       />
     </template>
 
@@ -51,6 +52,13 @@
         </template>
       </confirm-dialog>
     </template>
+
+    <change-password-dialog
+      :visible="ops.changePassword.isStarted"
+      :busy="ops.changePassword.isInProgress"
+      :canCancel="!ops.changePassword.isInProgressOrCompleted"
+      @confirm="onPasswordChangeConfirmed"
+    />
   </crud>
 </template>
 
@@ -59,12 +67,13 @@ import { Component, Vue } from "vue-property-decorator";
 import { IUser, Operation } from "../../types";
 import { AdminStore, UsersStore } from "../store";
 
+import ChangePasswordDialog from "../components/ChangePasswordDialog.vue";
 import ConfirmDialog from "../components/ConfirmDialog.vue";
 import Crud from "../components/Crud.vue";
 import EditUserDialog from "../components/EditUserDialog.vue";
 
 @Component({
-  components: { ConfirmDialog, Crud, EditUserDialog }
+  components: { ConfirmDialog, Crud, EditUserDialog, ChangePasswordDialog }
 })
 export default class AdminUsersView extends Vue {
   private headers = [
@@ -106,6 +115,19 @@ export default class AdminUsersView extends Vue {
 
   private async onDeleteConfirmed(user: IUser) {
     const res = await UsersStore.delete(user);
+  }
+
+  private onUserChangePassword(user: IUser) {
+    console.log(this.ops.changePassword.isStarted);
+    UsersStore.openChangePasswordDialog(user);
+  }
+
+  private onPasswordChangeConfirmed(newPassword: string) {
+    console.log("confirmed, ", newPassword);
+    UsersStore.changePassword({
+      password: newPassword,
+      user: UsersStore.operations.changePassword.data
+    });
   }
 }
 </script>

@@ -6,7 +6,13 @@ import {
   Mutation,
   VuexModule
 } from "vuex-module-decorators";
-import { EmptyUser, IUser, Operation, OperationState } from "../../types";
+import {
+  EmptyUser,
+  IChangePassword,
+  IUser,
+  Operation,
+  OperationState
+} from "../../types";
 import UsersService from "../services/users";
 
 const service = new UsersService();
@@ -17,6 +23,7 @@ export default class UsersStoreModule extends VuexModule {
   public users: IUser[] = [];
 
   public operations = {
+    changePassword: new Operation(),
     delete: new Operation(),
     fetch: new Operation(),
     save: new Operation()
@@ -93,6 +100,17 @@ export default class UsersStoreModule extends VuexModule {
 
   @Mutation public cancelDelete() {
     this.operations.delete.cancel();
+  }
+
+  @Mutation public openChangePasswordDialog(user: IUser) {
+    this.operations.changePassword.state = OperationState.Confirmation;
+    this.operations.changePassword.data = user;
+  }
+
+  @Action public changePassword({ user, password }: IChangePassword) {
+    this.operations.changePassword.start();
+    this.operations.changePassword.data = user;
+    console.log(user, password);
   }
 
   /** Users has been fetched successfully. */

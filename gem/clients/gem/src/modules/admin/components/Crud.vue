@@ -27,6 +27,9 @@
       >
         {{ admin.snackbar.message }}
       </v-snackbar>
+
+      <!-- Content -->
+      <slot />
     </v-layout>
   </v-container>
 </template>
