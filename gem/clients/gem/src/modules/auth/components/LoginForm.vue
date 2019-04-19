@@ -47,19 +47,19 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Emit, Prop } from "vue-property-decorator";
-import { Credentials } from "../types";
+import { Component, Emit, Prop, Vue } from "vue-property-decorator";
+import { ICredentials } from "../types";
 
 @Component
 export default class LoginForm extends Vue {
+  /** Error message to display. Show nothing if message is not provided. */
+  @Prop({ default: "" }) public message: string = "";
+
   private username: string = "";
   private password: string = "";
 
-  /** Error message to display. Show nothing if message is not provided. */
-  @Prop({ default: "" }) message: string = "";
-
   /** On login button clicked. Return credentials. */
-  @Emit("login") onLoginButtonClicked(): Credentials {
+  @Emit("login") private onLoginButtonClicked(): ICredentials {
     return { username: this.username, password: this.password };
   }
 

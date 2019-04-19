@@ -13,7 +13,7 @@ import { Component, Vue } from "vue-property-decorator";
 import LoginForm from "../components/LoginForm.vue";
 
 import { Auth } from "../store/auth";
-import { Credentials } from "../types";
+import { ICredentials } from "../types";
 
 @Component({
   components: { LoginForm }
@@ -27,7 +27,7 @@ export default class LoginView extends Vue {
    * On user clicks Login button.
    * @param credentials Credentials to login with.
    */
-  onLogin(credentials: Credentials) {
+  private onLogin(credentials: ICredentials) {
     Auth.login(credentials);
   }
 }

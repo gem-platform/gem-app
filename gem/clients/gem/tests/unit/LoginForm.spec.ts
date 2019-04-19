@@ -1,7 +1,7 @@
+import LoginForm from "@/modules/auth/components/LoginForm.vue";
 import { mount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
-import LoginForm from "@/modules/auth/components/LoginForm.vue";
 
 Vue.use(Vuetify);
 
@@ -23,14 +23,14 @@ describe("LoginForm.vue", () => {
 
   it("sends login event when login button clicked", () => {
     wrapper.setData({
-      username: "admin",
-      password: "pass"
+      password: "pass",
+      username: "admin"
     });
     submit.trigger("click");
     expect(wrapper.emitted().login).toBeTruthy();
     expect(wrapper.emitted().login[0][0]).toEqual({
-      username: "admin",
-      password: "pass"
+      password: "pass",
+      username: "admin"
     });
   });
 });

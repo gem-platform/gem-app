@@ -24,5 +24,7 @@
     "tests/**/*.ts",
     "tests/**/*.tsx"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  "trailing-comma": [false],
+  "arrow-parens": [true, "ban-single-arg-parens"]
 }

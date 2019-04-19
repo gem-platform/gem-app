@@ -4,20 +4,20 @@ import store from "../store";
 axios.defaults.baseURL = "http://localhost:9000";
 
 axios.interceptors.request.use(
-  function(config) {
-    const token = store.state["auth"].token;
+  config => {
+    const token = store.state.auth.token;
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
-  function(err) {
+  err => {
     return Promise.reject(err);
   }
 );
 
-axios.interceptors.response.use(undefined, function(err) {
-  return new Promise(function(resolve, reject) {
+axios.interceptors.response.use(undefined, err => {
+  return new Promise((resolve, reject) => {
     if (
       (err.response.status === 401 || err.response.status === 403) &&
       err.response.config &&

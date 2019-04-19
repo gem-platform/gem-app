@@ -3,8 +3,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
 import { Auth } from "@/modules/auth/store/auth";
+import { Component, Vue } from "vue-property-decorator";
 
 @Component
 export default class Home extends Vue {

@@ -27,20 +27,24 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
 import { Auth } from "@/modules/auth/store/auth";
+import { Component, Vue, Watch } from "vue-property-decorator";
 
 @Component
 export default class Home extends Vue {
-  @Watch("isAuthenticated") onAuthenticationChanged(
+  @Watch("isAuthenticated") private onAuthenticationChanged(
     isAuthenticated: boolean,
     wasAuthenticated: boolean
   ) {
     // Redirect to /login page if user is not authenticated
-    if (!isAuthenticated) this.$router.push("/login");
+    if (!isAuthenticated) {
+      this.$router.push("/login");
+    }
 
     // Redirect to / page if authenticated
-    if (!wasAuthenticated && isAuthenticated) this.$router.push("/");
+    if (!wasAuthenticated && isAuthenticated) {
+      this.$router.push("/");
+    }
   }
 
   get isAuthenticated() {
