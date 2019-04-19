@@ -41,3 +41,9 @@ async def delete_user(oid: int):
 @router.get("/")
 async def fetch_users_list():
     return list(fake_db.values())
+
+
+@router.put("/{oid}/changePassword")
+async def change_password(oid: int, newPassword: str):
+    fake_db[oid].password = newPassword
+    return True

@@ -13,10 +13,14 @@ module.exports = {
 
   confirm() {
     this.waitForOpen();
-    I.click(this.buttons.confirm);
+    within(".v-dialog--active", () => {
+      I.click(this.buttons.confirm);
+    });
   },
 
   cancel() {
-    I.click(this.buttons.cancel);
+    within(".v-dialog--active", () => {
+      I.click(this.buttons.cancel);
+    });
   }
 };

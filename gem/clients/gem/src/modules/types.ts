@@ -54,6 +54,11 @@ export class Operation {
     this.state = OperationState.NotStarted;
   }
 
+  public startConfirmation(data?: any) {
+    this.state = OperationState.Confirmation;
+    this.data = data;
+  }
+
   public start(message: string = "") {
     this.message = message;
     this.state = OperationState.InProgress;

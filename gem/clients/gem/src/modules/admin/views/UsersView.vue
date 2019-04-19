@@ -44,7 +44,7 @@
         :visible="ops.delete.isStarted"
         :busy="ops.delete.isInProgress"
         :canCancel="!ops.delete.isInProgressOrCompleted"
-        @cancel="users.cancelDelete()"
+        @cancel="users.closeConfirmDeleteDialog()"
         @confirm="onDeleteConfirmed"
       >
         <template v-slot:default="{ data = { full_name: '' } }">
@@ -110,7 +110,7 @@ export default class AdminUsersView extends Vue {
   }
 
   private onDeleteClicked(user: IUser) {
-    UsersStore.confirmDelete(user);
+    UsersStore.openConfirmDeleteDialog(user);
   }
 
   private async onDeleteConfirmed(user: IUser) {

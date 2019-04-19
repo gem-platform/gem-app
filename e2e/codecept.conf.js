@@ -2,7 +2,8 @@ exports.config = {
   output: "./output",
   helpers: {
     Puppeteer: {
-      url: "http://localhost:8080"
+      url: "http://localhost:8080",
+      show: true
     },
     REST: {
       endpoint: "http://localhost:9000",

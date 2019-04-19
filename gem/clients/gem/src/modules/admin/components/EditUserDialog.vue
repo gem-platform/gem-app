@@ -7,7 +7,7 @@
     @save="save"
   >
     <template v-if="!isNew" #actions>
-      <v-btn light flat @click="onChangePasswordClicked">Password</v-btn>
+      <v-btn light flat @click="onChangePasswordClicked">Change Password</v-btn>
     </template>
 
     <v-flex xs12 sm6>
