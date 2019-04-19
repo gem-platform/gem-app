@@ -6,7 +6,7 @@ import Axios from "axios";
  */
 export default class CrudService<T extends IEntity> {
   /** URL prefix to send request to. */
-  private url: string;
+  protected url: string;
 
   /**
    * Creates new instance of the CrudService.

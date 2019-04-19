@@ -6,10 +6,15 @@ from db import fake_db
 router = APIRouter()
 
 
+class ChangePassword(BaseModel):
+    password: str
+
+
 class User(BaseModel):
     oid: int
     username: str
     email: str
+    password: str = ""
     full_name: str = Schema(
         "",
         title="User's full name",
@@ -44,6 +49,6 @@ async def fetch_users_list():
 
 
 @router.put("/{oid}/changePassword")
-async def change_password(oid: int, newPassword: str):
-    fake_db[oid].password = newPassword
+async def change_password(oid: int, change: ChangePassword):
+    fake_db[oid].password = change.password
     return True

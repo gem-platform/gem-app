@@ -175,9 +175,30 @@ export default class UsersStoreModule extends VuexModule {
    * Change password for specified user.
    * @param changePassword Change password info.
    */
-  @Action public changePassword(changePassword: IChangePassword) {
+  @Action public async changePassword(changePassword: IChangePassword) {
+    try {
+      this.operations.changePassword.data = changePassword;
+      this.changePasswordStarted();
+      await service.changePassword(
+        changePassword.user,
+        changePassword.password
+      );
+      this.changePasswordSucceeded();
+    } catch {
+      this.changePasswordFailed("No WAI!");
+    }
+  }
+
+  @Mutation private changePasswordStarted() {
     this.operations.changePassword.start();
-    this.operations.changePassword.data = changePassword;
+  }
+
+  @Mutation private changePasswordSucceeded() {
+    this.operations.changePassword.succeed();
+  }
+
+  @Mutation private changePasswordFailed(message: string = "") {
+    this.operations.changePassword.fail(message);
   }
 
   /** Getters */

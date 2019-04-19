@@ -21,12 +21,14 @@ module.exports = {
     I.waitForVisible(this.editDialog.root);
   },
 
-  createUser(username) {
+  createUser(username, waitForClose = true) {
     this.clickCreateUser();
     within(this.editDialog.root, () => {
       this.editDialog.submit(username);
     });
-    I.waitForInvisible(this.editDialog.root);
+    if (waitForClose) {
+      I.waitForInvisible(this.editDialog.root);
+    }
   },
 
   clickConfirmDelete() {

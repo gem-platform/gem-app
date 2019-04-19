@@ -20,6 +20,11 @@ Scenario("I can create a new user", I => {
   });
 });
 
+Scenario("I see error message if user creation failed", I => {
+  usersPage.createUser("", false);
+  I.see("Error:");
+});
+
 Scenario("I see snackbar message if operation was succeeded", I => {
   usersPage.createUser(username);
   usersPage.snackbar.contains("User created/updated");

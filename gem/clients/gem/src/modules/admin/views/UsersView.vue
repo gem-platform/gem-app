@@ -3,7 +3,7 @@
     <!-- Edit user dialog -->
     <template v-slot:edit-dialog>
       <edit-user-dialog
-        :visible="ops.save.isStarted"
+        :visible="ops.save.isStartedOrFailed"
         :user="ops.save.data"
         :operation="ops.save"
         @close="users.closeEditDialog"
@@ -118,12 +118,10 @@ export default class AdminUsersView extends Vue {
   }
 
   private onUserChangePassword(user: IUser) {
-    console.log(this.ops.changePassword.isStarted);
     UsersStore.openChangePasswordDialog(user);
   }
 
   private onPasswordChangeConfirmed(newPassword: string) {
-    console.log("confirmed, ", newPassword);
     UsersStore.changePassword({
       password: newPassword,
       user: UsersStore.operations.changePassword.data

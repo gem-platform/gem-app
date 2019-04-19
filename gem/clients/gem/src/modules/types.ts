@@ -87,7 +87,7 @@ export class Operation {
   }
 
   get isFailed(): boolean {
-    return this.state === OperationState.Succeeded;
+    return this.state === OperationState.Failed;
   }
 
   get isConfirmationRequired(): boolean {
@@ -96,6 +96,10 @@ export class Operation {
 
   get isStarted(): boolean {
     return this.isConfirmationRequired || this.isInProgress;
+  }
+
+  get isStartedOrFailed(): boolean {
+    return this.isConfirmationRequired || this.isInProgress || this.isFailed;
   }
 
   get isInProgressOrCompleted(): boolean {
