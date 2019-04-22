@@ -25,7 +25,7 @@ Scenario("I see error message if user creation failed", I => {
   I.see("Error:");
 });
 
-Scenario("I see snackbar message if operation was succeeded", I => {
+Scenario("I see snackbar message if operation was succeeded", () => {
   usersPage.createUser(username);
   usersPage.snackbar.contains("User created/updated");
 });
