@@ -43,8 +43,8 @@
 </template>
 
 <script lang="ts">
+import { Operation, OperationState } from "@/lib/operations";
 import { Component, Emit, Model, Prop, Vue } from "vue-property-decorator";
-import { Operation } from "../../types";
 
 @Component
 export default class ConfirmDialog extends Vue {
@@ -67,12 +67,12 @@ export default class ConfirmDialog extends Vue {
   @Prop({ default: true }) public canCancel!: boolean;
 
   /** Cancel operation. */
-  @Emit("cancel") private cancel(): void {
+  @Emit() private cancel(): void {
     return;
   }
 
   /** Confirm operation. */
-  @Emit("confirm") private confirm(): any {
+  @Emit() private confirm(): any {
     return this.data;
   }
 }

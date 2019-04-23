@@ -6,6 +6,7 @@
         :visible="ops.save.isStarted"
         :user="ops.save.data"
         :operation="ops.save"
+        :formsOfAddress="formsOfAddress"
         @close="users.closeEditDialog"
         @save="onSaveUserClicked"
       />
@@ -55,8 +56,11 @@
 </template>
 
 <script lang="ts">
+import { formsOfAddress } from "@/modules/consts";
+
+import { Operation } from "@/lib/operations";
 import { Component, Vue } from "vue-property-decorator";
-import { IUser, Operation } from "../../types";
+import { IUser } from "../../types";
 import { AdminStore, UsersStore } from "../store";
 
 import ConfirmDialog from "../components/ConfirmDialog.vue";
@@ -106,6 +110,10 @@ export default class AdminUsersView extends Vue {
 
   private async onDeleteConfirmed(user: IUser) {
     const res = await UsersStore.delete(user);
+  }
+
+  private get formsOfAddress(): string[] {
+    return formsOfAddress;
   }
 }
 </script>

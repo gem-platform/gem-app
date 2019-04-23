@@ -26,27 +26,18 @@
 </template>
 
 <script lang="ts">
+import { Operation } from "@/lib/operations";
 import { IUser } from "@/modules/types.ts";
 import { Component, Emit, Model, Prop, Vue } from "vue-property-decorator";
-import { EmptyUser, Operation } from "../../types";
+import { EmptyUser } from "../../types";
 import EditDialog from "./EditDialog.vue";
-
-const formsOfAddress = [
-  "",
-  "Swami",
-  "Goswami",
-  "Devi Dasi",
-  "Das",
-  "Bhakta",
-  "Bhaktin"
-];
 
 @Component({ components: { EditDialog } })
 export default class EditUserDialog extends Vue {
   @Prop({ default: () => EmptyUser }) public readonly user!: IUser;
   @Prop({ default: false }) public visible!: boolean;
   @Prop({}) public readonly operation!: Operation;
-  @Prop({ default: formsOfAddress })
+  @Prop({ default: () => [] })
   public readonly formsOfAddress!: string[];
 
   @Emit("close") private close() {
