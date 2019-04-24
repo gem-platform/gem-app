@@ -40,7 +40,7 @@ def map_user_to_model(user: User) -> models.User:
         disabled=user.disabled
     )
     if user.oid > 0 :
-        model.id = user.oid,
+        model.id = user.oid
     return model
 
 
