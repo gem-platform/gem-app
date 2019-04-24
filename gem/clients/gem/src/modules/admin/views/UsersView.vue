@@ -6,6 +6,7 @@
         :visible="ops.save.isStartedOrFailed"
         :user="ops.save.data"
         :operation="ops.save"
+        :formsOfAddress="formsOfAddress"
         @close="users.closeEditDialog"
         @save="onSaveUserClicked"
         @change-password="onUserChangePassword"
@@ -129,6 +130,10 @@ export default class AdminUsersView extends Vue {
       password: newPassword,
       user: UsersStore.operations.changePassword.data
     });
+  }
+
+  private get formsOfAddress() {
+    return formsOfAddress;
   }
 }
 </script>

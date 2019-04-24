@@ -32,28 +32,17 @@ import { Component, Emit, Model, Prop, Vue } from "vue-property-decorator";
 import { EmptyUser } from "../../types";
 import EditDialog from "./EditDialog.vue";
 
-const formsOfAddress = [
-  "",
-  "Swami",
-  "Goswami",
-  "Devi Dasi",
-  "Das",
-  "Bhakta",
-  "Bhaktin"
-];
-
 @Component({ components: { EditDialog } })
 export default class EditUserDialog extends Vue {
   @Prop({ default: () => EmptyUser }) public readonly user!: IUser;
   @Prop({ default: false }) public visible!: boolean;
   @Prop({}) public readonly operation!: Operation;
-  @Prop({ default: () => [] })
-  public readonly formsOfAddress!: string[];
+  @Prop({ default: () => [] }) public readonly formsOfAddress!: string[];
 
-  @Emit("close") private close() {
+  @Emit() private close() {
     return;
   }
-  @Emit("save") private save() {
+  @Emit() private save() {
     return this.user;
   }
 
