@@ -13,6 +13,12 @@ function clientIsReady() {
   docker-compose logs gem-client | grep "App running at:"
 }
 
+function dbIsReady() {
+  docker-compose logs gem-db
+  echo "--------------------------"
+  docker-compose logs gem-db | grep "App running at:"
+}
+
 function waitUntilServiceIsReady() {
   attempt=1
   while [ $attempt -le $MAX_TRIES ]; do
@@ -31,3 +37,4 @@ function waitUntilServiceIsReady() {
 }
 
 waitUntilServiceIsReady clientIsReady "GEM Client"
+waitUntilServiceIsReady dbIsReady "GEM Database"
