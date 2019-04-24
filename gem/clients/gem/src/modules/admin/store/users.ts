@@ -1,3 +1,4 @@
+import { Operation, OperationState } from "@/lib/operations";
 import store from "@/store";
 import {
   Action,
@@ -6,7 +7,7 @@ import {
   Mutation,
   VuexModule
 } from "vuex-module-decorators";
-import { EmptyUser, IUser, Operation } from "../../types";
+import { EmptyUser, IUser } from "../../types";
 import UsersService from "../services/users";
 
 const service = new UsersService();
@@ -14,11 +15,13 @@ const service = new UsersService();
 /** Authentication storage module */
 @Module({ namespaced: true, dynamic: true, name: "admin-users", store })
 export default class UsersStoreModule extends VuexModule {
-  public isEditDialogVisible: boolean = false;
-  public editingUser: IUser = { ...EmptyUser };
   public users: IUser[] = [];
-  public fetchOperation: Operation = new Operation();
-  public saveOperation: Operation = new Operation();
+
+  public operations = {
+    delete: new Operation(),
+    fetch: new Operation(),
+    save: new Operation()
+  };
 
   /**
    * Open edit dialog.
@@ -27,14 +30,13 @@ export default class UsersStoreModule extends VuexModule {
   @Mutation public openEditDialog(user: IUser = EmptyUser): void {
     // make a copy. do not mutate original one
     // original one should be mutated if user press save button
-    this.editingUser = { ...user };
-    this.isEditDialogVisible = true;
+    this.operations.save.data = { ...user };
+    this.operations.save.state = OperationState.Confirmation;
   }
 
   /** Close edit dialog. */
   @Mutation public closeEditDialog(): void {
-    this.isEditDialogVisible = false;
-    this.saveOperation.clear();
+    this.operations.save.clear();
   }
 
   @Action public async fetch(): Promise<IUser[] | undefined> {
@@ -47,6 +49,15 @@ export default class UsersStoreModule extends VuexModule {
       this.usersFetchFailed("Error: Have no idea why.");
       return undefined;
     }
+  }
+
+  @Mutation public confirmDelete(user: IUser) {
+    this.operations.delete.data = user;
+    this.operations.delete.state = OperationState.Confirmation;
+  }
+
+  @Mutation public closeConfirmDelete() {
+    this.operations.delete.cancel();
   }
 
   /**
@@ -70,56 +81,82 @@ export default class UsersStoreModule extends VuexModule {
     }
   }
 
-  @Action public async delete(user: IUser): Promise<IUser> {
-    const result = await service.delete(user);
-    this.userDeleted(result);
-    return result;
+  @Action public async delete(user: IUser): Promise<IUser | undefined> {
+    try {
+      this.deleteUserStarted();
+      const result = await service.delete(user);
+      this.userDeleted(result);
+      return result;
+    } catch (ex) {
+      this.deleteUserFailed();
+    }
+  }
+
+  @Mutation public cancelDelete() {
+    this.operations.delete.cancel();
   }
 
   /** Users has been fetched successfully. */
   @Mutation private usersFetchStarted() {
-    this.fetchOperation.start();
+    this.operations.fetch.start();
   }
 
   /** Users has been fetched successfully. */
   @Mutation private usersFetched(users: IUser[]) {
     this.users = users;
-    this.fetchOperation.succeed();
+    this.operations.fetch.succeed();
   }
 
   @Mutation private usersFetchFailed(error: string) {
-    this.fetchOperation.fail(error);
+    this.operations.fetch.fail(error);
   }
 
   @Mutation private saveUserStarted() {
-    this.saveOperation.start();
+    this.operations.save.start();
   }
 
   @Mutation private saveUserFailed(error: string) {
-    this.saveOperation.fail(error);
+    this.operations.save.fail(error);
   }
 
   /** User has been successfully created. */
   @Mutation private userCreated(user: IUser) {
     this.users.push(user);
-    this.saveOperation.succeed("User created");
+    this.operations.save.succeed("User created");
   }
 
   /** User has been successfully updated. */
   @Mutation private userUpdated(user: IUser) {
     const original = this.users.find(x => x.oid === user.oid);
     Object.assign(original, user);
-    this.saveOperation.succeed("User updated");
+    this.operations.save.succeed("User updated");
+  }
+
+  @Mutation private deleteUserStarted() {
+    this.operations.delete.start();
   }
 
   /** User has been successfully deleted. */
   @Mutation private userDeleted(user: IUser) {
     this.users = this.users.filter(x => x.oid !== user.oid);
-    this.saveOperation.succeed("User deleted");
+    this.operations.delete.succeed("User deleted");
+  }
+
+  /** User has been successfully deleted. */
+  @Mutation private deleteUserFailed(message: string = "") {
+    this.operations.delete.fail(message);
   }
 
   get all(): IUser[] {
     return this.users;
+  }
+
+  get isEditDialogVisible(): boolean {
+    return (
+      this.operations.save.state === OperationState.Confirmation ||
+      this.operations.save.state === OperationState.Failed ||
+      this.operations.save.state === OperationState.InProgress
+    );
   }
 }
 
