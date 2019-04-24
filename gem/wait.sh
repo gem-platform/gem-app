@@ -16,7 +16,7 @@ function clientIsReady() {
 function dbIsReady() {
   docker-compose logs gem-db
   echo "--------------------------"
-  docker-compose logs gem-db | grep "App running at:"
+  docker-compose logs gem-db | grep "database system is ready to accept connections"
 }
 
 function waitUntilServiceIsReady() {
