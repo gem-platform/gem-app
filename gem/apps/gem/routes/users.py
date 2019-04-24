@@ -3,6 +3,7 @@ from pydantic import BaseModel, Schema
 from db import session_scope
 from db import models
 
+
 router = APIRouter()
 
 
@@ -77,6 +78,7 @@ async def delete_user(oid: int):
             return False
         s.delete(user_db)
     return oid
+
 
 
 @router.get("/")

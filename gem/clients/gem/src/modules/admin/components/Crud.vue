@@ -13,6 +13,9 @@
       <!-- Edit dialog-->
       <slot name="edit-dialog"></slot>
 
+      <!-- Delete entity dialog-->
+      <slot name="delete-dialog"></slot>
+
       <!-- Snackbar for notifications -->
       <v-snackbar
         :value="admin.isSnackbarVisible"
@@ -23,11 +26,6 @@
         data-ref="snackbar"
       >
         {{ admin.snackbar.message }}
-        <!--
-        <v-btn dark flat icon @click="onCloseSnackbar">
-          <v-icon>close</v-icon>
-        </v-btn>
-        -->
       </v-snackbar>
     </v-layout>
   </v-container>

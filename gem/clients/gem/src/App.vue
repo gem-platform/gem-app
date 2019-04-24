@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-toolbar v-if="isAuthenticated" color="amber" flat app>
+    <v-toolbar v-if="isNavbarVisible" color="amber" flat app>
       <v-toolbar-title class="headline text-uppercase">
         <span class="title ml-3 mr-5"
           >GEM&nbsp;<span class="font-weight-light">Online</span></span
@@ -27,8 +27,8 @@
 </template>
 
 <script lang="ts">
-import { Auth } from "@/modules/auth/store/auth";
 import { Component, Vue, Watch } from "vue-property-decorator";
+import { Auth } from "./modules/auth/store/auth";
 
 @Component
 export default class Home extends Vue {
@@ -49,6 +49,10 @@ export default class Home extends Vue {
 
   get isAuthenticated() {
     return Auth.isAuthenticated;
+  }
+
+  get isNavbarVisible(): boolean {
+    return Auth.isAuthenticated && Auth.isUserLoaded;
   }
 }
 </script>

@@ -1,11 +1,12 @@
 <template>
-  <crud @create="onCreateClicked">
+  <crud @create="onCreateClicked" @delete="onDeleteConfirmed">
     <!-- Edit user dialog -->
     <template v-slot:edit-dialog>
       <edit-user-dialog
-        :visible="users.isEditDialogVisible"
-        :user="users.editingUser"
-        :operation="users.saveOperation"
+        :visible="ops.save.isStarted"
+        :user="ops.save.data"
+        :operation="ops.save"
+        :formsOfAddress="formsOfAddress"
         @close="users.closeEditDialog"
         @save="onSaveUserClicked"
       />
@@ -16,39 +17,58 @@
       <v-data-table
         :headers="headers"
         :items="users.all"
-        :loading="users.fetchOperation.isInProgress"
+        :loading="ops.fetch.isInProgress"
         class="elevation-1"
         data-ref="users-table"
       >
-        <template v-slot:items="props">
-          <td @click="users.openEditDialog(props.item)">
-            {{ props.item.full_name }}
+        <template v-slot:items="{ item }">
+          <td @click="users.openEditDialog(item)">
+            {{ item.full_name }}
           </td>
-          <td>{{ props.item.email }}</td>
+          <td>{{ item.email }}</td>
           <td class="justify-center layout px-0">
-            <v-icon
-              small
-              @click="users.delete(props.item)"
-              data-ref="delete-user"
+            <v-icon small @click="onDeleteClicked(item)" data-ref="delete-user"
               >delete</v-icon
             >
           </td>
         </template>
       </v-data-table>
     </template>
+
+    <!-- Delete entity dialog -->
+    <template v-slot:delete-dialog>
+      <confirm-dialog
+        action="Delete"
+        title="Delete user?"
+        :data="ops.delete.data"
+        :visible="ops.delete.isStarted"
+        :busy="ops.delete.isInProgress"
+        :canCancel="!ops.delete.isInProgressOrCompleted"
+        @cancel="users.cancelDelete()"
+        @confirm="onDeleteConfirmed"
+      >
+        <template v-slot:default="{ data = { full_name: '' } }">
+          <b>{{ data.full_name }}</b> will be deleted. Confirm?
+        </template>
+      </confirm-dialog>
+    </template>
   </crud>
 </template>
 
 <script lang="ts">
+import { formsOfAddress } from "@/modules/consts";
+
+import { Operation } from "@/lib/operations";
 import { Component, Vue } from "vue-property-decorator";
-import { IUser, Operation } from "../../types";
+import { IUser } from "../../types";
 import { AdminStore, UsersStore } from "../store";
 
+import ConfirmDialog from "../components/ConfirmDialog.vue";
 import Crud from "../components/Crud.vue";
 import EditUserDialog from "../components/EditUserDialog.vue";
 
 @Component({
-  components: { Crud, EditUserDialog }
+  components: { ConfirmDialog, Crud, EditUserDialog }
 })
 export default class AdminUsersView extends Vue {
   private headers = [
@@ -59,6 +79,10 @@ export default class AdminUsersView extends Vue {
 
   private mounted() {
     UsersStore.fetch();
+  }
+
+  private get ops() {
+    return UsersStore.operations;
   }
 
   private get users() {
@@ -78,6 +102,18 @@ export default class AdminUsersView extends Vue {
 
   private onCreateClicked() {
     UsersStore.openEditDialog();
+  }
+
+  private onDeleteClicked(user: IUser) {
+    UsersStore.confirmDelete(user);
+  }
+
+  private async onDeleteConfirmed(user: IUser) {
+    const res = await UsersStore.delete(user);
+  }
+
+  private get formsOfAddress(): string[] {
+    return formsOfAddress;
   }
 }
 </script>
