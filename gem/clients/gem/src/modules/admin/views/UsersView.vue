@@ -54,6 +54,7 @@
       </confirm-dialog>
     </template>
 
+    <!-- Change password dialog -->
     <change-password-dialog
       :visible="ops.changePassword.isStarted"
       :busy="ops.changePassword.isInProgress"
