@@ -44,8 +44,8 @@
 </template>
 
 <script lang="ts">
+import { Operation, OperationState } from "@/lib/operations";
 import { Component, Emit, Model, Prop, Vue } from "vue-property-decorator";
-import { Operation } from "../../types";
 
 @Component
 export default class EditDialog extends Vue {

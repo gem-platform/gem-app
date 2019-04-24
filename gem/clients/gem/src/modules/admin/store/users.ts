@@ -1,3 +1,4 @@
+import { Operation, OperationState } from "@/lib/operations";
 import store from "@/store";
 import {
   Action,
@@ -6,7 +7,7 @@ import {
   Mutation,
   VuexModule
 } from "vuex-module-decorators";
-import { EmptyUser, IChangePassword, IUser, Operation } from "../../types";
+import { EmptyUser, IChangePassword, IUser } from "../../types";
 import UsersService from "../services/users";
 
 const service = new UsersService();

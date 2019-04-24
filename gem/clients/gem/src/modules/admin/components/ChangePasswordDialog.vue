@@ -51,8 +51,8 @@
 </template>
 
 <script lang="ts">
+import { Operation } from "@/lib/operations";
 import { Component, Emit, Model, Prop, Vue } from "vue-property-decorator";
-import { Operation } from "../../types";
 
 @Component
 export default class ConfirmDialog extends Vue {

@@ -63,8 +63,11 @@
 </template>
 
 <script lang="ts">
+import { formsOfAddress } from "@/modules/consts";
+
+import { Operation } from "@/lib/operations";
 import { Component, Vue } from "vue-property-decorator";
-import { IUser, Operation } from "../../types";
+import { IUser } from "../../types";
 import { AdminStore, UsersStore } from "../store";
 
 import ChangePasswordDialog from "../components/ChangePasswordDialog.vue";

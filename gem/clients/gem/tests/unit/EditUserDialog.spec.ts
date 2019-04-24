@@ -1,10 +1,10 @@
 import EditUserDialog from "@/modules/admin/components/EditUserDialog.vue";
-import { IUser, OperationState } from "@/modules/types.ts";
+import { IUser } from "@/modules/types.ts";
 import { mount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
 
-import { Operation } from "@/modules/types";
+import { Operation, OperationState } from "@/lib/operations";
 
 Vue.use(Vuetify);
 
