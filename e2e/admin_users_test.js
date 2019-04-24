@@ -34,6 +34,12 @@ Scenario("I can delete user", I => {
   usersPage.confirmDialog.confirm();
 
   within(usersPage.usersTable, function() {
+    I.click("[data-ref='delete-user']");
+  });
+
+  usersPage.confirmDialog.confirm();
+
+  within(usersPage.usersTable, function() {
     I.waitForDetached("[data-ref='delete-user']");
     I.dontSee(username);
   });
