@@ -77,8 +77,8 @@ async def delete_user(oid: int):
         if not user_db:
             return False
         s.delete(user_db)
-    return oid
-
+        user = map_model_to_user(user_db)
+        return user
 
 
 @router.get("/")
