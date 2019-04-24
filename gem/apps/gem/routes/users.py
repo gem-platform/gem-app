@@ -33,12 +33,13 @@ def map_model_to_user(model: models.User) -> User:
 
 def map_user_to_model(user: User) -> models.User:
     model = models.User(
-        oid=user.id,
         username=user.username,
         full_name=user.full_name,
         email=user.email,
         disabled=user.disabled
     )
+    if user.oid > 0 :
+        model.id = user.oid,
     return model
 
 
