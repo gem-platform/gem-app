@@ -26,8 +26,10 @@
           <td @click="users.openEditDialog(item)">
             {{ item.full_name }}
           </td>
-          <td>{{ item.email }}</td>
-          <td class="justify-center layout px-0">
+          <td class="text-xs-right">
+            <v-icon small class="mr-2" @click="users.openEditDialog(item)">
+              edit
+            </v-icon>
             <v-icon small @click="onDeleteClicked(item)" data-ref="delete-user">
               delete
             </v-icon>
@@ -83,7 +85,6 @@ import EditUserDialog from "../components/EditUserDialog.vue";
 export default class AdminUsersView extends Vue {
   private headers = [
     { text: "Name", value: "full_name" },
-    { text: "Email", value: "email" },
     { text: "Actions", align: "right", sortable: false, name: "full_name" }
   ];
 
@@ -126,9 +127,9 @@ export default class AdminUsersView extends Vue {
     UsersStore.openChangePasswordDialog(user);
   }
 
-  private onPasswordChangeConfirmed(newPassword: string) {
+  private onPasswordChangeConfirmed(chnagePasswordRespone: any) {
     UsersStore.changePassword({
-      password: newPassword,
+      password: chnagePasswordRespone.password,
       user: UsersStore.operations.changePassword.data
     });
   }

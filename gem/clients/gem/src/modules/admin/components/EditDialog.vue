@@ -1,10 +1,5 @@
 <template>
-  <v-dialog
-    v-model="visible"
-    fullscreen
-    hide-overlay
-    transition="dialog-bottom-transition"
-  >
+  <v-dialog v-model="visible" max-width="75%">
     <v-card data-ref="edit-user-dialog">
       <v-toolbar light color="amber" flat>
         <v-btn icon light @click="close" data-ref="close">
