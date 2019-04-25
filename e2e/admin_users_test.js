@@ -15,7 +15,7 @@ Before(I => {
 
 Scenario("I can create a new user", I => {
   usersPage.createUser(username);
-  within(usersPage.usersTable, function() {
+  within(usersPage.usersTable.root, function() {
     I.see(username);
   });
 });
@@ -27,13 +27,13 @@ Scenario("I see snackbar message if operation was succeeded", () => {
 
 Scenario("I can delete user", I => {
   usersPage.createUser(username);
-  within(usersPage.usersTable, function() {
-    I.click("[data-ref='delete-user'][data-ref-name='" + username + "']");
+  within(usersPage.usersTable.root, function() {
+    usersPage.usersTable.delete(username);
   });
   usersPage.confirmDialog.confirm();
 
   within(usersPage.usersTable, function() {
-    I.waitForDetached("[data-ref='delete-user'][data-ref-name='" + username + "']");
+    usersPage.usersTable.waitForDetached(username);
     I.dontSee(username);
   });
 });
