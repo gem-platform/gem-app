@@ -28,19 +28,12 @@ Scenario("I see snackbar message if operation was succeeded", () => {
 Scenario("I can delete user", I => {
   usersPage.createUser(username);
   within(usersPage.usersTable, function() {
-    I.click("[data-ref='delete-user']");
+    I.click("[data-ref='delete-user'][data-ref-name='" + username + "']");
   });
-
   usersPage.confirmDialog.confirm();
 
   within(usersPage.usersTable, function() {
-    I.click("[data-ref='delete-user']");
-  });
-
-  usersPage.confirmDialog.confirm();
-
-  within(usersPage.usersTable, function() {
-    I.waitForDetached("[data-ref='delete-user']");
+    I.waitForDetached("[data-ref='delete-user'][data-ref-name='" + username + "']");
     I.dontSee(username);
   });
 });
