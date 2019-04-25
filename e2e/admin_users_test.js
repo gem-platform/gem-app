@@ -6,7 +6,6 @@ const username = "Krishna das";
 const usersPage = require("./pages/admin/users/admin_users_page");
 
 Before(I => {
-  I.wipeout("./fixtures/johndoe.js");
   I.amOnPage("/");
   I.login("johndoe", "secret");
   I.waitForText("Welcome");
