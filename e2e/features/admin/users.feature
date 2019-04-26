@@ -3,7 +3,9 @@ Feature: Admin/Users
   As an administrator
   I want to be able manage users
 
-  Scenario: Administrator can create a new user
+  Background:
     Given I am an administrative user
+
+  Scenario: Administrator can create a new user
     When I create a user "Krishna das"
     Then I can see user "Krishna das"

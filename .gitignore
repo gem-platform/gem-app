@@ -15,3 +15,5 @@ npm-debug.log*
 #Idea
 .idea
 
+#db files
+gem/db/postgres_data
