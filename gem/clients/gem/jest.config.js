@@ -6,7 +6,7 @@ module.exports = {
       "jest-transform-stub",
     "^.+\\.tsx?$": "ts-jest"
   },
-  transformIgnorePatterns: ["/node_modules/", "/postgres_data/"],
+  transformIgnorePatterns: ["/node_modules/", "/.data/"],
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/src/$1"
   },
