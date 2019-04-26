@@ -1,7 +1,7 @@
 FROM tiangolo/uvicorn-gunicorn-fastapi:python3.7-alpine3.8
 
-# Install dependencies
-RUN apk --no-cache add alpine-sdk gcc openssl-dev libffi-dev && \
+# Install dependencies openssl-dev
+RUN apk --no-cache add alpine-sdk gcc libffi-dev python3-dev postgresql-dev && \
     pip install pipenv --no-cache-dir
 
 # Install app

@@ -5,6 +5,7 @@ __pycache__
 
 # E2E
 e2e/output
+e2e/*.local.js
 
 # CLIENTS
 /dist
@@ -12,8 +13,10 @@ e2e/output
 # LOG FILES
 npm-debug.log*
 
-#Idea
+# Idea
 .idea
+gem/apps/gem/routes/*.http
 
-#db files
-gem/db/postgres_data
+# Any persistent data like:
+# db, ssl keys, media files
+.data

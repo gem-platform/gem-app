@@ -6,10 +6,6 @@ const validLogin = "johndoe";
 const validPassword = "secret";
 const invalidPassword = "invalid";
 
-BeforeSuite(I => {
-  I.wipeout("./fixtures/johndoe.js");
-});
-
 Before(I => {
   I.amOnPage("/login");
 });

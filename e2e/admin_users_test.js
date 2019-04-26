@@ -6,7 +6,6 @@ const username = "Krishna das";
 const usersPage = require("./pages/admin/users/admin_users_page");
 
 Before(I => {
-  I.wipeout("./fixtures/johndoe.js");
   I.amOnPage("/");
   I.login("johndoe", "secret");
   I.waitForText("Welcome");
@@ -15,7 +14,7 @@ Before(I => {
 
 Scenario("I can create a new user", I => {
   usersPage.createUser(username);
-  within(usersPage.usersTable, function() {
+  within(usersPage.usersTable.root, function() {
     I.see(username);
   });
 });
@@ -32,12 +31,12 @@ Scenario("I see snackbar message if operation was succeeded", () => {
 
 Scenario("I can delete user", I => {
   usersPage.createUser(username);
-  within(usersPage.usersTable, function() {
-    I.click("[data-ref='delete-user']");
+  within(usersPage.usersTable.root, function() {
+    usersPage.usersTable.delete(username);
   });
   usersPage.confirmDialog.confirm();
   within(usersPage.usersTable, function() {
-    I.waitForDetached("[data-ref='delete-user']");
+    usersPage.usersTable.waitForDetached(username);
     I.dontSee(username);
   });
 });
