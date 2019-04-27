@@ -9,7 +9,7 @@ export default class UsersService extends CrudService<IUser> {
   }
 
   public async changePassword(user: IUser, password: string) {
-    const url = this.url + "/" + user.oid + "/changePassword";
+    const url = `${this.url}/${user.oid}/changePassword`;
     const res = await Axios.put(url, { password });
     return res.data;
   }
