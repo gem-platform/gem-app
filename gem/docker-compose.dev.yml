@@ -2,7 +2,7 @@ version: "3"
 services:
   gem-client:
     volumes:
-      - ./clients/gem:/app
+      - ./clients/gem:/usr/src/app
   gem-app:
     volumes:
       - ./apps/gem:/app

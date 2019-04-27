@@ -1,10 +1,11 @@
+import store from "@/store";
 import axios from "axios";
-import store from "../store";
 
 axios.defaults.baseURL = "http://localhost:9000";
 
 axios.interceptors.request.use(
   config => {
+    // @ts-ignore
     const token = store.state.auth.token;
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
