@@ -7,7 +7,7 @@ const usersPage = require("./pages/admin/users/admin_users_page");
 
 Before(I => {
   I.amOnPage("/");
-  I.login("johndoe", "secret");
+  I.login("Secretary", "secret");
   I.waitForText("Welcome");
   usersPage.open();
 });

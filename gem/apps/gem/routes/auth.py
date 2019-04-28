@@ -7,8 +7,10 @@ from jwt import PyJWTError, encode, decode
 from passlib.context import CryptContext
 from pydantic import BaseModel
 from starlette.status import HTTP_403_FORBIDDEN
-from db import session_scope
-from db import models
+from db import session_scope, models
+
+from api.user import User
+from mappers.user import map_model_to_user
 
 # to get a string like this run:
 # openssl rand -hex 32
@@ -19,6 +21,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 router = APIRouter()
 
+
 class Token(BaseModel):
     access_token: str
     token_type: str
@@ -26,17 +29,6 @@ class Token(BaseModel):
 
 class TokenPayload(BaseModel):
     username: str = None
-
-
-class User(BaseModel):
-    username: str
-    email: str = None
-    full_name: str = None
-    disabled: bool = None
-
-
-class UserInDB(User):
-    hashed_password: str
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -60,7 +52,7 @@ def get_user(username: str):
 
 def authenticate_user(username: str, password: str) -> models.User:
     user = get_user(username)
-    return user if user and verify_password(password, user.hashed_password) else False
+    return map_model_to_user(user) if user and verify_password(password, user.hashed_password) else False
 
 
 def create_access_token(*, data: dict, expires_delta: timedelta = None) -> str:
@@ -76,12 +68,15 @@ async def get_current_user(token: str = Security(oauth2_scheme)) -> models.User:
         payload = decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         token_data = TokenPayload(**payload)
     except PyJWTError:
-        raise HTTPException(status_code=HTTP_403_FORBIDDEN, detail="Could not validate credentials")
+        raise HTTPException(status_code=HTTP_403_FORBIDDEN,
+                            detail="Could not validate credentials")
     user = get_user(username=token_data.username)
-    return user
+    return map_model_to_user(user) if user else None
 
 
 async def get_current_active_user(current_user: User = Depends(get_current_user)):
+    if not current_user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
     if current_user.disabled:
         raise HTTPException(status_code=400, detail="Inactive user")
     return current_user
@@ -91,9 +86,11 @@ async def get_current_active_user(current_user: User = Depends(get_current_user)
 async def route_login_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
     user = authenticate_user(form_data.username, form_data.password)
     if not user:
-        raise HTTPException(status_code=400, detail="Incorrect email or password")
+        raise HTTPException(
+            status_code=400, detail="Incorrect email or password")
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(data={"username": user.username}, expires_delta=access_token_expires)
+    access_token = create_access_token(
+        data={"username": user.username}, expires_delta=access_token_expires)
     return {"access_token": access_token, "token_type": "bearer"}
 
 

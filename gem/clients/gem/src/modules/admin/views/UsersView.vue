@@ -30,7 +30,12 @@
             <v-icon small class="mr-2" @click="users.openEditDialog(item)">
               edit
             </v-icon>
-            <v-icon small @click="onDeleteClicked(item)" data-ref="delete-user">
+            <v-icon
+              small
+              @click="onDeleteClicked(item)"
+              data-ref="delete-user"
+              :data-ref-name="item.full_name"
+            >
               delete
             </v-icon>
           </td>
