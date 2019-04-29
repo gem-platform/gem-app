@@ -22,7 +22,7 @@ When("I create a user {string}", username => {
 });
 
 Then("I can see user {string}", username => {
-  within(usersPage.usersTable, function() {
+  within(usersPage.usersTable.root, function() {
     I.see(username);
   });
 });

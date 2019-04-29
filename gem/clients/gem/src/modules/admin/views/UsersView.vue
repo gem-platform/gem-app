@@ -27,8 +27,13 @@
           </td>
           <td>{{ item.email }}</td>
           <td class="justify-center layout px-0">
-            <v-icon small @click="onDeleteClicked(item)" data-ref="delete-user"
-              >delete</v-icon
+            <v-icon
+              small
+              @click="onDeleteClicked(item)"
+              data-ref="delete-user"
+              :data-ref-name="item.full_name"
+            >
+              delete</v-icon
             >
           </td>
         </template>

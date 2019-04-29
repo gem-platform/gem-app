@@ -10,6 +10,9 @@ exports.config = {
         "Content-Type": "application/json",
         Accept: "application/json"
       }
+    },
+    Cleaner: {
+      "require": "./cleaner_helper.js"
     }
   },
   include: {

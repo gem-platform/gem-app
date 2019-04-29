@@ -1,6 +1,7 @@
 const I = actor();
 
 const editDialog = require("./edit_user_dialog");
+const usersTable = require("./admin_users_table");
 const confirmDialog = require("../confirm_dialog");
 const snackbar = require("../snackbar");
 
@@ -8,8 +9,8 @@ module.exports = {
   editDialog,
   confirmDialog,
   snackbar,
-
-  usersTable: "[data-ref='users-table']",
+  usersTable,
+  
   createButton: "[data-ref='create-new-user']",
 
   open() {

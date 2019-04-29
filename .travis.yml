@@ -15,6 +15,8 @@ cache:
     - $HOME/.npm
 
 before_install:
+  - sudo /etc/init.d/mysql stop
+  - sudo /etc/init.d/postgresql stop
   # update is required to update the repositories to see the new packages for
   # Docker.
   # - sudo apt-get update
@@ -59,5 +61,5 @@ before_install:
 
 script:
   - (cd gem && docker-compose exec gem-client npm run test:unit -- --coverage --coverageDirectory=/coverage)
-  - (cd coverage && npx codecov --token=$CODECOV_TOKEN)
+  - (cd coverage && npx codecov --token=$CODECOV_TOKEN --root="../gem/clients/gem")
   - (cd e2e && npx codeceptjs run)
