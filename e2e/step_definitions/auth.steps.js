@@ -5,11 +5,16 @@ const context = require("./_context.js");
 
 /** Login user using specified credentials  */
 When("I login as {string} / {string}", async (username, password) => {
-  context.username = username;
-  context.token = (await I.sendPostRequest(
+  const res = await I.sendPostRequest(
     "/auth/token",
-    "username=" + username + "&password=" + password
-  )).data.access_token;
+    "username=" + username + "&password=" + password);
+
+  context.username = username;
+  context.token = res.data.access_token;
+
+  if (!context.token) {
+    console.error(res.data);
+  }
 });
 
 /** Checks if user logged in */
