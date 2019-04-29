@@ -74,5 +74,5 @@ before_install:
 
 script:
   - (cd gem && docker-compose exec gem-client npm run test:unit -- --coverage --coverageDirectory=/coverage)
-  - (cd coverage && npx codecov --token=$CODECOV_TOKEN)
+  - (cd coverage && npx codecov --token=$CODECOV_TOKEN -X search)
   - (cd e2e && npx codeceptjs run)
