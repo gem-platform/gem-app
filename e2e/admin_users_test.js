@@ -12,6 +12,7 @@ Before(I => {
   usersPage.open();
 
   // Wait for data loaded
+  I.waitForElement(usersPage.usersTable.root);
   within(usersPage.usersTable.root, () => {
     I.waitForText("Secretary");
   });
