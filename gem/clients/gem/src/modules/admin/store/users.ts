@@ -113,7 +113,7 @@ export default class UsersStoreModule extends VuexModule {
   @Action public async save(user: IUser): Promise<IUser | undefined> {
     try {
       this.saveUserStarted();
-      if (user.oid && user.oid > 0) {
+      if (user.oid && user.oid !== -1) {
         const result = await service.update(user);
         this.userUpdated(result);
       } else {
