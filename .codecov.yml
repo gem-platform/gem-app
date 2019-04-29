@@ -1,4 +1,2 @@
 ignore:
-  - ".data/**"
-  - ".data/.*"
-  - ".data/**/*"
+  - ".data"
