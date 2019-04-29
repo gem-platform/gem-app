@@ -1,28 +1,62 @@
 /// <reference path="../steps.d.ts" />
 
 const I = require("../steps_file")();
-const usersPage = require("../pages/admin/users/admin_users_page");
+const context = require("./_context.js");
 
-Given("I am an administrative user", () => {
-  I.amOnPage("/login");
-  I.login("johndoe", "secret");
-  I.waitForText("Welcome");
+When("I create user {string}", async username => {
+  const res = await I.sendPostRequest("/users/", {
+    username: username,
+    full_name: username,
+    email: username + "@test.com",
+    password: "password"
+  });
+  context.users[username] = res.data;
 });
 
-When("I create a user {string}", username => {
-  I.amOnPage("/admin/users");
-  I.click(usersPage.createButton);
-  I.waitForVisible(usersPage.editDialog.root);
-
-  within(usersPage.editDialog.root, function() {
-    usersPage.editDialog.submit(username);
-  });
-
-  I.waitForInvisible(usersPage.editDialog.root);
+When("I delete user {string}", username => {
+  const user = context.users[username];
+  if (!user) {
+    throw Error("No user found");
+  }
+  I.sendDeleteRequest("/users/" + user.oid);
 });
 
-Then("I can see user {string}", username => {
-  within(usersPage.usersTable, function() {
-    I.see(username);
+Then("User {string} exists", async username => {
+  const res = (await I.sendGetRequest("/users/")).data;
+  const users = res.filter(x => x.username == username);
+  if (users.lenght <= 0) {
+    throw Error("No one user found");
+  }
+  if (users.lenght > 1) {
+    throw Error("Too many users found");
+  }
+});
+
+Then("User {string} doesn't exist", async username => {
+  const res = (await I.sendGetRequest("/users/")).data;
+  const users = res.filter(x => x.username == username);
+  if (users.lenght > 0) {
+    throw Error("User still exists");
+  }
+});
+
+/** Set password for specified user */
+When("I set password for {string} as {string}", async (username, password) => {
+  const user = context.users[username];
+  if (!user) {
+    throw Error("No user found");
+  }
+
+  const url = "/users/" + user.oid + "/changePassword";
+  context.response = (await I.sendPutRequest(url, { password })).data;
+});
+
+Given("{string} with password {string} exist", async (username, password) => {
+  const res = await I.sendPostRequest("/users/", {
+    username: username,
+    full_name: username,
+    email: username + "@test.com",
+    password: password
   });
+  context.users[username] = res.data;
 });

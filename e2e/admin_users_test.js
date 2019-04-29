@@ -6,16 +6,21 @@ const username = "Krishna das";
 const usersPage = require("./pages/admin/users/admin_users_page");
 
 Before(I => {
-  I.wipeout("./fixtures/johndoe.js");
   I.amOnPage("/");
-  I.login("johndoe", "secret");
+  I.login("Secretary", "secret");
   I.waitForText("Welcome");
   usersPage.open();
+
+  // Wait for data loaded
+  I.waitForElement(usersPage.usersTable.root);
+  within(usersPage.usersTable.root, () => {
+    I.waitForText("Secretary");
+  });
 });
 
 Scenario("I can create a new user", I => {
   usersPage.createUser(username);
-  within(usersPage.usersTable, function() {
+  within(usersPage.usersTable.root, function() {
     I.see(username);
   });
 });
@@ -32,12 +37,48 @@ Scenario("I see snackbar message if operation was succeeded", () => {
 
 Scenario("I can delete user", I => {
   usersPage.createUser(username);
-  within(usersPage.usersTable, function() {
-    I.click("[data-ref='delete-user']");
+  within(usersPage.usersTable.root, function() {
+    usersPage.usersTable.delete(username);
   });
   usersPage.confirmDialog.confirm();
   within(usersPage.usersTable, function() {
-    I.waitForDetached("[data-ref='delete-user']");
+    usersPage.usersTable.waitForDetached(username);
     I.dontSee(username);
   });
 });
+
+Scenario("I see 'Change Password' button for created user", I => {
+  usersPage.usersTable.clickEdit("Secretary");
+  within(usersPage.editDialog.root, () => {
+    I.see("CHANGE PASSWORD");
+  });
+}).tag("@change-password");
+
+Scenario("I don't see 'Change Password' button for new user", I => {
+  usersPage.clickCreateUser();
+  within(usersPage.editDialog.root, () => {
+    I.dontSee("CHANGE PASSWORD");
+  });
+}).tag("@change-password");
+
+Scenario("I see 'Change Password' dialog when I click 'Change Password' button", I => {
+  usersPage.usersTable.clickEdit("Secretary");
+  usersPage.editDialog.clickChangePassword();
+  I.waitForVisible(usersPage.changePasswordDialog.root);
+}).tag("@change-password");
+
+Scenario("I can cancel 'Change Password' dialog", () => {
+  usersPage.usersTable.clickEdit("Secretary");
+  usersPage.editDialog.clickChangePassword();
+  usersPage.changePasswordDialog.waitForOpen();
+  usersPage.changePasswordDialog.clickCancel();
+  usersPage.changePasswordDialog.waitForClose();
+}).tag("@change-password")
+
+Scenario("I can change password", () => {
+  usersPage.usersTable.clickEdit("Secretary");
+  usersPage.editDialog.clickChangePassword();
+  usersPage.changePasswordDialog.waitForOpen();
+  usersPage.changePasswordDialog.submit("new_password");
+  usersPage.changePasswordDialog.waitForClose();
+}).tag("@change-password")

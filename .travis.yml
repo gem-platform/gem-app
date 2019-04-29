@@ -28,6 +28,8 @@ before_install:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
 
+  - sudo /etc/init.d/mysql stop
+  - sudo /etc/init.d/postgresql stop
   # update is required to update the repositories to see the new packages for
   # Docker.
   # - sudo apt-get update
@@ -72,5 +74,5 @@ before_install:
 
 script:
   - (cd gem && docker-compose exec gem-client npm run test:unit -- --coverage --coverageDirectory=/coverage)
-  - (cd coverage && npx codecov --token=$CODECOV_TOKEN)
-  - (cd e2e && npx codeceptjs run)
+  - (cd coverage && npx codecov --token=$CODECOV_TOKEN -X search)
+  - (cd e2e && npx codeceptjs run --steps --verbose)

@@ -1,15 +1,18 @@
 <template>
   <v-dialog v-model="visible" max-width="400" ref="dialog">
-    <v-card>
+    <v-card data-ref="change-password-dialog">
       <!-- Header -->
-      <v-card-title class="headline">Change password</v-card-title>
-
+      <v-toolbar light color="amber" flat>
+        <v-btn icon light @click="cancel" data-ref="close">
+          <v-icon>close</v-icon>
+        </v-btn>
+        <v-toolbar-title>Change password</v-toolbar-title>
+        <v-spacer></v-spacer>
+      </v-toolbar>
       <v-container grid-list-md>
         <v-layout wrap>
           <v-flex xs12>
-            <v-alert :value="error !== ''" ref="error">
-              {{ error }}
-            </v-alert>
+            <v-alert :value="error !== ''" ref="error">{{ error }}</v-alert>
           </v-flex>
 
           <v-flex xs12>
@@ -29,9 +32,14 @@
         <v-spacer></v-spacer>
 
         <!-- Cancel operation button -->
-        <v-btn flat v-if="canCancel" @click="cancel" ref="cancel">
-          Cancel
-        </v-btn>
+        <v-btn
+          flat
+          v-if="canCancel"
+          @click="cancel"
+          ref="cancel"
+          data-ref="cancel"
+          >Cancel</v-btn
+        >
 
         <!-- Delete operation button -->
         <v-btn
@@ -42,9 +50,8 @@
           :disabled="busy"
           @click="confirm"
           data-ref="confirm"
+          >Change</v-btn
         >
-          Change
-        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -71,12 +78,12 @@ export default class ConfirmDialog extends Vue {
   private password: string = "";
 
   /** Cancel operation. */
-  @Emit("cancel") private cancel(): void {
+  @Emit() private cancel(): void {
     return;
   }
 
   /** Confirm operation. */
-  @Emit("confirm") private confirm(): any {
+  @Emit() private confirm(): any {
     return { password: this.password };
   }
 }

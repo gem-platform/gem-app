@@ -1,5 +1,5 @@
 
-type ICodeceptCallback = (i: CodeceptJS.I) => void;
+type ICodeceptCallback = (i: CodeceptJS.I, loginPage:CodeceptJS.loginPage) => void;
 
 declare class FeatureConfig {
   retry(times:number): FeatureConfig
@@ -280,8 +280,21 @@ declare namespace CodeceptJS {
     waitForDetached(locator: string, sec: number) : void,
     debug(msg: string) : void,
     debugSection(section: string, msg: string) : void,
+    setRequestTimeout(newTimeout: string) : void,
+    sendGetRequest(url: string, headers?: string) : void,
+    sendPostRequest(url: string, payload?: string, headers?: string) : void,
+    sendPatchRequest(url: string, payload: string, headers?: string) : void,
+    sendPutRequest(url: string, payload?: string, headers?: string) : void,
+    sendDeleteRequest(url: string, headers?: string) : void,
+    login(username: string, password: string) : void,
+    wipeout(path: string) : void,
     say: () => any; 
     retryStep(opts: string) : void,
+
+  }
+
+  export interface loginPage {
+    sendForm(username: string, password: string) : void,
 
   }
 

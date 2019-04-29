@@ -23,14 +23,23 @@
         data-ref="users-table"
       >
         <template v-slot:items="{ item }">
-          <td @click="users.openEditDialog(item)">
-            {{ item.full_name }}
-          </td>
-          <td>{{ item.email }}</td>
-          <td class="justify-center layout px-0">
-            <v-icon small @click="onDeleteClicked(item)" data-ref="delete-user">
-              delete
-            </v-icon>
+          <td @click="users.openEditDialog(item)">{{ item.full_name }}</td>
+          <td class="text-xs-right">
+            <v-icon
+              small
+              class="mr-2"
+              @click="users.openEditDialog(item)"
+              data-ref="edit-user"
+              :data-ref-name="item.full_name"
+              >edit</v-icon
+            >
+            <v-icon
+              small
+              @click="onDeleteClicked(item)"
+              data-ref="delete-user"
+              :data-ref-name="item.full_name"
+              >delete</v-icon
+            >
           </td>
         </template>
       </v-data-table>
@@ -60,6 +69,7 @@
       :busy="ops.changePassword.isInProgress"
       :canCancel="!ops.changePassword.isInProgressOrCompleted"
       @confirm="onPasswordChangeConfirmed"
+      @cancel="users.closeChangePasswordDialog()"
     />
   </crud>
 </template>
@@ -83,7 +93,6 @@ import EditUserDialog from "../components/EditUserDialog.vue";
 export default class AdminUsersView extends Vue {
   private headers = [
     { text: "Name", value: "full_name" },
-    { text: "Email", value: "email" },
     { text: "Actions", align: "right", sortable: false, name: "full_name" }
   ];
 
@@ -126,9 +135,9 @@ export default class AdminUsersView extends Vue {
     UsersStore.openChangePasswordDialog(user);
   }
 
-  private onPasswordChangeConfirmed(newPassword: string) {
+  private onPasswordChangeConfirmed(chnagePasswordRespone: any) {
     UsersStore.changePassword({
-      password: newPassword,
+      password: chnagePasswordRespone.password,
       user: UsersStore.operations.changePassword.data
     });
   }

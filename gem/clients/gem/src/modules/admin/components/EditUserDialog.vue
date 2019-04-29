@@ -7,7 +7,13 @@
     @save="save"
   >
     <template v-if="!isNew" #actions>
-      <v-btn light flat @click="onChangePasswordClicked">Change Password</v-btn>
+      <v-btn
+        light
+        flat
+        @click="onChangePasswordClicked"
+        data-ref="change-password"
+        >Change Password</v-btn
+      >
     </template>
 
     <v-flex xs12 sm6>
@@ -51,7 +57,7 @@ export default class EditUserDialog extends Vue {
   }
 
   get isNew(): boolean {
-    return this.user.oid === 0;
+    return this.user.oid === -1;
   }
 }
 </script>
