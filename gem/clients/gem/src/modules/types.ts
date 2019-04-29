@@ -21,6 +21,6 @@ export const EmptyUser: IUser = {
   disabled: false,
   email: "",
   full_name: "",
-  oid: 0,
+  oid: -1,
   username: ""
 };

@@ -10,6 +10,11 @@ Before(I => {
   I.login("Secretary", "secret");
   I.waitForText("Welcome");
   usersPage.open();
+
+  // Wait for data loaded
+  within(usersPage.usersTable.root, () => {
+    I.waitForText("Secretary");
+  });
 });
 
 Scenario("I can create a new user", I => {
@@ -40,3 +45,39 @@ Scenario("I can delete user", I => {
     I.dontSee(username);
   });
 });
+
+Scenario("I see 'Change Password' button for created user", I => {
+  usersPage.usersTable.clickEdit("Secretary");
+  within(usersPage.editDialog.root, () => {
+    I.see("CHANGE PASSWORD");
+  });
+}).tag("@change-password");
+
+Scenario("I don't see 'Change Password' button for new user", I => {
+  usersPage.clickCreateUser();
+  within(usersPage.editDialog.root, () => {
+    I.dontSee("CHANGE PASSWORD");
+  });
+}).tag("@change-password");
+
+Scenario("I see 'Change Password' dialog when I click 'Change Password' button", I => {
+  usersPage.usersTable.clickEdit("Secretary");
+  usersPage.editDialog.clickChangePassword();
+  I.waitForVisible(usersPage.changePasswordDialog.root);
+}).tag("@change-password");
+
+Scenario("I can cancel 'Change Password' dialog", () => {
+  usersPage.usersTable.clickEdit("Secretary");
+  usersPage.editDialog.clickChangePassword();
+  usersPage.changePasswordDialog.waitForOpen();
+  usersPage.changePasswordDialog.clickCancel();
+  usersPage.changePasswordDialog.waitForClose();
+}).tag("@change-password")
+
+Scenario("I can change password", () => {
+  usersPage.usersTable.clickEdit("Secretary");
+  usersPage.editDialog.clickChangePassword();
+  usersPage.changePasswordDialog.waitForOpen();
+  usersPage.changePasswordDialog.submit("new_password");
+  usersPage.changePasswordDialog.waitForClose();
+}).tag("@change-password")

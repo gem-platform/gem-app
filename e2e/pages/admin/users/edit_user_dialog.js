@@ -7,11 +7,18 @@ module.exports = {
     email: "[aria-label='Email']"
   },
   buttons: {
-    save: "[data-ref='save-user']"
+    save: "[data-ref='save-user']",
+    changePassword: "[data-ref='change-password']"
   },
 
   submit(name) {
     I.fillField(this.fields.name, name);
     I.click(this.buttons.save);
+  },
+
+  clickChangePassword() {
+    within(this.root, () => {
+      I.click(this.buttons.changePassword);
+    });
   }
 };

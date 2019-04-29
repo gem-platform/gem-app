@@ -63,6 +63,13 @@ export default class UsersStoreModule extends VuexModule {
     this.operations.changePassword.startConfirmation(user);
   }
 
+  /**
+   * Close change password dialog.
+   */
+  @Mutation public closeChangePasswordDialog() {
+    this.operations.changePassword.cancel();
+  }
+
   /** Data */
 
   /** Fetch */

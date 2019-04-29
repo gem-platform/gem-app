@@ -23,21 +23,23 @@
         data-ref="users-table"
       >
         <template v-slot:items="{ item }">
-          <td @click="users.openEditDialog(item)">
-            {{ item.full_name }}
-          </td>
+          <td @click="users.openEditDialog(item)">{{ item.full_name }}</td>
           <td class="text-xs-right">
-            <v-icon small class="mr-2" @click="users.openEditDialog(item)">
-              edit
-            </v-icon>
+            <v-icon
+              small
+              class="mr-2"
+              @click="users.openEditDialog(item)"
+              data-ref="edit-user"
+              :data-ref-name="item.full_name"
+              >edit</v-icon
+            >
             <v-icon
               small
               @click="onDeleteClicked(item)"
               data-ref="delete-user"
               :data-ref-name="item.full_name"
+              >delete</v-icon
             >
-              delete
-            </v-icon>
           </td>
         </template>
       </v-data-table>
@@ -67,6 +69,7 @@
       :busy="ops.changePassword.isInProgress"
       :canCancel="!ops.changePassword.isInProgressOrCompleted"
       @confirm="onPasswordChangeConfirmed"
+      @cancel="users.closeChangePasswordDialog()"
     />
   </crud>
 </template>
