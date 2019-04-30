@@ -26,6 +26,7 @@ Feature: Manage accounts
     When I set password for "Krishna" as "new_password"
     And I login as "Krishna" / "password"
     Then I not logged in
+    And I see error "Incorrect email or password"
 
   @change-password
   Scenario: Password must be at least 6 characters

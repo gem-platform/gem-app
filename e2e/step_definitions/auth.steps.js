@@ -11,13 +11,13 @@ When("I logout", () => {
 
 /** Login user using specified credentials  */
 When("I login as {string} / {string}", async (username, password) => {
-  const res = await I.sendPostRequest(
+  context.response = (await I.sendPostRequest(
     "/auth/token",
     "username=" + username + "&password=" + password
-  );
+  )).data;
 
   context.username = username;
-  context.token = res.data.access_token;
+  context.token = context.response.access_token;
   context.headers["Authorization"] = "Bearer " + context.token;
 });
 
