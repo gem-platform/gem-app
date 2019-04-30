@@ -31,3 +31,9 @@ Feature: Manage accounts
   Scenario: Password must be at least 6 characters
     When I set password for "Krishna" as "short"
     Then I see error "Should be at least 6 characters long"
+
+  @change-password
+  Scenario: Unauthorized user can't change password
+    When I logout
+    And I set password for "Krishna" as "short"
+    Then I see error "Not authenticated"

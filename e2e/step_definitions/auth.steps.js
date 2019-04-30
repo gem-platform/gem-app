@@ -3,6 +3,12 @@
 const I = require("../steps_file")();
 const context = require("./_context.js");
 
+When("I logout", () => {
+  context.username = "";
+  context.token = "";
+  context.headers["Authorization"] = "";
+});
+
 /** Login user using specified credentials  */
 When("I login as {string} / {string}", async (username, password) => {
   const res = await I.sendPostRequest(
