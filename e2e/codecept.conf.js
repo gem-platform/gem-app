@@ -35,8 +35,8 @@ exports.config = {
     screenshotOnFail: {
       enabled: true
     },
-    "stepByStepReport": {
-      "enabled": true
+    stepByStepReport: {
+      enabled: true
     }
   },
   tests: "./*_test.js",

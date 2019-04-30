@@ -21,7 +21,6 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 router = APIRouter()
 
-
 class Token(BaseModel):
     access_token: str
     token_type: str
@@ -86,8 +85,7 @@ async def get_current_active_user(current_user: User = Depends(get_current_user)
 async def route_login_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
     user = authenticate_user(form_data.username, form_data.password)
     if not user:
-        raise HTTPException(
-            status_code=400, detail="Incorrect email or password")
+        raise HTTPException(status_code=400, detail="Incorrect email or password")
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
         data={"username": user.username}, expires_delta=access_token_expires)

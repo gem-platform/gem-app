@@ -18,7 +18,7 @@ class ChangePassword(BaseModel):
     )
 
     @validator('password')
-    def name_must_contain_space(cls, v: str):
+    def should_be_at_least_6_chars_long(cls, v: str):
         if len(v) < 6:
             raise ValueError('Should be at least 6 characters long')
         return v
