@@ -9,6 +9,7 @@ module.exports = {
     confirm: "[data-ref='confirm']",
     cancel: "[data-ref='cancel']"
   },
+  alert: ".v-alert",
 
   submit(password) {
     within(this.root, () => {
@@ -28,6 +29,6 @@ module.exports = {
   },
 
   waitForClose() {
-    I.waitForInvisible(this.root)
+    I.waitForInvisible(this.root);
   }
 };

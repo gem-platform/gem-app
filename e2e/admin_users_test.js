@@ -61,7 +61,7 @@ Scenario("I don't see 'Change Password' button for new user", I => {
   });
 }).tag("@change-password");
 
-Scenario("I see 'Change Password' dialog when I click 'Change Password' button", I => {
+Scenario("I see dialog when I click 'Change Password' button", I => {
   usersPage.usersTable.clickEdit("Secretary");
   usersPage.editDialog.clickChangePassword();
   I.waitForVisible(usersPage.changePasswordDialog.root);
@@ -73,7 +73,7 @@ Scenario("I can cancel 'Change Password' dialog", () => {
   usersPage.changePasswordDialog.waitForOpen();
   usersPage.changePasswordDialog.clickCancel();
   usersPage.changePasswordDialog.waitForClose();
-}).tag("@change-password")
+}).tag("@change-password");
 
 Scenario("I can change password", () => {
   usersPage.usersTable.clickEdit("Secretary");
@@ -81,4 +81,21 @@ Scenario("I can change password", () => {
   usersPage.changePasswordDialog.waitForOpen();
   usersPage.changePasswordDialog.submit("new_password");
   usersPage.changePasswordDialog.waitForClose();
+}).tag("@change-password");
+
+Scenario("I can change password after fail", () => {
+  usersPage.usersTable.clickEdit("Secretary");
+  usersPage.editDialog.clickChangePassword();
+  usersPage.changePasswordDialog.waitForOpen();
+  usersPage.changePasswordDialog.submit("");
+  usersPage.changePasswordDialog.submit("new_password");
+  usersPage.changePasswordDialog.waitForClose();
+}).tag("@change-password");
+
+Scenario("I see error message on fail", I => {
+  usersPage.usersTable.clickEdit("Secretary");
+  usersPage.editDialog.clickChangePassword();
+  usersPage.changePasswordDialog.waitForOpen();
+  usersPage.changePasswordDialog.submit("1");
+  I.waitForVisible(usersPage.changePasswordDialog.alert);
 }).tag("@change-password")

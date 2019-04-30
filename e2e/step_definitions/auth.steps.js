@@ -7,14 +7,12 @@ const context = require("./_context.js");
 When("I login as {string} / {string}", async (username, password) => {
   const res = await I.sendPostRequest(
     "/auth/token",
-    "username=" + username + "&password=" + password);
+    "username=" + username + "&password=" + password
+  );
 
   context.username = username;
   context.token = res.data.access_token;
-
-  if (!context.token) {
-    console.error(res.data);
-  }
+  context.headers["Authorization"] = "Bearer " + context.token;
 });
 
 /** Checks if user logged in */
@@ -26,9 +24,7 @@ Then("I logged in", async () => {
 
 /** Checks if user logged in */
 Then("I logged in as {string}", async username => {
-  const res = await I.sendGetRequest("/auth/me", {
-    Authorization: "Bearer " + context.token
-  });
+  const res = await I.sendGetRequest("/auth/me", context.headers);
   if (res.data.username != username) {
     throw Error(
       "You are logged as " + res.data.username + " but should as " + username

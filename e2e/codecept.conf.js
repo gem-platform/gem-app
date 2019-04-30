@@ -34,6 +34,9 @@ exports.config = {
   plugins: {
     screenshotOnFail: {
       enabled: true
+    },
+    "stepByStepReport": {
+      "enabled": true
     }
   },
   tests: "./*_test.js",

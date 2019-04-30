@@ -17,6 +17,7 @@ module.exports = {
   },
 
   clickChangePassword() {
+    I.wait(1);
     within(this.root, () => {
       I.click(this.buttons.changePassword);
     });

@@ -1,23 +1,27 @@
-from fastapi import APIRouter
-from pydantic import BaseModel, Schema
+from fastapi import APIRouter, Depends, HTTPException
+from pydantic import BaseModel, ValidationError, Schema, validator
 from db import session_scope, models
 from passlib.context import CryptContext
 from mappers.user import map_model_to_user, map_user_to_model
 from api.user import User
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+from .auth import get_current_active_user
 
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 router = APIRouter()
 
 
 class ChangePassword(BaseModel):
     password: str = Schema(
         "",
-        title="Password",
-        min_length=6, max_length=128
+        title="Password"
     )
 
-# TODO: Should be checking, that user can't change data any other users without permission
+    @validator('password')
+    def name_must_contain_space(cls, v: str):
+        if len(v) < 6:
+            raise ValueError('Should be at least 6 characters long')
+        return v
 
 
 @router.post("/")
@@ -70,12 +74,14 @@ async def fetch_users_list():
 
 
 @router.put("/{oid}/changePassword")
-async def change_password(oid: int, change: ChangePassword):
+async def change_password(
+        oid: int, change: ChangePassword,
+        current_user: User = Depends(get_current_active_user)):
     with session_scope() as s:
         user_db = s.query(models.User).filter_by(
             id=oid).first()  # type: models.User
         if not user_db:
-            return False
+            raise HTTPException(status_code=404, detail="User not found")
         user_db.hashed_password = pwd_context.hash(change.password)
         s.commit()
     return {"status": "ok"}

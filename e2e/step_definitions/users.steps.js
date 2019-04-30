@@ -48,7 +48,11 @@ When("I set password for {string} as {string}", async (username, password) => {
   }
 
   const url = "/users/" + user.oid + "/changePassword";
-  context.response = (await I.sendPutRequest(url, { password })).data;
+  context.response = (await I.sendPutRequest(
+    url,
+    { password },
+    context.headers
+  )).data;
 });
 
 Given("{string} with password {string} exist", async (username, password) => {

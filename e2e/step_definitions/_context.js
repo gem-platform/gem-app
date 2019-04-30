@@ -2,6 +2,7 @@ const context = {
   username: "",
   token: "",
   users: {},
-  response: ""
+  response: "",
+  headers: {}
 };
 module.exports = context;

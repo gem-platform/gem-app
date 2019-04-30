@@ -15,16 +15,19 @@ Feature: Manage accounts
     When I delete user "Krishna"
     Then User "Krishna" doesn't exist
 
+  @change-password
   Scenario: Secretary can change a password for user
     When I set password for "Krishna" as "new_password"
     And I login as "Krishna" / "new_password"
     Then I logged in as "Krishna"
 
+  @change-password
   Scenario: User can't login using old password
     When I set password for "Krishna" as "new_password"
     And I login as "Krishna" / "password"
     Then I not logged in
 
+  @change-password
   Scenario: Password must be at least 6 characters
     When I set password for "Krishna" as "short"
-    Then I see error "ensure this value has at least 6 characters"
+    Then I see error "Should be at least 6 characters long"
