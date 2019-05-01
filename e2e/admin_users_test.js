@@ -27,7 +27,7 @@ Scenario("I can create a new user", I => {
 
 Scenario("I see the error message if user creation failed", I => {
   usersPage.createUser("", false);
-  I.see("Error:");
+  I.waitForVisible(usersPage.editDialog.root + " .error");
 });
 
 Scenario("I see snackbar message if operation was succeeded", () => {

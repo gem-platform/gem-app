@@ -124,7 +124,10 @@ export default class UsersStoreModule extends VuexModule {
       }
       return user;
     } catch (err) {
-      const message = err.response.data.detail;
+      const message =
+        (err.response.data.detail instanceof Array
+          ? err.response.data.detail[0].msg
+          : err.message) || "Can't save user";
       log({ message });
       this.saveUserFailed(message);
     }
