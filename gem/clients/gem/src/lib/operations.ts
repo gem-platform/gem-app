@@ -27,6 +27,11 @@ export class Operation {
     this.state = OperationState.NotStarted;
   }
 
+  public startConfirmation(data?: any) {
+    this.state = OperationState.Confirmation;
+    this.data = data;
+  }
+
   public start(message: string = "") {
     this.message = message;
     this.state = OperationState.InProgress;
@@ -55,7 +60,7 @@ export class Operation {
   }
 
   get isFailed(): boolean {
-    return this.state === OperationState.Succeeded;
+    return this.state === OperationState.Failed;
   }
 
   get isConfirmationRequired(): boolean {
@@ -64,6 +69,10 @@ export class Operation {
 
   get isStarted(): boolean {
     return this.isConfirmationRequired || this.isInProgress;
+  }
+
+  get isStartedOrFailed(): boolean {
+    return this.isConfirmationRequired || this.isInProgress || this.isFailed;
   }
 
   get isInProgressOrCompleted(): boolean {

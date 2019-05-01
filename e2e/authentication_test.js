@@ -2,7 +2,7 @@
 
 Feature("Authentication Form");
 
-const validLogin = "johndoe";
+const validLogin = "Secretary";
 const validPassword = "secret";
 const invalidPassword = "invalid";
 

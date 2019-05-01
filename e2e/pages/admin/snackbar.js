@@ -7,5 +7,9 @@ module.exports = {
     within(this.root, () => {
       I.see(message);
     });
+  },
+
+  waitForOpen() {
+    I.waitForVisible(this.root);
   }
 };

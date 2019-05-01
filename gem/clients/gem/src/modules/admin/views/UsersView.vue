@@ -3,12 +3,13 @@
     <!-- Edit user dialog -->
     <template v-slot:edit-dialog>
       <edit-user-dialog
-        :visible="ops.save.isStarted"
+        :visible="ops.save.isStartedOrFailed"
         :user="ops.save.data"
         :operation="ops.save"
         :formsOfAddress="formsOfAddress"
         @close="users.closeEditDialog"
         @save="onSaveUserClicked"
+        @change-password="onUserChangePassword"
       />
     </template>
 
@@ -22,18 +23,22 @@
         data-ref="users-table"
       >
         <template v-slot:items="{ item }">
-          <td @click="users.openEditDialog(item)">
-            {{ item.full_name }}
-          </td>
-          <td>{{ item.email }}</td>
-          <td class="justify-center layout px-0">
+          <td @click="users.openEditDialog(item)">{{ item.full_name }}</td>
+          <td class="text-xs-right">
+            <v-icon
+              small
+              class="mr-2"
+              @click="users.openEditDialog(item)"
+              data-ref="edit-user"
+              :data-ref-name="item.full_name"
+              >edit</v-icon
+            >
             <v-icon
               small
               @click="onDeleteClicked(item)"
               data-ref="delete-user"
               :data-ref-name="item.full_name"
-            >
-              delete</v-icon
+              >delete</v-icon
             >
           </td>
         </template>
@@ -49,7 +54,7 @@
         :visible="ops.delete.isStarted"
         :busy="ops.delete.isInProgress"
         :canCancel="!ops.delete.isInProgressOrCompleted"
-        @cancel="users.cancelDelete()"
+        @cancel="users.closeConfirmDeleteDialog()"
         @confirm="onDeleteConfirmed"
       >
         <template v-slot:default="{ data = { full_name: '' } }">
@@ -57,6 +62,16 @@
         </template>
       </confirm-dialog>
     </template>
+
+    <!-- Change password dialog -->
+    <change-password-dialog
+      :visible="ops.changePassword.isStartedOrFailed"
+      :busy="ops.changePassword.isInProgress"
+      :canCancel="!ops.changePassword.isInProgressOrCompleted"
+      :error="ops.changePassword.message"
+      @confirm="onPasswordChangeConfirmed"
+      @cancel="users.closeChangePasswordDialog()"
+    />
   </crud>
 </template>
 
@@ -68,17 +83,17 @@ import { Component, Vue } from "vue-property-decorator";
 import { IUser } from "../../types";
 import { AdminStore, UsersStore } from "../store";
 
+import ChangePasswordDialog from "../components/ChangePasswordDialog.vue";
 import ConfirmDialog from "../components/ConfirmDialog.vue";
 import Crud from "../components/Crud.vue";
 import EditUserDialog from "../components/EditUserDialog.vue";
 
 @Component({
-  components: { ConfirmDialog, Crud, EditUserDialog }
+  components: { ConfirmDialog, Crud, EditUserDialog, ChangePasswordDialog }
 })
 export default class AdminUsersView extends Vue {
   private headers = [
     { text: "Name", value: "full_name" },
-    { text: "Email", value: "email" },
     { text: "Actions", align: "right", sortable: false, name: "full_name" }
   ];
 
@@ -110,14 +125,35 @@ export default class AdminUsersView extends Vue {
   }
 
   private onDeleteClicked(user: IUser) {
-    UsersStore.confirmDelete(user);
+    UsersStore.openConfirmDeleteDialog(user);
   }
 
   private async onDeleteConfirmed(user: IUser) {
     const res = await UsersStore.delete(user);
+    AdminStore.openSnackbar({
+      color: res ? "success" : "error",
+      message: res ? "User deleted" : "Unable to delete user"
+    });
   }
 
-  private get formsOfAddress(): string[] {
+  private onUserChangePassword(user: IUser) {
+    UsersStore.openChangePasswordDialog(user);
+  }
+
+  private async onPasswordChangeConfirmed(chnagePasswordRespone: any) {
+    const res = await UsersStore.changePassword({
+      password: chnagePasswordRespone.password,
+      user: UsersStore.operations.changePassword.data
+    });
+    if (res) {
+      AdminStore.openSnackbar({
+        color: "success",
+        message: "Password changed"
+      });
+    }
+  }
+
+  private get formsOfAddress() {
     return formsOfAddress;
   }
 }

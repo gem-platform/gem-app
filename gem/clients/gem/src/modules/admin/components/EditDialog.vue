@@ -15,6 +15,7 @@
         </v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items>
+          <slot name="actions" />
           <v-btn
             light
             flat

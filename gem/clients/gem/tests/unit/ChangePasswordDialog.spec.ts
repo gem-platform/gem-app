@@ -1,34 +1,22 @@
-import ConfirmDialog from "@/modules/admin/components/ConfirmDialog.vue";
+import ChangePasswordDialog from "@/modules/admin/components/ChangePasswordDialog.vue";
 import { mount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
 
 Vue.use(Vuetify);
 
-describe("ConfirmDialog.vue", () => {
+describe("ChangePasswordDialog.vue", () => {
   function getContext() {
-    const wrapper = mount(ConfirmDialog);
+    const wrapper = mount(ChangePasswordDialog);
     return {
       cancel: wrapper.find({ ref: "cancel" }),
       confirm: wrapper.find({ ref: "confirm" }),
       dialog: wrapper.find({ ref: "dialog" }),
+      error: wrapper.find({ ref: "error" }),
+      password: wrapper.find({ ref: "password" }),
       wrapper
     };
   }
-
-  it("renders props.title when passed", () => {
-    const context = getContext();
-    const title = "Should I do this?";
-    context.wrapper.setProps({ title });
-    expect(context.wrapper.html()).toContain(title);
-  });
-
-  it("renders props.action when passed", () => {
-    const context = getContext();
-    const action = "Go ahead";
-    context.wrapper.setProps({ action });
-    expect(context.confirm.html()).toContain(action);
-  });
 
   it("shows dialog if props.visible is true", () => {
     const context = getContext();
@@ -42,11 +30,13 @@ describe("ConfirmDialog.vue", () => {
     expect(context.wrapper.emitted().confirm).toBeTruthy();
   });
 
-  it("emits confirm event with data", () => {
+  it("emits confirm event with new password", () => {
     const context = getContext();
-    context.wrapper.setProps({ data: 123 });
+    context.wrapper.setData({ password: "new-password" });
     context.confirm.trigger("click");
-    expect(context.wrapper.emitted().confirm[0][0]).toEqual(123);
+    expect(context.wrapper.emitted().confirm[0][0]).toEqual({
+      password: "new-password"
+    });
   });
 
   it("emits cancel event if cancel button clicked", () => {
@@ -55,21 +45,32 @@ describe("ConfirmDialog.vue", () => {
     expect(context.wrapper.emitted().cancel).toBeTruthy();
   });
 
-  it("confirm button is disabled if busy is true", () => {
+  it("confirm button is disabled if prop.busy is true", () => {
     const context = getContext();
     context.wrapper.setProps({ busy: true });
     expect(context.confirm.props().disabled).toBeTruthy();
   });
 
-  it("confirm button is in loading state if busy is true", () => {
+  it("confirm button is in loading state if prop.busy is true", () => {
     const context = getContext();
     context.wrapper.setProps({ busy: true });
     expect(context.confirm.props().loading).toBeTruthy();
   });
 
-  it("cancel button is hidden if canCancel is false", () => {
+  it("cancel button is hidden if prop.canCancel is false", () => {
     const context = getContext();
     context.wrapper.setProps({ canCancel: false });
     expect(context.cancel.exists()).toBeFalsy();
+  });
+
+  it("shows error message if props.error is set", () => {
+    const context = getContext();
+    context.wrapper.setProps({ error: "password is to weak" });
+    expect(context.error.isVisible()).toBeTruthy();
+  });
+
+  it("does not show error message if props.error is not set", () => {
+    const context = getContext();
+    expect(context.error.isVisible()).toBeFalsy();
   });
 });

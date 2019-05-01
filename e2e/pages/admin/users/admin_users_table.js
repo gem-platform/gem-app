@@ -3,7 +3,15 @@ const I = actor();
 module.exports = {
   root: "[data-ref='users-table']",
   buttons: {
-    delete: "[data-ref='delete-user']"
+    delete: "[data-ref='delete-user']",
+    edit: "[data-ref='edit-user']"
+  },
+
+  clickEdit(name) {
+    within(this.root, () => {
+      const refByName = "[data-ref-name='" + name + "']";
+      I.click(this.buttons.edit + refByName);
+    });
   },
 
   delete(name) {
@@ -12,7 +20,7 @@ module.exports = {
   },
 
   waitForDetached(name) {
-    const refByName = "[data-ref-name='" + name + "']";    
+    const refByName = "[data-ref-name='" + name + "']";
     I.waitForDetached(this.buttons.delete + refByName);
   }
 };

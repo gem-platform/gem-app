@@ -2,9 +2,10 @@
   <v-app>
     <v-toolbar v-if="isNavbarVisible" color="amber" flat app>
       <v-toolbar-title class="headline text-uppercase">
-        <span class="title ml-3 mr-5"
-          >GEM&nbsp;<span class="font-weight-light">Online</span></span
-        >
+        <span class="title ml-3 mr-5">
+          GEM&nbsp;
+          <span class="font-weight-light">Online</span>
+        </span>
       </v-toolbar-title>
       <v-text-field
         solo-inverted

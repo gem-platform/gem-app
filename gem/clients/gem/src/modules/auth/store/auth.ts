@@ -30,7 +30,7 @@ export default class AuthModule extends VuexModule {
    * @returns true if user data loaded, otherwise false.
    */
   get isUserLoaded(): boolean {
-    return this.user.oid !== 0;
+    return this.user.oid !== -1;
   }
 
   /** Authentication token. Get from localStorage if user was previously authenticated. */

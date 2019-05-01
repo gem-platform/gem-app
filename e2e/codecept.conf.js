@@ -12,7 +12,7 @@ exports.config = {
       }
     },
     Cleaner: {
-      "require": "./cleaner_helper.js"
+      require: "./cleaner_helper.js"
     }
   },
   include: {
@@ -26,12 +26,16 @@ exports.config = {
   gherkin: {
     features: "./features/**/*.feature",
     steps: [
-      "./step_definitions/authentication.steps.js",
-      "./step_definitions/users.steps.js"
+      "./step_definitions/auth.steps.js",
+      "./step_definitions/users.steps.js",
+      "./step_definitions/common.steps.js"
     ]
   },
   plugins: {
     screenshotOnFail: {
+      enabled: true
+    },
+    stepByStepReport: {
       enabled: true
     }
   },

@@ -2,7 +2,7 @@
   <v-dialog
     v-model="visible"
     max-width="400"
-    ref="root"
+    ref="dialog"
     data-ref="confirm-dialog"
   >
     <v-card>

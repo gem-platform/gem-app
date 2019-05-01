@@ -16,31 +16,38 @@ describe("EditUserDialog.vue", () => {
     oid: 1,
     username: "johndoe"
   };
-  const wrapper = mount(EditUserDialog, {
-    propsData: { user }
-  });
-  const alert = wrapper.find(".v-alert");
-  const name = wrapper.find({ ref: "name" });
-  const email = wrapper.find({ ref: "email" });
-  const close = wrapper.find("[data-ref='close']");
-  const save = wrapper.find("[data-ref='save-user']");
+
+  function getContext() {
+    const wrapper = mount(EditUserDialog, {
+      propsData: { user }
+    });
+    const alert = wrapper.find(".v-alert");
+    const name = wrapper.find({ ref: "name" });
+    const email = wrapper.find({ ref: "email" });
+    const close = wrapper.find("[data-ref='close']");
+    const save = wrapper.find("[data-ref='save-user']");
+    return { wrapper, alert, name, email, close, save };
+  }
 
   it("renders props.user when passed", () => {
-    expect(name.props().value).toEqual(user.full_name);
-    expect(email.props().value).toEqual(user.email);
+    const context = getContext();
+    expect(context.name.props().value).toEqual(user.full_name);
+    expect(context.email.props().value).toEqual(user.email);
   });
 
   it("sends close event when close button clicked", () => {
-    close.trigger("click");
-    expect(wrapper.props().visible).toEqual(false);
-    expect(wrapper.emitted().close).toBeTruthy();
+    const context = getContext();
+    context.close.trigger("click");
+    expect(context.wrapper.props().visible).toEqual(false);
+    expect(context.wrapper.emitted().close).toBeTruthy();
   });
 
   it("sends save event when save button clicked", () => {
-    save.trigger("click");
-    expect(wrapper.props().visible).toEqual(false);
-    expect(wrapper.emitted().save).toBeTruthy();
-    expect(wrapper.emitted().save[0][0]).toEqual(user);
+    const context = getContext();
+    context.save.trigger("click");
+    expect(context.wrapper.props().visible).toEqual(false);
+    expect(context.wrapper.emitted().save).toBeTruthy();
+    expect(context.wrapper.emitted().save[0][0]).toEqual(user);
   });
 
   it("sends changed entity when save button clicked", () => {
@@ -50,25 +57,28 @@ describe("EditUserDialog.vue", () => {
       full_name: "changedName"
     };
 
-    name.find("input").setValue("changedName");
-    email.find("input").setValue("changedEmail");
-    save.trigger("click");
+    const context = getContext();
+    context.name.find("input").setValue("changedName");
+    context.email.find("input").setValue("changedEmail");
+    context.save.trigger("click");
 
-    expect(wrapper.emitted().save[0][0]).toEqual(changedUser);
+    expect(context.wrapper.emitted().save[0][0]).toEqual(changedUser);
   });
 
   it("shows alert if operation is in failed state", () => {
-    wrapper.setProps({
+    const context = getContext();
+    context.wrapper.setProps({
       operation: new Operation(OperationState.Failed, "Some error")
     });
-    expect(alert.props().value).toBeTruthy();
-    expect(alert.text()).toContain("Some error");
+    expect(context.alert.props().value).toBeTruthy();
+    expect(context.alert.text()).toContain("Some error");
   });
 
   it("doesn't show alert if operation succeeded", () => {
-    wrapper.setProps({
+    const context = getContext();
+    context.wrapper.setProps({
       operation: new Operation(OperationState.Succeeded, "Success")
     });
-    expect(alert.props().value).toBeFalsy();
+    expect(context.alert.props().value).toBeFalsy();
   });
 });

@@ -2,6 +2,7 @@
   "extends": "tslint:recommended",
   "rules": {
     "trailing-comma": [false],
-    "arrow-parens": [true, "ban-single-arg-parens"]
+    "arrow-parens": [true, "ban-single-arg-parens"],
+    "member-ordering": [false]
   }
 }

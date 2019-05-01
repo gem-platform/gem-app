@@ -1,12 +1,12 @@
 {
   "folders": [
     {
-      "name": "Documentation",
-      "path": "doc"
-    },
-    {
       "name": "GEM Client",
       "path": "gem/clients/gem"
+    },
+    {
+      "name": "Documentation",
+      "path": "doc"
     },
     {
       "name": "GEM App",

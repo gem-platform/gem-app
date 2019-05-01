@@ -53,7 +53,7 @@ import { ICredentials } from "../types";
 @Component
 export default class LoginForm extends Vue {
   /** Error message to display. Show nothing if message is not provided. */
-  @Prop({ default: "" }) public message: string = "";
+  @Prop({ default: "" }) public message!: string;
 
   private username: string = "";
   private password: string = "";
