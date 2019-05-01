@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
-from pydantic import BaseModel, ValidationError, Schema, validator
+from pydantic import BaseModel, Schema, validator
 from db import session_scope, models
 from passlib.context import CryptContext
 from mappers.user import map_model_to_user, map_user_to_model

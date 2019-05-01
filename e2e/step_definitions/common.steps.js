@@ -1,6 +1,5 @@
 /// <reference path="../steps.d.ts" />
 
-const I = require("../steps_file")();
 const context = require("./_context.js");
 
 Then("I see the error {string}", msg => {

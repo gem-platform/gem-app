@@ -3,8 +3,7 @@
     <v-layout column>
       <!-- Control panel -->
       <v-btn block outline @click="onCreateClicked" data-ref="create-new-user">
-        <v-icon dark>add</v-icon>
-        Create
+        <v-icon dark>add</v-icon>Create
       </v-btn>
 
       <!-- Table -->
@@ -24,9 +23,8 @@
         :color="admin.snackbar.color"
         @input="admin.closeSnackbar"
         data-ref="snackbar"
+        >{{ admin.snackbar.message }}</v-snackbar
       >
-        {{ admin.snackbar.message }}
-      </v-snackbar>
 
       <!-- Content -->
       <slot />

@@ -48,7 +48,7 @@ Scenario("I can delete user", I => {
   });
 });
 
-Scenario("I see notification when user deleted", I => {
+Scenario("I see notification when user deleted", () => {
   usersPage.usersTable.delete("Secretary");
   usersPage.confirmDialog.confirm();
   usersPage.snackbar.waitForOpen();
@@ -109,7 +109,7 @@ Scenario("I see error message on fail", I => {
   I.waitForVisible(usersPage.changePasswordDialog.alert);
 }).tag("@change-password");
 
-Scenario("I see notification on success", I => {
+Scenario("I see notification on success", () => {
   usersPage.usersTable.clickEdit("Secretary");
   usersPage.editDialog.clickChangePassword();
   usersPage.changePasswordDialog.waitForOpen();
