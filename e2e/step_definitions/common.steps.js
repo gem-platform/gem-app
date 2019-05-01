@@ -3,7 +3,7 @@
 const I = require("../steps_file")();
 const context = require("./_context.js");
 
-Then("I see error {string}", msg => {
+Then("I see the error {string}", msg => {
   const message =
     context.response.detail instanceof Array
       ? context.response.detail[0].msg

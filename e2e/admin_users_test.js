@@ -25,7 +25,7 @@ Scenario("I can create a new user", I => {
   });
 });
 
-Scenario("I see error message if user creation failed", I => {
+Scenario("I see the error message if user creation failed", I => {
   usersPage.createUser("", false);
   I.see("Error:");
 });
@@ -98,4 +98,4 @@ Scenario("I see error message on fail", I => {
   usersPage.changePasswordDialog.waitForOpen();
   usersPage.changePasswordDialog.submit("1");
   I.waitForVisible(usersPage.changePasswordDialog.alert);
-}).tag("@change-password")
+}).tag("@change-password");
