@@ -195,11 +195,12 @@ export default class UsersStoreModule extends VuexModule {
   @Action public async changePassword(changePassword: IChangePassword) {
     try {
       this.changePasswordStarted();
-      await service.changePassword(
+      const res = await service.changePassword(
         changePassword.user,
         changePassword.password
       );
       this.changePasswordSucceeded();
+      return res;
     } catch (err) {
       const message =
         (err.response.data.detail instanceof Array

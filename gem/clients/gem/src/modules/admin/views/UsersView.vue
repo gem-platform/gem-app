@@ -130,17 +130,29 @@ export default class AdminUsersView extends Vue {
 
   private async onDeleteConfirmed(user: IUser) {
     const res = await UsersStore.delete(user);
+    if (res) {
+      AdminStore.openSnackbar({
+        color: "success",
+        message: "User deleted"
+      });
+    }
   }
 
   private onUserChangePassword(user: IUser) {
     UsersStore.openChangePasswordDialog(user);
   }
 
-  private onPasswordChangeConfirmed(chnagePasswordRespone: any) {
-    UsersStore.changePassword({
+  private async onPasswordChangeConfirmed(chnagePasswordRespone: any) {
+    const res = await UsersStore.changePassword({
       password: chnagePasswordRespone.password,
       user: UsersStore.operations.changePassword.data
     });
+    if (res) {
+      AdminStore.openSnackbar({
+        color: "success",
+        message: "Password changed"
+      });
+    }
   }
 
   private get formsOfAddress() {

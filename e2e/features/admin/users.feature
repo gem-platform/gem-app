@@ -39,7 +39,7 @@ Feature: Manage accounts
     And I set a password for "Krishna" as "short"
     Then I see the error "Not authenticated"
 
-  @change-password @debug
+  @change-password
   Scenario: Password remains the same after user update
     When I set a password for "Krishna" as "keep_password"
     And I set a name for "Krishna" as "Krishna das"

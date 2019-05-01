@@ -32,8 +32,9 @@ Scenario("I see the error message if user creation failed", I => {
 
 Scenario("I see snackbar message if operation was succeeded", () => {
   usersPage.createUser(username);
+  usersPage.snackbar.waitForOpen();
   usersPage.snackbar.contains("User created/updated");
-});
+}).tag("@snackbar");
 
 Scenario("I can delete user", I => {
   usersPage.createUser(username);
@@ -46,6 +47,14 @@ Scenario("I can delete user", I => {
     I.dontSee(username);
   });
 });
+
+Scenario("I see notification when user deleted", I => {
+  usersPage.usersTable.delete("Secretary");
+  usersPage.confirmDialog.confirm();
+  usersPage.snackbar.waitForOpen();
+  usersPage.snackbar.contains("User deleted");
+}).tag("@snackbar");
+
 
 Scenario("I see 'Change Password' button for created user", I => {
   usersPage.usersTable.clickEdit("Secretary");
@@ -99,3 +108,12 @@ Scenario("I see error message on fail", I => {
   usersPage.changePasswordDialog.submit("1");
   I.waitForVisible(usersPage.changePasswordDialog.alert);
 }).tag("@change-password");
+
+Scenario("I see notification on success", I => {
+  usersPage.usersTable.clickEdit("Secretary");
+  usersPage.editDialog.clickChangePassword();
+  usersPage.changePasswordDialog.waitForOpen();
+  usersPage.changePasswordDialog.submit("1234567");
+  usersPage.snackbar.waitForOpen();
+  usersPage.snackbar.contains("Password changed");
+}).tag("@change-password").tag("@snackbar");
