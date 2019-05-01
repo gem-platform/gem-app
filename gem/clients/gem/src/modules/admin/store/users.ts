@@ -1,4 +1,5 @@
-import { Operation, OperationState } from "@/lib/operations";
+import { log } from "@/lib/logging";
+import { Operation } from "@/lib/operations";
 import store from "@/store";
 import {
   Action,
@@ -81,9 +82,10 @@ export default class UsersStoreModule extends VuexModule {
       const users = await service.fetch();
       this.fetchUsersSucceeded(users);
       return users;
-    } catch {
-      this.fetchUsersFailed("Error: Have no idea why.");
-      return undefined;
+    } catch (err) {
+      const message = err.response.data.detail;
+      log({ message });
+      this.fetchUsersFailed(message);
     }
   }
 
@@ -121,8 +123,10 @@ export default class UsersStoreModule extends VuexModule {
         this.userCreated(result);
       }
       return user;
-    } catch {
-      this.saveUserFailed("Error: shit happens");
+    } catch (err) {
+      const message = err.response.data.detail;
+      log({ message });
+      this.saveUserFailed(message);
     }
   }
 
@@ -159,7 +163,9 @@ export default class UsersStoreModule extends VuexModule {
       const result = await service.delete(user);
       this.userDeleted(result);
       return result;
-    } catch (ex) {
+    } catch (err) {
+      const message = err.response.data.detail;
+      log({ message });
       this.deleteUserFailed();
     }
   }
@@ -193,10 +199,11 @@ export default class UsersStoreModule extends VuexModule {
       this.changePasswordSucceeded();
     } catch (err) {
       const message =
-        err.response.data.detail instanceof Array
+        (err.response.data.detail instanceof Array
           ? err.response.data.detail[0].msg
-          : err.message;
-      this.changePasswordFailed(message || "Can't change password");
+          : err.message) || "Can't change password";
+      log({ message });
+      this.changePasswordFailed(message);
     }
   }
 
