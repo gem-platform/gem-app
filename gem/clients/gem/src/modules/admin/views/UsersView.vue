@@ -130,12 +130,10 @@ export default class AdminUsersView extends Vue {
 
   private async onDeleteConfirmed(user: IUser) {
     const res = await UsersStore.delete(user);
-    if (res) {
-      AdminStore.openSnackbar({
-        color: "success",
-        message: "User deleted"
-      });
-    }
+    AdminStore.openSnackbar({
+      color: res ? "success" : "error",
+      message: res ? "User deleted" : "Unable to delete user"
+    });
   }
 
   private onUserChangePassword(user: IUser) {

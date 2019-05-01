@@ -169,7 +169,7 @@ export default class UsersStoreModule extends VuexModule {
     } catch (err) {
       const message = err.response.data.detail;
       log({ message });
-      this.deleteUserFailed();
+      this.deleteUserFailed(message);
     }
   }
 
