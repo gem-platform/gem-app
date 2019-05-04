@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Schema, validator
 
 from api.proposal import Proposal
@@ -24,16 +24,17 @@ async def create_proposal(
         return proposal
 
 
-@router.put("/")
+@router.put("/{oid}")
 async def update_proposal(
+        oid: int,
         proposal: Proposal,
         current_user: User = Depends(get_current_active_user)):
     """Update proposal"""
     with session_scope() as s:
         proposal_db = s.query(models.Proposal).filter_by(
-            id=proposal.oid).first()  # type: models.Proposal
+            id=oid).first()  # type: models.Proposal
         if not proposal_db:
-            return False
+            raise HTTPException(status_code=404, detail="User not found")
         proposal_db.title = proposal.title
         proposal_db.content = proposal.content
         s.commit()
@@ -49,7 +50,7 @@ async def delete_proposal(
         proposal_db = s.query(models.Proposal).filter_by(
             id=oid).first()  # type: models.Proposal
         if not proposal_db:
-            return False
+            raise HTTPException(status_code=404, detail="Proposal not found")
         s.delete(proposal_db)
         proposal = map_model_to_proposal(proposal_db)
         return proposal

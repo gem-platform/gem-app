@@ -6,7 +6,7 @@ RUN apk --no-cache add alpine-sdk gcc libffi-dev python3-dev postgresql-dev && \
 
 # Install app
 COPY . /app
-RUN pipenv install --system
+RUN pipenv install --system --dev
 ENV PORT=9000
 
 # Start application with hotreload
