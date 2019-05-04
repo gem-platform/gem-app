@@ -28,6 +28,7 @@ export class Operation {
   }
 
   public startConfirmation(data?: any) {
+    this.message = "";
     this.state = OperationState.Confirmation;
     this.data = data;
   }

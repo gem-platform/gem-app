@@ -7,9 +7,11 @@ Vue.use(Vuetify);
 
 describe("ConfirmDialog.vue", () => {
   function getContext() {
+    document.body.setAttribute("data-app", "true");
     const wrapper = mount(ConfirmDialog);
     return {
       cancel: wrapper.find({ ref: "cancel" }),
+      card: wrapper.find({ ref: "card" }),
       confirm: wrapper.find({ ref: "confirm" }),
       dialog: wrapper.find({ ref: "dialog" }),
       wrapper
@@ -20,7 +22,7 @@ describe("ConfirmDialog.vue", () => {
     const context = getContext();
     const title = "Should I do this?";
     context.wrapper.setProps({ title });
-    expect(context.wrapper.html()).toContain(title);
+    expect(context.card.html()).toContain(title);
   });
 
   it("renders props.action when passed", () => {

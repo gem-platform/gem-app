@@ -67,7 +67,7 @@
     <change-password-dialog
       :visible="ops.changePassword.isStartedOrFailed"
       :busy="ops.changePassword.isInProgress"
-      :canCancel="!ops.changePassword.isInProgressOrCompleted"
+      :canCancel="!ops.changePassword.isInProgress"
       :error="ops.changePassword.message"
       @confirm="onPasswordChangeConfirmed"
       @cancel="users.closeChangePasswordDialog()"
