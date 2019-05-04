@@ -27,3 +27,4 @@ Feature: Manage proposals
   Scenario: Proposal title should be at least 3 characters long
     When I create the proposal "N"
     Then I see the error "ensure this value has at least 3 characters"
+  

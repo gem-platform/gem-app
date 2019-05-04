@@ -1,7 +1,8 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from pydantic import BaseModel, Schema, validator
 
 from api.proposal import Proposal
+from api.user import User
 from db import models, session_scope
 from mappers.proposal import map_model_to_proposal, map_proposal_to_model
 
@@ -11,7 +12,10 @@ router = APIRouter()
 
 
 @router.post("/")
-async def create_proposal(proposal: Proposal) -> models.Proposal:
+async def create_proposal(
+        proposal: Proposal,
+        current_user: User = Depends(get_current_active_user)) -> models.Proposal:
+    """Create new proposal using specified data."""
     with session_scope() as s:
         proposal_db = map_proposal_to_model(proposal)
         s.add(proposal_db)
@@ -21,7 +25,10 @@ async def create_proposal(proposal: Proposal) -> models.Proposal:
 
 
 @router.put("/")
-async def update_proposal(proposal: Proposal):
+async def update_proposal(
+        proposal: Proposal,
+        current_user: User = Depends(get_current_active_user)):
+    """Update proposal"""
     with session_scope() as s:
         proposal_db = s.query(models.Proposal).filter_by(
             id=proposal.oid).first()  # type: models.Proposal
@@ -34,7 +41,10 @@ async def update_proposal(proposal: Proposal):
 
 
 @router.delete("/{oid}")
-async def delete_proposal(oid: int):
+async def delete_proposal(
+        oid: int,
+        current_user: User = Depends(get_current_active_user)):
+    """Delete proposal using specified ID."""
     with session_scope() as s:
         proposal_db = s.query(models.Proposal).filter_by(
             id=oid).first()  # type: models.Proposal
@@ -46,7 +56,9 @@ async def delete_proposal(oid: int):
 
 
 @router.get("/")
-async def fetch_proposals_list():
+async def fetch_proposals_list(
+        current_user: User = Depends(get_current_active_user)):
+    """Fetch list of proposals"""
     with session_scope() as s:
         proposals = s.query(models.Proposal).all()  # type: models.Proposal
         return list(map(lambda p: map_model_to_proposal(p), proposals))
