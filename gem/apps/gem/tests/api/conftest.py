@@ -18,3 +18,11 @@ def client(uclient: TestClient) -> TestClient:
     access_token = res.json()["access_token"]
     uclient.headers["Authorization"] = "Bearer " + access_token
     return uclient
+
+
+@fixture
+def proposal() -> dict:
+    return {
+        "title": "new proposal",
+        "content": "content"
+    }

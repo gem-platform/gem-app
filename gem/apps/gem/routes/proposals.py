@@ -19,9 +19,8 @@ async def create_proposal(
     with session_scope() as s:
         proposal_db = map_proposal_to_model(proposal)
         s.add(proposal_db)
-        s.flush()
-        proposal.oid = proposal_db.id
-        return proposal
+        s.flush()  # save to db to be able to obtain ID for mapping below
+        return map_model_to_proposal(proposal_db)
 
 
 @router.put("/{oid}")
@@ -34,11 +33,10 @@ async def update_proposal(
         proposal_db = s.query(models.Proposal).filter_by(
             id=oid).first()  # type: models.Proposal
         if not proposal_db:
-            raise HTTPException(status_code=404, detail="User not found")
+            raise HTTPException(status_code=404, detail="Proposal not found")
         proposal_db.title = proposal.title
         proposal_db.content = proposal.content
-        s.commit()
-    return proposal
+        return map_model_to_proposal(proposal_db)
 
 
 @router.delete("/{oid}")
