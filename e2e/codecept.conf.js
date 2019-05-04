@@ -28,7 +28,8 @@ exports.config = {
     steps: [
       "./step_definitions/auth.steps.js",
       "./step_definitions/users.steps.js",
-      "./step_definitions/common.steps.js"
+      "./step_definitions/common.steps.js",
+      "./step_definitions/proposals.steps.js"
     ]
   },
   plugins: {

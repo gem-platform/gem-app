@@ -5,7 +5,7 @@ Feature: Manage proposals
 
   Background:
     Given I log in as "Secretary" / "secret"
-    And Proposal "Test proposal" exist
+    And Proposal "Test proposal" created
 
   @admin @proposal
   Scenario: Secretary can create a new proposal
@@ -19,11 +19,11 @@ Feature: Manage proposals
 
   @admin @proposal
   Scenario: Secretary can edit proposal
-    When I change the title for "Test proposal" to "New proposal"
+    When I set a title for "Test proposal" as "New proposal"
     Then Proposal "Test proposal" exists
     And Proposal "New proposal" doesn't exist
 
   @admin @proposal
   Scenario: Proposal title should be at least 3 characters long
     When I create the proposal "N"
-    Then I the see error "Should be at least 3 characters long"
+    Then I see the error "Should be at least 3 characters long"
