@@ -1,0 +1,52 @@
+from fastapi import APIRouter
+from pydantic import BaseModel, Schema, validator
+
+from api.proposal import Proposal
+from db import models, session_scope
+from mappers.proposal import map_model_to_proposal, map_proposal_to_model
+
+from .auth import get_current_active_user
+
+router = APIRouter()
+
+
+@router.post("/")
+async def create_proposal(proposal: Proposal) -> models.Proposal:
+    with session_scope() as s:
+        proposal_db = map_proposal_to_model(proposal)
+        s.add(proposal_db)
+        s.flush()
+        proposal.oid = proposal_db.id
+        return proposal
+
+
+@router.put("/")
+async def update_proposal(proposal: Proposal):
+    with session_scope() as s:
+        proposal_db = s.query(models.Proposal).filter_by(
+            id=proposal.oid).first()  # type: models.Proposal
+        if not proposal_db:
+            return False
+        proposal_db.title = proposal.title
+        proposal_db.content = proposal.content
+        s.commit()
+    return proposal
+
+
+@router.delete("/{oid}")
+async def delete_proposal(oid: int):
+    with session_scope() as s:
+        proposal_db = s.query(models.Proposal).filter_by(
+            id=oid).first()  # type: models.Proposal
+        if not proposal_db:
+            return False
+        s.delete(proposal_db)
+        proposal = map_model_to_proposal(proposal_db)
+        return proposal
+
+
+@router.get("/")
+async def fetch_proposals_list():
+    with session_scope() as s:
+        proposals = s.query(models.Proposal).all()  # type: models.Proposal
+        return list(map(lambda p: map_model_to_proposal(p), proposals))

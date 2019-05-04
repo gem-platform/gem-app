@@ -50,11 +50,11 @@ When(
     }
 
     const url = "/users/" + user.oid + "/changePassword";
-    context.response = (await I.sendPutRequest(
+    context.response = await I.sendPutRequest(
       url,
       { password },
       context.headers
-    )).data;
+    );
   }
 );
 
@@ -68,7 +68,7 @@ When("I set a name for {string} as {string}", async (username, newName) => {
   user.full_name = newName;
 
   const url = "/users/" + user.oid;
-  context.response = (await I.sendPutRequest(url, user, context.headers)).data;
+  context.response = await I.sendPutRequest(url, user, context.headers);
 });
 
 Given("{string} with password {string} exist", async (username, password) => {

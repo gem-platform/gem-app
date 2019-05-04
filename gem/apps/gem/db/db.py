@@ -39,8 +39,3 @@ def session_scope():
         raise
     finally:
         session.close()
-
-
-fake_db = {
-
-}
