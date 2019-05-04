@@ -55,7 +55,6 @@ Scenario("I see notification when user deleted", () => {
   usersPage.snackbar.contains("User deleted");
 }).tag("@snackbar");
 
-
 Scenario("I see 'Change Password' button for created user", I => {
   usersPage.usersTable.clickEdit("Secretary");
   within(usersPage.editDialog.root, () => {
@@ -116,4 +115,29 @@ Scenario("I see notification on success", () => {
   usersPage.changePasswordDialog.submit("1234567");
   usersPage.snackbar.waitForOpen();
   usersPage.snackbar.contains("Password changed");
-}).tag("@change-password").tag("@snackbar");
+})
+  .tag("@change-password")
+  .tag("@snackbar");
+
+Scenario("I see no error message after fail and reopen", I => {
+  usersPage.usersTable.clickEdit("Secretary");
+  usersPage.editDialog.clickChangePassword();
+  usersPage.changePasswordDialog.waitForOpen();
+  usersPage.changePasswordDialog.submit("123");
+  usersPage.changePasswordDialog.clickCancel();
+  usersPage.editDialog.clickChangePassword();
+  I.dontSee("Should be at least 6 characters long");
+}).tag("@change-password");
+
+Scenario("I see empty password field after reopen", async I => {
+  usersPage.usersTable.clickEdit("Secretary");
+  usersPage.editDialog.clickChangePassword();
+  usersPage.changePasswordDialog.waitForOpen();
+  usersPage.changePasswordDialog.submit("123");
+  usersPage.changePasswordDialog.clickCancel();
+  usersPage.editDialog.clickChangePassword();
+  const value = await I.grabValueFrom(
+    usersPage.changePasswordDialog.fields.password
+  );
+  if (value) throw Error("Password field is not empty");
+}).tag("@change-password");

@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="visible" max-width="400" ref="dialog">
+  <v-dialog v-model="visible" max-width="400" ref="dialog" persistent>
     <v-card data-ref="change-password-dialog">
       <!-- Header -->
       <v-toolbar light color="amber" flat>
@@ -59,7 +59,14 @@
 
 <script lang="ts">
 import { Operation } from "@/lib/operations";
-import { Component, Emit, Model, Prop, Vue } from "vue-property-decorator";
+import {
+  Component,
+  Emit,
+  Model,
+  Prop,
+  Vue,
+  Watch
+} from "vue-property-decorator";
 
 @Component
 export default class ConfirmDialog extends Vue {
@@ -74,6 +81,11 @@ export default class ConfirmDialog extends Vue {
 
   /** Error message. */
   @Prop({ default: "" }) public error!: string;
+
+  @Watch("visible") private onOpen(newValue: boolean) {
+    // cleanup password field before open and close dialog
+    this.password = "";
+  }
 
   private password: string = "";
 
