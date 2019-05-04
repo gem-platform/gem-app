@@ -6,6 +6,7 @@ import Vuetify from "vuetify";
 Vue.use(Vuetify);
 
 describe("LoginForm.vue", () => {
+  document.body.setAttribute("data-app", "true");
   const wrapper = mount(LoginForm);
   const submit = wrapper.find({ ref: "submit" });
 
