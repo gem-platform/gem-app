@@ -51,7 +51,7 @@ def get_user(username: str):
 
 def authenticate_user(username: str, password: str) -> models.User:
     user = get_user(username)
-    return map_model_to_user(user) if user and verify_password(password, user.hashed_password) else False
+    return user if user and verify_password(password, user.hashed_password) else False
 
 
 def create_access_token(*, data: dict, expires_delta: timedelta = None) -> str:
