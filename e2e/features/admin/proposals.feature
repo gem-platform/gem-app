@@ -22,3 +22,8 @@ Feature: Manage proposals
     When I change the title for "Test proposal" to "New proposal"
     Then Proposal "Test proposal" exists
     And Proposal "New proposal" doesn't exist
+
+  @admin @proposal
+  Scenario: Proposal title should be at least 3 characters long
+    When I create the proposal "N"
+    Then I the see error "Should be at least 3 characters long"
