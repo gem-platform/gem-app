@@ -1,1 +1,1 @@
-DATABASE_URI = 'postgresql://gem:1@localhost:5432/gem_db'
+DATABASE_URI = 'postgresql://gem:1@gem-db:5432/gem_db'
