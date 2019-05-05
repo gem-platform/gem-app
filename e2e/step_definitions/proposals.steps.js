@@ -60,7 +60,7 @@ When("I set a title for {string} as {string}", async (title, newTitle) => {
 
   proposal.title = newTitle;
 
-  const url = "/propsals/" + proposal.oid;
+  const url = "/proposals/" + proposal.oid;
   context.response = await I.sendPutRequest(url, proposal, context.headers);
 });
 
@@ -75,5 +75,31 @@ Given("Proposal {string} created", async title => {
     context.proposals[title] = context.response.data;
   } else {
     throw Error("Unable to create proposal");
+  }
+});
+
+/** Lock proposal for modification */
+When("I lock proposal {string} for modification", async title => {
+  const proposal = context.proposals[title];
+  if (!proposal) {
+    throw Error("No proposal found");
+  }
+
+  const url = "/proposals/" + proposal.oid + "/lock";
+  context.response = await I.sendPostRequest(url, {}, context.headers);
+});
+
+/** Check proposal is locked */
+When("Proposal {string} is locked", async title => {
+  const proposal = context.proposals[title];
+  if (!proposal) {
+    throw Error("No proposal found");
+  }
+
+  const url = "/proposals/" + proposal.oid;
+  context.response = await I.sendGetRequest(url, context.headers);
+
+  if (!context.response.data.locked) {
+    throw Error("Proposal " + title + " is not locked");
   }
 });

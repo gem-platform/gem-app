@@ -24,5 +24,6 @@ def client(uclient: TestClient) -> TestClient:
 def proposal() -> dict:
     return {
         "title": "new proposal",
-        "content": "content"
+        "content": "content",
+        "locked": False
     }

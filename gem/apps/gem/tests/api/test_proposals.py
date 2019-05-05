@@ -80,3 +80,27 @@ def test_delete_proposal_404(client: TestClient):
     response = client.delete("/proposals/999")
     assert response.status_code == 404
     assert response.json() == {"detail": "Proposal not found"}
+
+
+def test_fetch_proposal(client: TestClient, proposal):
+    response = client.post("/proposals/", json=proposal)
+    response = client.get("/proposals/1")
+    assert response.status_code == 200
+    assert response.json() == {"oid": 1, **proposal}
+
+# Lock proposal
+
+
+def test_lock_proposal(client: TestClient, proposal):
+    response = client.post("/proposals/", json=proposal)
+    response = client.post("/proposals/1/lock")
+    assert response.status_code == 200
+    assert response.json() == {"status": "ok"}
+
+
+def test_update_locked_proposal(client: TestClient, proposal):
+    response = client.post("/proposals/", json=proposal)
+    response = client.post("/proposals/1/lock")
+    response = client.put("/proposals/1", json=proposal)
+    assert response.status_code == 400
+    assert response.json() == {"detail": "Proposal is locked for modification"}

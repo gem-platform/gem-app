@@ -12,3 +12,6 @@ class Proposal(BaseModel):
         "",
         title="Content"
     )
+    locked: bool = Schema(
+        False,
+        title="Is proposal locked for modification?")

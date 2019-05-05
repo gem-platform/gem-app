@@ -19,3 +19,4 @@ class Proposal(Base):
     id = Column(Integer, primary_key=True)
     title = Column(String(250), nullable=False)
     content = Column(UnicodeText(), nullable=True)
+    locked = Column(Boolean, nullable=False, default=False)

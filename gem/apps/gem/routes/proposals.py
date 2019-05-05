@@ -34,6 +34,9 @@ async def update_proposal(
             id=oid).first()  # type: models.Proposal
         if not proposal_db:
             raise HTTPException(status_code=404, detail="Proposal not found")
+        if proposal_db.locked:
+            raise HTTPException(
+                status_code=400, detail="Proposal is locked for modification")
         proposal_db.title = proposal.title
         proposal_db.content = proposal.content
         return map_model_to_proposal(proposal_db)
@@ -61,3 +64,30 @@ async def fetch_proposals_list(
     with session_scope() as s:
         proposals = s.query(models.Proposal).all()  # type: models.Proposal
         return list(map(lambda p: map_model_to_proposal(p), proposals))
+
+
+@router.get("/{oid}")
+async def fetch_proposal(
+        oid: int,
+        current_user: User = Depends(get_current_active_user)):
+    """Fetch list of proposals"""
+    with session_scope() as s:
+        proposal_db = s.query(models.Proposal).filter_by(
+            id=oid).first()  # type: models.Proposal
+        if not proposal_db:
+            raise HTTPException(status_code=404, detail="Proposal not found")
+        return map_model_to_proposal(proposal_db)
+
+
+@router.post("/{oid}/lock")
+async def lock_proposal(
+        oid: int,
+        current_user: User = Depends(get_current_active_user)):
+    """Create new proposal using specified data."""
+    with session_scope() as s:
+        proposal_db = s.query(models.Proposal).filter_by(
+            id=oid).first()  # type: models.Proposal
+        if not proposal_db:
+            raise HTTPException(status_code=404, detail="Proposal not found")
+        proposal_db.locked = True
+        return {"status": "ok"}

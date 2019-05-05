@@ -28,3 +28,20 @@ Feature: Manage proposals
     When I create the proposal "N"
     Then I see the error "ensure this value has at least 3 characters"
   
+  # Lock proposal
+  # The proposal must be locked for modification in order to be
+  # sure that comments are placed in the same place (in the same paragraph).
+  # If, after the comments have been left, the document is changed,
+  # the position of the comments may become incorrect.
+
+  @admin @proposal @proposal-lock
+  Scenario: Secretary can lock proposal for modification
+    When I lock proposal "Test proposal" for modification
+    Then Proposal "Test proposal" is locked
+  
+  @admin @proposal @proposal-lock
+  Scenario: Unable to edit locked proposal
+    When I lock proposal "Test proposal" for modification
+    Then I set a title for "Test proposal" as "New proposal"
+    And I see the error "Proposal is locked for modification"
+  
