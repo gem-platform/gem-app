@@ -5,7 +5,7 @@
     hide-overlay
     transition="dialog-bottom-transition"
   >
-    <v-card data-ref="edit-user-dialog">
+    <v-card data-ref="edit-dialog">
       <v-toolbar light color="amber" flat>
         <v-btn icon light @click="close" data-ref="close">
           <v-icon>close</v-icon>
@@ -20,7 +20,7 @@
             light
             flat
             @click="save"
-            data-ref="save-user"
+            data-ref="save"
             :loading="isLoading"
             :disabled="!canSave || isLoading"
             >Save</v-btn

@@ -1,13 +1,13 @@
 const I = actor();
 
 module.exports = {
-  root: "[data-ref='edit-user-dialog']",
+  root: "[data-ref='edit-dialog']",
   fields: {
     name: "[aria-label='Name']",
     email: "[aria-label='Email']"
   },
   buttons: {
-    save: "[data-ref='save-user']",
+    save: "[data-ref='save']",
     changePassword: "[data-ref='change-password']"
   },
 

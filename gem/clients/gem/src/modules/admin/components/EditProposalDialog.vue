@@ -14,7 +14,7 @@
     </template>
 
     <v-flex xs12>
-      <v-alert type="info" v-model="isLocked">
+      <v-alert type="info" v-model="isLocked" ref="locked-alert">
         This proposal is locked for modification
       </v-alert>
     </v-flex>
