@@ -22,7 +22,10 @@
         data-ref="proposals-table"
       >
         <template v-slot:items="{ item }">
-          <td @click="proposals.openEditDialog(item)">{{ item.title }}</td>
+          <td @click="proposals.openEditDialog(item)">
+            {{ item.title }}
+            <v-icon small class="mr-2" v-if="item.locked">lock</v-icon>
+          </td>
           <td class="text-xs-right">
             <v-icon
               small
