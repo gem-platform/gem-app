@@ -1,5 +1,6 @@
 import EditProposalDialog from "@/modules/admin/components/EditProposalDialog.vue";
 import { IProposal } from "@/modules/types.ts";
+import CKEditor from "@ckeditor/ckeditor5-vue";
 import { mount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
@@ -7,6 +8,7 @@ import Vuetify from "vuetify";
 import { Operation, OperationState } from "@/lib/operations";
 
 Vue.use(Vuetify);
+Vue.use(CKEditor);
 
 describe("EditProposalDialog.vue", () => {
   const proposal: IProposal = {
