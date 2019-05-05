@@ -22,7 +22,7 @@
             @click="save"
             data-ref="save-user"
             :loading="isLoading"
-            :disabled="isLoading"
+            :disabled="!canSave || isLoading"
             >Save</v-btn
           >
         </v-toolbar-items>
@@ -49,6 +49,7 @@ import { Component, Emit, Model, Prop, Vue } from "vue-property-decorator";
 
 @Component
 export default class EditDialog extends Vue {
+  @Prop({ default: true }) public canSave!: boolean;
   @Prop({ default: false }) public visible!: boolean;
   @Prop({ default: "Edit" }) public title!: string;
   @Prop({ default: false }) public readonly showSuccessAlert!: boolean;

@@ -31,7 +31,7 @@ export default class CrudService<T extends IEntity> {
    * @returns Updated entity.
    */
   public async update(entity: T): Promise<T> {
-    return (await Axios.put(this.url + "/", entity)).data;
+    return (await Axios.put(this.url + "/" + entity.oid, entity)).data;
   }
 
   /**

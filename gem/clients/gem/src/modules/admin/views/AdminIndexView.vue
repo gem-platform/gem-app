@@ -4,6 +4,7 @@
       <v-flex xs12 sm8 md4>
         Admin page
         <router-link to="users" append>Manage users</router-link>
+        <router-link to="proposals" append>Manage proposals</router-link>
       </v-flex>
     </v-layout>
   </v-container>

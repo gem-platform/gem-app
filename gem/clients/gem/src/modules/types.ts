@@ -11,6 +11,14 @@ export interface IUser extends IEntity {
   disabled: boolean;
 }
 
+/** Proposal */
+export interface IProposal extends IEntity {
+  oid: number;
+  title: string;
+  content: string;
+  locked: boolean;
+}
+
 export interface IChangePassword {
   user: IUser;
   password: string;
@@ -23,4 +31,11 @@ export const EmptyUser: IUser = {
   full_name: "",
   oid: -1,
   username: ""
+};
+
+export const EmptyProposal: IProposal = {
+  content: "",
+  locked: false,
+  oid: -1,
+  title: ""
 };

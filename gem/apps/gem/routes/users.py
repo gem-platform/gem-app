@@ -36,13 +36,13 @@ async def create_user(user: User) -> models.User:
         return user
 
 
-@router.put("/")
-async def update_user(user: User):
+@router.put("/{oid}")
+async def update_user(oid: int, user: User):
     with session_scope() as s:
         user_db = s.query(models.User).filter_by(
-            id=user.oid).first()  # type: models.User
+            id=oid).first()  # type: models.User
         if not user_db:
-            return False
+            raise HTTPException(status_code=404, detail="User not found")
         user_db.username = user.username
         user_db.full_name = user.full_name
         user_db.email = user.email
