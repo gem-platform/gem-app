@@ -10,7 +10,6 @@ module.exports = {
   confirmDialog,
   snackbar,
   proposalsTable,
-  changePasswordDialog,
 
   createButton: "[data-ref='create-new']",
 
