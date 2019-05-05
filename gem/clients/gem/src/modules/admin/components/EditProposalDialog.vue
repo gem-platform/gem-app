@@ -43,6 +43,7 @@ import { IProposal } from "@/modules/types.ts";
 import { Component, Emit, Model, Prop, Vue } from "vue-property-decorator";
 import { EmptyProposal } from "../../types";
 
+// @ts-ignore
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 import EditDialog from "./EditDialog.vue";

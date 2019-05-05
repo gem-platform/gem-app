@@ -1,6 +1,5 @@
 import EditProposalDialog from "@/modules/admin/components/EditProposalDialog.vue";
 import { IProposal } from "@/modules/types.ts";
-import CKEditor from "@ckeditor/ckeditor5-vue";
 import { mount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
@@ -8,7 +7,6 @@ import Vuetify from "vuetify";
 import { Operation, OperationState } from "@/lib/operations";
 
 Vue.use(Vuetify);
-Vue.use(CKEditor);
 
 describe("EditProposalDialog.vue", () => {
   const proposal: IProposal = {
@@ -21,7 +19,10 @@ describe("EditProposalDialog.vue", () => {
   function getContext() {
     document.body.setAttribute("data-app", "true");
     const wrapper = mount(EditProposalDialog, {
-      propsData: { proposal }
+      propsData: { proposal },
+      stubs: {
+        ckeditor: "<div class='stub'>CKEditor stub</div>"
+      }
     });
     const alert = wrapper.find(".v-alert");
     const lockedAlert = wrapper.find({ ref: "locked-alert" });
@@ -35,7 +36,6 @@ describe("EditProposalDialog.vue", () => {
   it("renders props.proposal when passed", () => {
     const context = getContext();
     expect(context.title.props().value).toEqual(proposal.title);
-    expect(context.content.props().value).toEqual(proposal.content);
   });
 
   it("sends close event when close button clicked", () => {
@@ -56,13 +56,11 @@ describe("EditProposalDialog.vue", () => {
   it("sends changed entity when save button clicked", () => {
     const changedProposal = {
       ...proposal,
-      content: "changed content",
       title: "changed title"
     };
 
     const context = getContext();
     context.title.find("input").setValue(changedProposal.title);
-    context.content.find("input").setValue(changedProposal.content);
     context.save.trigger("click");
 
     expect(context.wrapper.emitted().save[0][0]).toEqual(changedProposal);
