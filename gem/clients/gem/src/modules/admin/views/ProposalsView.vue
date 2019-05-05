@@ -123,7 +123,7 @@ export default class AdminProposalsView extends Vue {
     const res = await ProposalsStore.delete(proposal);
     AdminStore.openSnackbar({
       color: res ? "success" : "error",
-      message: res ? "User deleted" : "Unable to delete user"
+      message: res ? "Proposal deleted" : "Unable to delete proposal"
     });
   }
 

@@ -22,7 +22,7 @@ module.exports = {
     I.waitForVisible(this.editDialog.root);
   },
 
-  createUser(title, waitForClose = true) {
+  createProposal(title, waitForClose = true) {
     this.clickCreateProposal();
     within(this.editDialog.root, () => {
       this.editDialog.submit(title);
