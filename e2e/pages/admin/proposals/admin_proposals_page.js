@@ -1,8 +1,7 @@
 const I = actor();
 
-const editDialog = require("./edit_user_dialog");
-const usersTable = require("./admin_users_table");
-const changePasswordDialog = require("./change_password_dialog");
+const editDialog = require("./edit_proposal_dialog");
+const proposalsTable = require("./admin_proposals_table");
 const confirmDialog = require("../confirm_dialog");
 const snackbar = require("../snackbar");
 
@@ -10,24 +9,24 @@ module.exports = {
   editDialog,
   confirmDialog,
   snackbar,
-  usersTable,
+  proposalsTable,
   changePasswordDialog,
 
   createButton: "[data-ref='create-new']",
 
   open() {
-    I.amOnPage("/admin/users");
+    I.amOnPage("/admin/proposals");
   },
 
-  clickCreateUser() {
+  clickCreateProposal() {
     I.click(this.createButton);
     I.waitForVisible(this.editDialog.root);
   },
 
-  createUser(username, waitForClose = true) {
-    this.clickCreateUser();
+  createUser(title, waitForClose = true) {
+    this.clickCreateProposal();
     within(this.editDialog.root, () => {
-      this.editDialog.submit(username);
+      this.editDialog.submit(title);
     });
     if (waitForClose) {
       I.waitForInvisible(this.editDialog.root);

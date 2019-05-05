@@ -29,14 +29,14 @@
               class="mr-2"
               @click="proposals.openEditDialog(item)"
               data-ref="edit-proposal"
-              :data-ref-name="item.title"
+              :data-ref-title="item.title"
               >edit</v-icon
             >
             <v-icon
               small
               @click="onDeleteClicked(item)"
               data-ref="delete-proposal"
-              :data-ref-name="item.title"
+              :data-ref-title="item.title"
               >delete</v-icon
             >
           </td>
