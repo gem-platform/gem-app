@@ -202,7 +202,10 @@ export default class ProposalsStoreModule extends VuexModule {
   }
 
   @Mutation private lockSucceeded(proposal: IProposal) {
-    proposal.locked = true;
+    const original = this.proposals.find(x => x.oid === proposal.oid);
+    if (original) {
+      original.locked = true;
+    }
     this.operations.lock.succeed();
   }
 
