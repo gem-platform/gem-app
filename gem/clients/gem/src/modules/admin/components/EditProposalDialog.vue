@@ -28,12 +28,11 @@
       />
     </v-flex>
     <v-flex xs12>
-      <v-text-field
+      <ckeditor
+        :editor="editor.editor"
         v-model="proposal.content"
-        label="Content"
-        ref="content"
-        required
-      />
+        :config="editor.editorConfig"
+      ></ckeditor>
     </v-flex>
   </edit-dialog>
 </template>
@@ -43,13 +42,30 @@ import { Operation } from "@/lib/operations";
 import { IProposal } from "@/modules/types.ts";
 import { Component, Emit, Model, Prop, Vue } from "vue-property-decorator";
 import { EmptyProposal } from "../../types";
+
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+
 import EditDialog from "./EditDialog.vue";
 
-@Component({ components: { EditDialog } })
+@Component({
+  components: {
+    EditDialog
+  }
+})
 export default class EditUserDialog extends Vue {
   @Prop({ default: () => EmptyProposal }) public readonly proposal!: IProposal;
   @Prop({ default: false }) public visible!: boolean;
   @Prop({}) public readonly operation!: Operation;
+
+  private get editor() {
+    return {
+      editor: ClassicEditor,
+      editorData: "<p>Content of the editor.</p>",
+      editorConfig: {
+        // The configuration of the editor.
+      }
+    };
+  }
 
   @Emit() private close() {
     return;
