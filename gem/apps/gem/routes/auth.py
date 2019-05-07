@@ -21,6 +21,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 router = APIRouter()
 
+
 class Token(BaseModel):
     access_token: str
     token_type: str
@@ -62,13 +63,12 @@ def create_access_token(*, data: dict, expires_delta: timedelta = None) -> str:
     return encoded_jwt
 
 
-async def get_current_user(token: str = Security(oauth2_scheme)) -> models.User:
+async def get_current_user(token: str = Depends(oauth2_scheme)) -> models.User:
     try:
         payload = decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         token_data = TokenPayload(**payload)
     except PyJWTError:
-        raise HTTPException(status_code=HTTP_403_FORBIDDEN,
-                            detail="Could not validate credentials")
+        raise HTTPException(status_code=HTTP_403_FORBIDDEN, detail="Could not validate credentials")
     user = get_user(username=token_data.username)
     return map_model_to_user(user) if user else None
 
@@ -87,8 +87,7 @@ async def route_login_access_token(form_data: OAuth2PasswordRequestForm = Depend
     if not user:
         raise HTTPException(status_code=400, detail="Incorrect email or password")
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(
-        data={"username": user.username}, expires_delta=access_token_expires)
+    access_token = create_access_token(data={"username": user.username}, expires_delta=access_token_expires)
     return {"access_token": access_token, "token_type": "bearer"}
 
 

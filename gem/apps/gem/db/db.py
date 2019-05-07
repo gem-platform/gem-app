@@ -18,7 +18,6 @@ def recreate_db():
 def add_default_user():
     with session_scope() as s:
         user = User(
-            id=0,
             username='Secretary',
             full_name='Secretary',
             email='johndoe@example.com',
