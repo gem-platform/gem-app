@@ -63,7 +63,7 @@ async def fetch_proposals_list(
     """Fetch list of proposals"""
     with session_scope() as s:
         proposals = s.query(models.Proposal).all()  # type: models.Proposal
-        return list(map(lambda p: map_model_to_proposal(p), proposals))
+        return list(map(map_model_to_proposal, proposals))
 
 
 @router.get("/{oid}")
