@@ -52,17 +52,3 @@ Scenario("I see notification when proposal deleted", () => {
   proposalsPage.snackbar.waitForOpen();
   proposalsPage.snackbar.contains("Proposal deleted");
 }).tag("@proposal").tag("@snackbar");
-
-Scenario("I see 'Lock' button for created proposal", I => {
-  proposalsPage.proposalsTable.clickEdit("Proposal");
-  within(proposalsPage.editDialog.root, () => {
-    I.see("LOCK");
-  });
-}).tag("@proposal").tag("@proposal-lock");
-
-Scenario("I don't see 'Lock' button for new proposal", I => {
-  proposalsPage.clickCreateProposal();
-  within(proposalsPage.editDialog.root, () => {
-    I.dontSee("LOCK");
-  });
-}).tag("@proposal").tag("@proposal-lock");

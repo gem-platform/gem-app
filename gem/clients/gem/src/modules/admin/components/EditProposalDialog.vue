@@ -8,7 +8,13 @@
     @save="save"
   >
     <template v-if="!isNew" #actions>
-      <v-btn light flat @click="onLockClicked" data-ref="lock" v-if="!isLocked">
+      <v-btn
+        light
+        flat
+        @click="onLockClicked"
+        data-ref="lock"
+        v-if="!isLocked && canLock"
+      >
         Lock
       </v-btn>
     </template>
@@ -31,7 +37,7 @@
       <ckeditor
         :editor="editor.editor"
         v-model="proposal.content"
-        :config="editor.editorConfig"
+        :config="editor.config"
       ></ckeditor>
     </v-flex>
   </edit-dialog>
@@ -60,11 +66,8 @@ export default class EditUserDialog extends Vue {
 
   private get editor() {
     return {
-      editor: ClassicEditor,
-      editorData: "<p>Content of the editor.</p>",
-      editorConfig: {
-        // The configuration of the editor.
-      }
+      config: {},
+      editor: ClassicEditor
     };
   }
 
@@ -86,6 +89,11 @@ export default class EditUserDialog extends Vue {
 
   get isLocked(): boolean {
     return this.proposal.locked;
+  }
+
+  get canLock(): boolean {
+    // For future usage
+    return false;
   }
 }
 </script>
