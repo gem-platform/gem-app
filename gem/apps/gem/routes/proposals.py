@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
-from pydantic import BaseModel, Schema, validator
+from pydantic import BaseModel, Schema
 
 from api.proposal import Proposal
 from api.user import User
