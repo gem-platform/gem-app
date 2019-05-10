@@ -6,7 +6,7 @@ RUN apk --no-cache add alpine-sdk gcc libffi-dev python3-dev postgresql-dev && \
 
 # Install app
 COPY . /app
-RUN pipenv install --system
+RUN pipenv install --system --dev
 COPY prestart.sh /app/prestart.sh
 ENV PORT=9000
 
