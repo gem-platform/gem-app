@@ -17,6 +17,9 @@ npm-debug.log*
 .idea
 gem/apps/gem/routes/*.http
 
+# VS Code
+.vscode
+
 # Any persistent data like:
 # db, ssl keys, media files
 .data
