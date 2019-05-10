@@ -21,17 +21,17 @@ When("I delete the proposal {string}", title => {
   if (!proposal) {
     throw Error("No proposal found");
   }
-  I.sendDeleteRequest("/proposal/" + proposal.oid, context.headers);
+  I.sendDeleteRequest("/proposals/" + proposal.oid, context.headers);
 });
 
 Then("Proposal {string} exists", async title => {
   context.response = await I.sendGetRequest("/proposals/", context.headers);
   if (context.response.status === 200) {
     const proposals = context.response.data.filter(x => x.title == title);
-    if (proposals.lenght <= 0) {
+    if (proposals.length <= 0) {
       throw Error("No one proposal with title '" + title + "' found ");
     }
-    if (proposals.lenght > 1) {
+    if (proposals.length > 1) {
       throw Error("Too many proposals with title '" + title + "' found");
     }
   } else {
@@ -42,8 +42,8 @@ Then("Proposal {string} exists", async title => {
 Then("Proposal {string} doesn't exist", async title => {
   context.response = await I.sendGetRequest("/proposals/", context.headers);
   if (context.response.status === 200) {
-    const proposals = context.response.data.filter(x => x.title == title);
-    if (proposals.lenght > 0) {
+    const proposals = context.response.data.filter(x => x.title === title);
+    if (proposals.length > 0) {
       throw Error("Proposal '" + title + "' still exists");
     }
   } else {

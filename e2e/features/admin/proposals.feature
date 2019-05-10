@@ -9,8 +9,8 @@ Feature: Manage proposals
 
   @admin @proposal
   Scenario: Secretary can create a new proposal
-    When I create the proposal "Test proposal"
-    Then Proposal "Test proposal" exists
+    When I create the proposal "New proposal"
+    Then Proposal "New proposal" exists
 
   @admin @proposal
   Scenario: Secretary can delete proposal
@@ -20,8 +20,8 @@ Feature: Manage proposals
   @admin @proposal
   Scenario: Secretary can edit proposal
     When I set a title for "Test proposal" as "New proposal"
-    Then Proposal "Test proposal" exists
-    And Proposal "New proposal" doesn't exist
+    Then Proposal "Test proposal" doesn't exist
+    And Proposal "New proposal" exists
 
   @admin @proposal
   Scenario: Proposal title should be at least 3 characters long

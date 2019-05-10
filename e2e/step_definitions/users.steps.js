@@ -24,10 +24,10 @@ When("I delete user {string}", username => {
 Then("User {string} exists", async username => {
   const res = (await I.sendGetRequest("/users/")).data;
   const users = res.filter(x => x.username == username);
-  if (users.lenght <= 0) {
+  if (users.length <= 0) {
     throw Error("No one user found");
   }
-  if (users.lenght > 1) {
+  if (users.length > 1) {
     throw Error("Too many users found");
   }
 });
@@ -35,7 +35,7 @@ Then("User {string} exists", async username => {
 Then("User {string} doesn't exist", async username => {
   const res = (await I.sendGetRequest("/users/")).data;
   const users = res.filter(x => x.username == username);
-  if (users.lenght > 0) {
+  if (users.length > 0) {
     throw Error("User still exists");
   }
 });
