@@ -17,6 +17,7 @@ bcrypt = "*"
 email-validator = "*"
 sqlalchemy = "*"
 psycopg2 = "*"
+alembic = "*"
 
 [requires]
 python_version = "3.7"
