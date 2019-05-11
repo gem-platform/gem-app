@@ -18,6 +18,7 @@ describe("EditUserDialog.vue", () => {
   };
 
   function getContext() {
+    document.body.setAttribute("data-app", "true");
     const wrapper = mount(EditUserDialog, {
       propsData: { user }
     });

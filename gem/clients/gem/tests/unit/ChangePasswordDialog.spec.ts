@@ -7,7 +7,9 @@ Vue.use(Vuetify);
 
 describe("ChangePasswordDialog.vue", () => {
   function getContext() {
+    document.body.setAttribute("data-app", "true");
     const wrapper = mount(ChangePasswordDialog);
+
     return {
       cancel: wrapper.find({ ref: "cancel" }),
       confirm: wrapper.find({ ref: "confirm" }),

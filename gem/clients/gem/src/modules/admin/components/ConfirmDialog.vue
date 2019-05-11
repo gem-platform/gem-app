@@ -5,15 +5,13 @@
     ref="dialog"
     data-ref="confirm-dialog"
   >
-    <v-card>
+    <v-card ref="card">
       <!-- Header -->
       <v-card-title class="headline">{{ title }}</v-card-title>
 
       <!-- Content -->
       <v-card-text>
-        <slot :data="data">
-          Would you like to delete this?
-        </slot>
+        <slot :data="data">Would you like to do this?</slot>
       </v-card-text>
 
       <!-- Actions -->
@@ -21,9 +19,7 @@
         <v-spacer></v-spacer>
 
         <!-- Cancel operation button -->
-        <v-btn flat v-if="canCancel" @click="cancel" ref="cancel">
-          Cancel
-        </v-btn>
+        <v-btn flat v-if="canCancel" @click="cancel" ref="cancel">Cancel</v-btn>
 
         <!-- Delete operation button -->
         <v-btn
@@ -34,9 +30,8 @@
           :disabled="busy"
           @click="confirm"
           data-ref="confirm"
+          >{{ action }}</v-btn
         >
-          {{ action }}
-        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
