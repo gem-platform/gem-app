@@ -4,7 +4,8 @@ from db import session_scope, models
 from passlib.context import CryptContext
 from mappers.user import map_model_to_user, map_user_to_model
 from api.user import User
-from auth.role import auth_req
+from auth.role import RoleChecker
+from auth.const import ADMIN
 
 from .auth import get_current_active_user
 
@@ -60,7 +61,7 @@ async def delete_user(oid: int):
 
 
 @router.get("/")
-async def fetch_users_list():
+async def fetch_users_list(is_permited: bool = Depends(RoleChecker(role=ADMIN))):
     with session_scope() as s:
         users = s.query(models.User).all()  # type: [models.User]
         user_list = []

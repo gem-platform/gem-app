@@ -1,17 +1,17 @@
-from typing import List
+from typing import List, Set
 
-ADMIN = 1
-GUEST = 2
-GBC = 3
-Secretary = 4
+from fastapi import Depends
+from routes import auth
+from db import session_scope, models, User
 
-#
-# def auth_req(roles : List[str]=[], permissions : List[str]=[]):
-#     def decorator(func):
-#         def wrapper(*args, **kwargs):
-#             result = func(*args, **kwargs)
-#             return result
-#         return wrapper
-#     return decorator
+class RoleChecker:
+    def __init__(self, role: int, permissions=["all"]):
+        self.role = role
+        self.permissions = permissions
 
-#@auth_req(roles=["admin"], permissions=["all"])
+    def __call__(self, user : User = Depends(auth.get_current_active_user)):
+        with session_scope() as s:
+            role = s.query(models.Role).filter_by(id=user.role_id).first()  # type: models.Role
+            if role.id == self.role:
+                return True
+        return False

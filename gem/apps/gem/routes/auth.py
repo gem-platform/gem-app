@@ -71,16 +71,22 @@ async def get_current_user(token: str = Depends(oauth2_scheme)) -> models.User:
     except PyJWTError:
         raise HTTPException(status_code=HTTP_403_FORBIDDEN, detail="Could not validate credentials")
     user = get_user(username=token_data.username)
-    return map_model_to_user(user) if user else None
+    return user if user else None
 
 
-async def get_current_active_user(current_user: User = Depends(get_current_user)):
+async def get_current_active_user(current_user: models.User = Depends(get_current_user)):
     if not current_user:
         raise HTTPException(status_code=401, detail="Not authenticated")
     if current_user.disabled:
         raise HTTPException(status_code=400, detail="Inactive user")
     return current_user
 
+async def is_l(current_user: models.User = Depends(get_current_user)):
+    if not current_user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    if current_user.disabled:
+        raise HTTPException(status_code=400, detail="Inactive user")
+    return current_user
 
 @router.post("/token", response_model=Token)
 async def route_login_access_token(form_data: OAuth2PasswordRequestForm = Depends()):

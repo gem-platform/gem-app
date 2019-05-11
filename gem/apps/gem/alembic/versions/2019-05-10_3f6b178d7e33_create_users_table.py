@@ -25,7 +25,8 @@ def upgrade():
         sa.Column('full_name', String(250), nullable=True),
         sa.Column('email', String(50), nullable=False),
         sa.Column('hashed_password', String(100), nullable=False),
-        sa.Column('disabled', Boolean, nullable=False)
+        sa.Column('disabled', Boolean, nullable=False),
+        sa.Column('role_id', Integer, nullable=False)
     )
 
 
