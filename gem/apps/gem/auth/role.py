@@ -5,6 +5,7 @@ GUEST = 2
 GBC = 3
 Secretary = 4
 
+#
 # def auth_req(roles : List[str]=[], permissions : List[str]=[]):
 #     def decorator(func):
 #         def wrapper(*args, **kwargs):
