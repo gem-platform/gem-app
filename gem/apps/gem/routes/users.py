@@ -4,6 +4,7 @@ from db import session_scope, models
 from passlib.context import CryptContext
 from mappers.user import map_model_to_user, map_user_to_model
 from api.user import User
+from auth.role import auth_req
 
 from .auth import get_current_active_user
 
@@ -12,10 +13,7 @@ router = APIRouter()
 
 
 class ChangePassword(BaseModel):
-    password: str = Schema(
-        "",
-        title="Password"
-    )
+    password: str = Schema("", title="Password")
 
     @validator('password')
     def should_be_at_least_6_chars_long(cls, v: str):
@@ -39,8 +37,7 @@ async def create_user(user: User) -> models.User:
 @router.put("/")
 async def update_user(user: User):
     with session_scope() as s:
-        user_db = s.query(models.User).filter_by(
-            id=user.oid).first()  # type: models.User
+        user_db = s.query(models.User).filter_by(id=user.oid).first()  # type: models.User
         if not user_db:
             return False
         user_db.username = user.username
@@ -54,8 +51,7 @@ async def update_user(user: User):
 @router.delete("/{oid}")
 async def delete_user(oid: int):
     with session_scope() as s:
-        user_db = s.query(models.User).filter_by(
-            id=oid).first()  # type: models.User
+        user_db = s.query(models.User).filter_by(id=oid).first()  # type: models.User
         if not user_db:
             return False
         s.delete(user_db)
@@ -66,7 +62,7 @@ async def delete_user(oid: int):
 @router.get("/")
 async def fetch_users_list():
     with session_scope() as s:
-        users = s.query(models.User).all()  # type: models.User
+        users = s.query(models.User).all()  # type: [models.User]
         user_list = []
         for user in users:
             user_list.append(map_model_to_user(user))
@@ -78,8 +74,7 @@ async def change_password(
         oid: int, change: ChangePassword,
         current_user: User = Depends(get_current_active_user)):
     with session_scope() as s:
-        user_db = s.query(models.User).filter_by(
-            id=oid).first()  # type: models.User
+        user_db = s.query(models.User).filter_by(id=oid).first()  # type: models.User
         if not user_db:
             raise HTTPException(status_code=404, detail="User not found")
         user_db.hashed_password = pwd_context.hash(change.password)
