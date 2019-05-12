@@ -4,6 +4,7 @@ from fastapi import Depends
 from routes import auth
 from db.models import User
 
+# Checking user role
 class RoleChecker:
     def __init__(self, role: int, permissions=["all"]):
         self.role = role
