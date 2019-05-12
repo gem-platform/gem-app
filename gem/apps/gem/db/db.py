@@ -5,9 +5,10 @@ from sqlalchemy.orm import sessionmaker
 from .config import DATABASE_URI
 from .models import Base, User, Role
 from auth.const import ADMIN, Secretary, GBC, GUEST
+from starlette.requests import Request
 
 engine = create_engine(DATABASE_URI)
-Session = sessionmaker(bind=engine)
+SessionLocal = sessionmaker(bind=engine)
 
 
 def recreate_db():
@@ -67,9 +68,13 @@ def add_default_user():
         s.add(user)
 
 
+# Dependency
+def get_db(request: Request):
+    return request.state.db
+
 @contextmanager
 def session_scope():
-    session = Session()
+    session = SessionLocal()
     try:
         yield session
         session.commit()

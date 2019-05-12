@@ -1,17 +1,16 @@
-
+from sqlalchemy.orm import Session
 from starlette.middleware.cors import CORSMiddleware
 from datetime import datetime, timedelta
-
 from fastapi import Depends, FastAPI, HTTPException, Security, APIRouter
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jwt import PyJWTError, encode, decode
 from passlib.context import CryptContext
 from pydantic import BaseModel
+from starlette.requests import Request
 from starlette.status import HTTP_403_FORBIDDEN
-from db import session_scope, models
+from db import models, get_db
 
 from api.user import User
-from mappers.user import map_model_to_user
 
 # to get a string like this run:
 # openssl rand -hex 32
@@ -44,15 +43,14 @@ def get_password_hash(password):
     return pwd_context.hash(password)
 
 
-def get_user(username: str):
-    with session_scope() as s:
-        s.expire_on_commit = False
-        user = s.query(models.User).filter_by(username=username).first()
-        return user
+def get_user(s: Session, username: str):
+    s.expire_on_commit = False
+    user = s.query(models.User).filter_by(username=username).first()
+    return user
 
 
-def authenticate_user(username: str, password: str) -> models.User:
-    user = get_user(username)
+def authenticate_user(s: Session, username: str, password: str) -> models.User:
+    user = get_user(s, username)
     return user if user and verify_password(password, user.hashed_password) else False
 
 
@@ -64,13 +62,13 @@ def create_access_token(*, data: dict, expires_delta: timedelta = None) -> str:
     return encoded_jwt
 
 
-async def get_current_user(token: str = Depends(oauth2_scheme)) -> models.User:
+async def get_current_user(token: str = Depends(oauth2_scheme), s: Session = Depends(get_db)) -> models.User:
     try:
         payload = decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         token_data = TokenPayload(**payload)
     except PyJWTError:
         raise HTTPException(status_code=HTTP_403_FORBIDDEN, detail="Could not validate credentials")
-    user = get_user(username=token_data.username)
+    user = get_user(s, username=token_data.username)
     return user if user else None
 
 
@@ -81,16 +79,10 @@ async def get_current_active_user(current_user: models.User = Depends(get_curren
         raise HTTPException(status_code=400, detail="Inactive user")
     return current_user
 
-async def is_l(current_user: models.User = Depends(get_current_user)):
-    if not current_user:
-        raise HTTPException(status_code=401, detail="Not authenticated")
-    if current_user.disabled:
-        raise HTTPException(status_code=400, detail="Inactive user")
-    return current_user
-
 @router.post("/token", response_model=Token)
-async def route_login_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
-    user = authenticate_user(form_data.username, form_data.password)
+async def route_login_access_token(form_data: OAuth2PasswordRequestForm = Depends(),
+                                   s: Session = Depends(get_db)):
+    user = authenticate_user(s, form_data.username, form_data.password)
     if not user:
         raise HTTPException(status_code=400, detail="Incorrect email or password")
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
