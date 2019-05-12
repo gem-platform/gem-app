@@ -23,3 +23,6 @@ gem/apps/gem/routes/*.http
 # Any persistent data like:
 # db, ssl keys, media files
 .data
+
+#env folders
+venv/

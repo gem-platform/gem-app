@@ -1,5 +1,3 @@
-from typing import List, Set
-
 from fastapi import Depends
 from routes import auth
 from db.models import User
