@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from .config import DATABASE_URI
 from .models import Base, User, Role
-from auth.const import ADMIN, Secretary, GBC, GUEST
+from auth.const import ADMIN, SECRETARY, GBC, GUEST
 from starlette.requests import Request
 
 engine = create_engine(DATABASE_URI)
@@ -35,7 +35,7 @@ def add_default_roles():
         role = Role(
             name='secretary',
             permissions={"user_list": 1, "user_create": 1, "user_edit": 1},
-            rid=Secretary,
+            rid=SECRETARY,
         )
         s.add(role)
         role = Role(

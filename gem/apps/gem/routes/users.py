@@ -5,7 +5,7 @@ from passlib.context import CryptContext
 from mappers.user import map_model_to_user, map_user_to_model
 from api.user import User
 from auth.role import RoleChecker
-from auth.const import ADMIN
+from auth.const import ADMIN, SECRETARY
 from sqlalchemy.orm import Session
 from starlette.status import HTTP_403_FORBIDDEN
 
@@ -61,9 +61,6 @@ async def delete_user(oid: int, s: Session = Depends(get_db)):
 async def fetch_users_list(
         is_permitted: bool = Depends(RoleChecker(role=ADMIN)),
         s: Session = Depends(get_db)):
-    #Temprory set 404 as on 403 it log out
-    if not is_permitted:
-        raise HTTPException(status_code=404, detail="Access Denied")
     users = s.query(models.User).all()  # type: [models.User]
     user_list = []
     for user in users:

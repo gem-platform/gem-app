@@ -30,5 +30,5 @@ create table "user"
 alter table "user"
     owner to gem;
 
-INSERT INTO public."user" (id, username, full_name, email, hashed_password, disabled, role_id) VALUES (1, 'Admin', 'Admin', 'admin@example.com', '$2b$12$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW', false, 1);
-INSERT INTO public."user" (id, username, full_name, email, hashed_password, disabled, role_id) VALUES (2, 'Secretary', 'Secretary', 'secretary@example.com', '$2b$12$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW', false, 2);
+INSERT INTO public."user" (id, username, full_name, email, hashed_password, disabled, role_id) VALUES (1, 'admin', 'Admin', 'admin@example.com', '$2b$12$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW', false, 1);
+INSERT INTO public."user" (id, username, full_name, email, hashed_password, disabled, role_id) VALUES (2, 'secretary', 'John Smith', 'secretary@example.com', '$2b$12$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW', false, 2);
