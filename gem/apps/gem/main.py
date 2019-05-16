@@ -2,7 +2,7 @@ from uvicorn import run
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
-from routes import debug, auth, users, proposals, reviews
+from routes import debug, auth, users, proposals, events
 
 
 app = FastAPI(
@@ -13,7 +13,7 @@ app.include_router(debug.router, prefix="/debug", tags=["debug"])
 app.include_router(auth.router, prefix="/auth", tags=["auth"])
 app.include_router(users.router, prefix="/users", tags=["users"])
 app.include_router(proposals.router, prefix="/proposals", tags=["proposals"])
-app.include_router(reviews.router, prefix="/reviews", tags=["reviews"])
+app.include_router(events.router, prefix="/events", tags=["events"])
 
 app.add_middleware(CORSMiddleware,
                    allow_origins=['*'],

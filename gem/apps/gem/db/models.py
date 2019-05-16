@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, UnicodeText, ForeignKey
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, UnicodeText, ForeignKey, Table
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -15,12 +15,20 @@ class User(Base):
     disabled = Column(Boolean, nullable=False)
 
 
+event_proposals = Table(
+    'event_proposal', Base.metadata,
+    Column('event_id', Integer, ForeignKey('event.id')),
+    Column('proposal_id', Integer, ForeignKey('proposal.id'))
+)
+
+
 class Proposal(Base):
     __tablename__ = "proposal"
     id = Column(Integer, primary_key=True)
     title = Column(String(250), nullable=False)
     content = Column(UnicodeText(), nullable=True)
     locked = Column(Boolean, nullable=False, default=False)
+    events = relationship("Event", secondary=event_proposals)
 
 
 class Event(Base):
@@ -28,32 +36,7 @@ class Event(Base):
     id = Column(Integer, primary_key=True)
     type = Column(String(50))
     title = Column(String(128))
-    start = Column(DateTime())
-    end = Column(DateTime())
-
-    __mapper_args__ = {
-        "polymorphic_identity": "event",
-        "polymorphic_on": type
-    }
-
-
-class Meeting(Event):
-    __tablename__ = "meeting"
-    id = Column(Integer, ForeignKey("event.id"), primary_key=True)
     agenda = Column(UnicodeText())
-
-    __mapper_args__ = {
-        "polymorphic_identity": "meeting",
-    }
-
-
-class Review(Event):
-    __tablename__ = "review"
-    id = Column(Integer, ForeignKey("event.id"), primary_key=True)
-
-    proposal_id = Column(Integer, ForeignKey("proposal.id"))
-    proposal = relationship("Proposal")
-
-    __mapper_args__ = {
-        "polymorphic_identity": "review",
-    }
+    start = Column(DateTime(timezone=True))
+    end = Column(DateTime(timezone=True))
+    proposals = relationship("Proposal", secondary=event_proposals)

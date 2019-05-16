@@ -22,26 +22,20 @@ def upgrade():
         sa.Column("id", sa.Integer, primary_key=True),
         sa.Column("type", sa.String(50)),
         sa.Column("title", sa.String(128)),
-        sa.Column("start", sa.DateTime()),
-        sa.Column("end", sa.DateTime())
+        sa.Column("agenda", sa.UnicodeText()),
+        sa.Column("start", sa.DateTime(timezone=True)),
+        sa.Column("end", sa.DateTime(timezone=True))
     )
 
     op.create_table(
-        'meeting',
-        sa.Column("id", sa.Integer, sa.ForeignKey(
+        'event_proposal',
+        sa.Column("evnet_id", sa.Integer, sa.ForeignKey(
             "event.id"), primary_key=True),
-        sa.Column("agenda", sa.UnicodeText())
-    )
-
-    op.create_table(
-        'review',
-        sa.Column("id", sa.Integer, sa.ForeignKey(
-            "event.id"), primary_key=True),
-        sa.Column("proposal_id", sa.Integer, sa.ForeignKey("proposal.id"))
+        sa.Column("proposal_id", sa.Integer, sa.ForeignKey(
+            "proposal.id"), primary_key=True)
     )
 
 
 def downgrade():
-    op.drop_table('review')
-    op.drop_table('meeting')
     op.drop_table('event')
+    op.drop_table('event_proposal')

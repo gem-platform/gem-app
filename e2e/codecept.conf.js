@@ -30,6 +30,7 @@ exports.config = {
       "./step_definitions/users.steps.js",
       "./step_definitions/common.steps.js",
       "./step_definitions/proposals.steps.js",
+      "./step_definitions/events.steps.js",
       "./step_definitions/reviews.steps.js"
     ]
   },

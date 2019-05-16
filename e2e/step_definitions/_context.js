@@ -3,7 +3,7 @@ const context = {
   token: "",
   users: {},
   proposals: {},
-  reviews: {},
+  events: {},
   response: "",
   headers: {}
 };

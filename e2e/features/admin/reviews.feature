@@ -8,28 +8,23 @@ Feature: Manage proposal reviews
     And Proposal "Test proposal" created
     And Review "Review" for "Test proposal" created
 
-  @review
+  @event @review
   Scenario: Secretary can create a review
     When I create a review "New review" for "Test proposal"
-    Then Review "New review" exists
+    Then Event "New review" exists
 
-  @review
+  @event @review
   Scenario: Secretary can delete review
-    When I delete the review "Review"
-    Then Review "Review" doesn't exist
+    When I delete the event "Review"
+    Then Event "Review" doesn't exist
   
-  @review
-  Scenario: Secretary can change the start date for review
-    When I set the start date for "Review" as "2012/12/12"
+  @event @review
+  Scenario: Secretary can change the period for review
+    When I set period for "Review" from "2012/12/12" to "2013/12/12"
     Then Start date for "Review" is "2012/12/12"
+    And End date for "Review" is "2013/12/12"
 
-  @review
-  Scenario: Secretary can change the end date for review
-    When I set the end date for "Review" as "2012/12/12"
-    Then End date for "Review" is "2012/12/12"
-
-  @review
+  @event @review
   Scenario: Start date should be less than the end date
-    When I set the end date for "Review" as "2012/12/12"
-    And I set the start date for "Review" as "3012/12/12"
+    When I set period for "Review" from "2019/12/12" to "2013/12/12"
     Then I see the error "End date should be greater than the start date"
