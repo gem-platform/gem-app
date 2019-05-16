@@ -1,3 +1,4 @@
+from datetime import datetime, timezone
 from starlette.testclient import TestClient
 from pytest import fixture
 from main import app
@@ -26,4 +27,16 @@ def proposal() -> dict:
         "title": "new proposal",
         "content": "content",
         "locked": False
+    }
+
+
+@fixture
+def event() -> dict:
+    return {
+        "title": "new event",
+        "agenda": "agenda",
+        "type": "event",
+        "start": datetime.now(tz=timezone.utc).isoformat(),
+        "end": datetime.now(tz=timezone.utc).isoformat(),
+        "proposals": []
     }
