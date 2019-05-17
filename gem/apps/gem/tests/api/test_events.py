@@ -90,6 +90,12 @@ def test_fetch_event(client: TestClient, event):
     assert response.json() == {"oid": 1, **event}
 
 
+def test_fetch_event_404(client: TestClient):
+    response = client.get("/events/999")
+    assert response.status_code == 404
+    assert response.json() == {"detail": "Event not found"}
+
+
 def test_set_wrong_period(client: TestClient, event):
     event["start"] = (datetime.now(tz=timezone.utc) +
                       timedelta(days=1)).isoformat()
@@ -97,3 +103,20 @@ def test_set_wrong_period(client: TestClient, event):
     assert response.status_code == 422
     assert response.json()["detail"][0]["msg"] ==\
         "End date should be greater than the start date"
+
+
+def test_set_proposal(client: TestClient, event, proposal):
+    client.post("/proposals/", json=proposal)
+    client.post("/events/", json=event)
+    client.put("/events/1", json={**event, "proposals": [1]})
+    response = client.get("/events/1")
+    assert response.json()["proposals"] == [1]
+
+
+def test_set_proposal_not_dup(client: TestClient, event, proposal):
+    client.post("/proposals/", json=proposal)
+    client.post("/events/", json=event)
+    client.put("/events/1", json={**event, "proposals": [1]})
+    client.put("/events/1", json={**event, "proposals": [1]})
+    response = client.get("/events/1")
+    assert response.json()["proposals"] == [1]

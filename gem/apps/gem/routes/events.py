@@ -38,13 +38,19 @@ async def update_event(
         event_db.agenda = event.agenda
         event_db.start = event.start
         event_db.end = event.end
+
         # todo: check proposal exists
+        proposals = s.query(models.Proposal).filter(
+            models.Proposal.id.in_(event.proposals)).all()
+        event_db.proposals.extend(proposals)
+        s.flush()
+
         # event_db.proposals_id = event.proposals
         return model2event(event_db)
 
 
 @router.delete("/{oid}")
-async def delete_review(
+async def delete_event(
         oid: int,
         current_user: User = Depends(get_current_active_user)):
     """Delete proposal using specified ID."""
