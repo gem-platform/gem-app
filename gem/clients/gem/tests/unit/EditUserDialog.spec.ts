@@ -12,8 +12,8 @@ describe("EditUserDialog.vue", () => {
   const user: IUser = {
     disabled: false,
     email: "johndoe@email.com",
-    oid: 1,
-    username: "John Doe"
+    name: "John Doe",
+    oid: 1
   };
 
   function getContext() {
@@ -31,7 +31,7 @@ describe("EditUserDialog.vue", () => {
 
   it("renders props.user when passed", () => {
     const context = getContext();
-    expect(context.name.props().value).toEqual(user.username);
+    expect(context.name.props().value).toEqual(user.name);
     expect(context.email.props().value).toEqual(user.email);
   });
 
@@ -54,7 +54,7 @@ describe("EditUserDialog.vue", () => {
     const changedUser = {
       ...user,
       email: "changedEmail",
-      username: "changedName"
+      name: "changedName"
     };
 
     const context = getContext();

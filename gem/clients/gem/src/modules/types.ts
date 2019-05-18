@@ -5,26 +5,26 @@ export interface IEntity {
 /** User */
 export interface IUser extends IEntity {
   oid: number;
-  username: string;
+  name: string;
   email: string;
   disabled: boolean;
 }
 
 export class User implements IUser {
   public oid: number = -1;
-  public username: string = "";
+  public name: string = "";
   public email: string = "";
   public disabled: boolean = false;
 
   constructor(data: IUser) {
     this.oid = data.oid;
-    this.username = data.username;
+    this.name = data.name;
     this.email = data.email;
     this.disabled = data.disabled;
   }
 
   get fullName(): string {
-    return this.username;
+    return this.name;
   }
 }
 
@@ -37,6 +37,6 @@ export interface IChangePassword {
 export const EmptyUser: User = new User({
   disabled: false,
   email: "",
-  oid: -1,
-  username: ""
+  name: "",
+  oid: -1
 });

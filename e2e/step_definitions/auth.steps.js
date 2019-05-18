@@ -31,9 +31,9 @@ Then("I logged in", async () => {
 /** Checks if user logged in */
 Then("I logged in as {string}", async username => {
   const res = await I.sendGetRequest("/auth/me", context.headers);
-  if (res.data.username !== username) {
+  if (res.data.name !== username) {
     throw Error(
-      "You are logged as " + res.data.username + " but should as " + username
+      "You are logged as " + res.data.name + " but should as " + username
     );
   }
 });

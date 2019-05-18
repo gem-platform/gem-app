@@ -9,7 +9,7 @@ Base = declarative_base()
 class User(Base):
     __tablename__ = "user"
     id = Column(Integer, primary_key=True)
-    username = Column(String(250), nullable=False)
+    name = Column(String(250), nullable=False)
     email = Column(String(50), nullable=False)
     hashed_password = Column(String(100), nullable=False)
     disabled = Column(Boolean, nullable=False)
@@ -18,7 +18,7 @@ class User(Base):
 
     @hybrid_property
     def full_name(self):
-        return self.username
+        return self.name
 
 
 class Role(Base):

@@ -33,7 +33,7 @@ async def create_user(user: User, s: Session = Depends(get_db)) -> models.User:
         s.add(user_db)
         s.commit()
         user.oid = user_db.id
-        user.username = user_db.username
+        user.name = user_db.name
     except Exception as e:
         # log exception
         return {"e": e}
@@ -42,10 +42,11 @@ async def create_user(user: User, s: Session = Depends(get_db)) -> models.User:
 
 @router.put("/")
 async def update_user(user: User, s: Session = Depends(get_db)):
-    user_db = s.query(models.User).filter_by(id=user.oid).first()  # type: models.User
+    user_db = s.query(models.User).filter_by(
+        id=user.oid).first()  # type: models.User
     if not user_db:
         return False
-    user_db.username = user.username
+    user_db.name = user.name
     user_db.email = user.email
     user_db.disabled = user.disabled
     s.commit()
@@ -54,7 +55,8 @@ async def update_user(user: User, s: Session = Depends(get_db)):
 
 @router.delete("/{oid}")
 async def delete_user(oid: int, s: Session = Depends(get_db)):
-    user_db = s.query(models.User).filter_by(id=oid).first()  # type: models.User
+    user_db = s.query(models.User).filter_by(
+        id=oid).first()  # type: models.User
     if not user_db:
         return False
     s.delete(user_db)
@@ -79,7 +81,8 @@ async def change_password(
         oid: int, change: ChangePassword,
         s: Session = Depends(get_db),
         current_user: models.User = Depends(get_current_user)):
-    user_db = s.query(models.User).filter_by(id=oid).first()  # type: models.User
+    user_db = s.query(models.User).filter_by(
+        id=oid).first()  # type: models.User
     if not user_db:
         raise HTTPException(status_code=404, detail="User not found")
     user_db.hashed_password = pwd_context.hash(change.password)

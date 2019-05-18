@@ -45,7 +45,7 @@ def get_password_hash(password):
 
 def get_user(s: Session, username: str):
     s.expire_on_commit = False
-    user = s.query(models.User).filter_by(username=username).first()
+    user = s.query(models.User).filter_by(name=username).first()
     return user
 
 
@@ -67,7 +67,8 @@ async def get_current_user(token: str = Depends(oauth2_scheme), s: Session = Dep
         payload = decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         token_data = TokenPayload(**payload)
     except PyJWTError:
-        raise HTTPException(status_code=HTTP_403_FORBIDDEN, detail="Could not validate credentials")
+        raise HTTPException(status_code=HTTP_403_FORBIDDEN,
+                            detail="Could not validate credentials")
     user = get_user(s, username=token_data.username)
     return user if user else None
 
@@ -79,14 +80,17 @@ async def get_current_active_user(current_user: models.User = Depends(get_curren
         raise HTTPException(status_code=400, detail="Inactive user")
     return current_user
 
+
 @router.post("/token", response_model=Token)
 async def route_login_access_token(form_data: OAuth2PasswordRequestForm = Depends(),
                                    s: Session = Depends(get_db)):
     user = authenticate_user(s, form_data.username, form_data.password)
     if not user:
-        raise HTTPException(status_code=400, detail="Incorrect email or password")
+        raise HTTPException(
+            status_code=400, detail="Incorrect email or password")
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(data={"username": user.username}, expires_delta=access_token_expires)
+    access_token = create_access_token(
+        data={"username": user.name}, expires_delta=access_token_expires)
     return {"access_token": access_token, "token_type": "bearer"}
 
 

@@ -14,7 +14,7 @@
           {{ message }}
         </v-alert>
 
-        <!-- Username and password -->
+        <!-- Name and password -->
         <v-text-field
           v-model="username"
           prepend-icon="person"

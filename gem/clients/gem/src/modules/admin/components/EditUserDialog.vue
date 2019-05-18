@@ -17,7 +17,7 @@
     </template>
 
     <v-flex xs12 sm6>
-      <v-text-field v-model="user.username" label="Name" required ref="name" />
+      <v-text-field v-model="user.name" label="Name" required ref="name" />
     </v-flex>
     <v-flex xs12 sm3>
       <v-combobox label="Form of address" :items="formsOfAddress" />

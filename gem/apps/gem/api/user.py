@@ -4,7 +4,7 @@ from auth.const import GUEST
 
 class User(BaseModel):
     oid: int = 0
-    username: str = Schema(
+    name: str = Schema(
         "", title="User's name",
         min_length=3, max_length=128
     )

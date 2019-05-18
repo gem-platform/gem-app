@@ -24,13 +24,13 @@ def upgrade():
 
     session.add_all([
         User(id=0,
-             username="Admin",
+             name="Admin",
              email="admin@example.com",
              hashed_password="$2b$12$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW",
              disabled=False,
              role_id=0),
         User(id=1,
-             username="Secretary",
+             name="Secretary",
              email="secretary@example.com",
              hashed_password="$2b$12$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW",
              disabled=False,

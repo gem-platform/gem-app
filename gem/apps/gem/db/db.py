@@ -49,7 +49,7 @@ def add_default_roles():
 def add_default_user():
     with session_scope() as s:
         user = User(
-            username="admin",
+            name="admin",
             email="admin@example.com",
             hashed_password="$2b$12$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW",
             disabled=False,
@@ -58,7 +58,7 @@ def add_default_user():
         s.add(user)
 
         user = User(
-            username="Secretary",
+            name="Secretary",
             email="johndoe@example.com",
             hashed_password="$2b$12$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW",
             disabled=False,
