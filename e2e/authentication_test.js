@@ -2,7 +2,7 @@
 
 Feature("Authentication Form");
 
-const validLogin = "Secretary";
+const validLogin = "secretary";
 const validPassword = "secret";
 const invalidPassword = "invalid";
 
@@ -16,7 +16,8 @@ Scenario("I see login form at login page", I => {
 
 Scenario("I able to login with valid credentials", I => {
   I.login(validLogin, validPassword);
-  I.waitForText(`Welcome back, ${validLogin}!`);
+  let login = validLogin.toLowerCase();
+  I.waitForText(`Welcome back, ${login}!`);
 });
 
 Scenario("I'm unable to login with invalid credentials", I => {

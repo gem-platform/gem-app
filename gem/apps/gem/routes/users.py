@@ -6,6 +6,7 @@ from mappers.user import map_model_to_user, map_user_to_model
 from api.user import User
 from auth.role import RoleChecker
 from auth.const import ADMIN, SECRETARY
+from .auth import get_current_user
 from sqlalchemy.orm import Session
 from starlette.status import HTTP_403_FORBIDDEN
 
@@ -26,11 +27,19 @@ class ChangePassword(BaseModel):
 @router.post("/")
 async def create_user(user: User, s: Session = Depends(get_db)) -> models.User:
     # s.expire_on_commit = False
-    user_db = map_user_to_model(user)
-    user_db.hashed_password = pwd_context.hash(user.password)
-    s.add(user_db)
-    s.flush()
-    user.oid = user_db.id
+    try:
+        user_db = map_user_to_model(user)
+        if not user_db.username:
+            # temporary fix as we do not ask username in the user creat form
+            user_db.username = user_db.full_name.lower()
+        user_db.hashed_password = pwd_context.hash(user.password)
+        s.add(user_db)
+        s.commit()
+        user.oid = user_db.id
+        user.username = user_db.username
+    except Exception as e:
+        # log exception
+        return {"e": e}
     return user
 
 
@@ -53,13 +62,14 @@ async def delete_user(oid: int, s: Session = Depends(get_db)):
     if not user_db:
         return False
     s.delete(user_db)
+    s.commit()
     user = map_model_to_user(user_db)
     return user
 
 
 @router.get("/")
 async def fetch_users_list(
-        is_permitted: bool = Depends(RoleChecker(role=ADMIN)),
+        # is_permitted: bool = Depends(RoleChecker(role=[ADMIN, SECRETARY], permissions=['all','user_list'])),
         s: Session = Depends(get_db)):
     users = s.query(models.User).all()  # type: [models.User]
     user_list = []
@@ -71,7 +81,8 @@ async def fetch_users_list(
 @router.put("/{oid}/changePassword")
 async def change_password(
         oid: int, change: ChangePassword,
-        s: Session = Depends(get_db)):
+        s: Session = Depends(get_db),
+        current_user: models.User = Depends(get_current_user)):
     user_db = s.query(models.User).filter_by(id=oid).first()  # type: models.User
     if not user_db:
         raise HTTPException(status_code=404, detail="User not found")

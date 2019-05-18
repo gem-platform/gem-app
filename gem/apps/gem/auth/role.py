@@ -2,15 +2,17 @@ from fastapi import Depends
 from routes import auth
 from db.models import User
 from auth.const import ADMIN
-
-# Checking user role & permissions
 from starlette.exceptions import HTTPException
 from starlette.status import HTTP_403_FORBIDDEN, HTTP_404_NOT_FOUND
 
+'''
+Checking user role & permissions
+'''
+
 
 class RoleChecker:
-    def __init__(self, role: int, permissions=None):
-        self.role = role
+    def __init__(self, role=None, permissions=None):
+        self.role = [] if role is None else role
         self.permissions = ["all"] if permissions is None else permissions
 
     def __call__(self, user: User = Depends(auth.get_current_active_user)):
@@ -25,8 +27,8 @@ class RoleChecker:
         return 'all' in permissions and permissions['all'] == 1 and role == ADMIN
 
     def check_role(self, user: User):
-        if user.role.rid != self.role:
-            # Temprory set 404 as on 403 it log out
+        if user.role.rid not in self.role:
+            # Temporary set 404 as on 403 it log out
             raise HTTPException(status_code=HTTP_404_NOT_FOUND, detail="Access Denied")
 
     def check_permissions(self, permissions):
@@ -35,7 +37,9 @@ class RoleChecker:
         :param permissions:
         """
         for permission_name in self.permissions:
+            if permission_name == 'all':
+                continue
             if permission_name not in permissions \
                     or (permission_name in permissions and permissions[permission_name] == 0):
-                # Temprory set 404 as on 403 it log out
+                # Temporary set 404 as on 403 it log out
                 raise HTTPException(status_code=HTTP_404_NOT_FOUND, detail="Not enough permissions")

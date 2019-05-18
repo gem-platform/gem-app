@@ -24,20 +24,21 @@
       >
         <template v-slot:items="{ item }">
           <td @click="users.openEditDialog(item)">{{ item.full_name }}</td>
+          <td @click="users.openEditDialog(item)">{{ item.username }}</td>
           <td class="text-xs-right">
             <v-icon
               small
               class="mr-2"
               @click="users.openEditDialog(item)"
               data-ref="edit-user"
-              :data-ref-name="item.full_name"
+              :data-ref-name="item.username"
               >edit</v-icon
             >
             <v-icon
               small
               @click="onDeleteClicked(item)"
               data-ref="delete-user"
-              :data-ref-name="item.full_name"
+              :data-ref-name="item.username"
               >delete</v-icon
             >
           </td>
@@ -94,6 +95,7 @@ import EditUserDialog from "../components/EditUserDialog.vue";
 export default class AdminUsersView extends Vue {
   private headers = [
     { text: "Name", value: "full_name" },
+    { text: "Login", value: "username" },
     { text: "Actions", align: "right", sortable: false, name: "full_name" }
   ];
 

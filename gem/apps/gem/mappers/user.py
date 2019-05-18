@@ -9,17 +9,18 @@ def map_model_to_user(model: models.User) -> User:
         full_name=model.full_name,
         email=model.email,
         disabled=model.disabled,
-        password=model.hashed_password
+        role_id=model.role_id
     )
     return user
 
 
 def map_user_to_model(user: User) -> models.User:
     model = models.User(
-        username=user.username,
+        username=user.username.lower(),
         full_name=user.full_name,
         email=user.email,
-        disabled=user.disabled
+        disabled=user.disabled,
+        role_id=user.role_id
     )
     if user.oid > 0:
         model.id = user.oid

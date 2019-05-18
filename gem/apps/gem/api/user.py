@@ -1,4 +1,5 @@
 from pydantic import BaseModel, Schema
+from auth.const import GUEST
 
 
 class User(BaseModel):
@@ -16,3 +17,4 @@ class User(BaseModel):
         min_length=3, max_length=64
     )
     disabled: bool = False
+    role_id: int = GUEST
