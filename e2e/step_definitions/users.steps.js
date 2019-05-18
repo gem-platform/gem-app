@@ -24,7 +24,7 @@ When('I delete user {string}', username => {
 
 Then('User {string} exists', async username => {
   const res = (await I.sendGetRequest('/users/')).data;
-  const users = res.filter(x => x.username === username.toLowerCase());
+  const users = res.filter(x => x.username === username);
   if (users.length <= 0) {
     throw Error('No user found');
   }

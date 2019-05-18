@@ -30,7 +30,6 @@ Then("I logged in", async () => {
 
 /** Checks if user logged in */
 Then("I logged in as {string}", async username => {
-  username =username.toLowerCase();
   const res = await I.sendGetRequest("/auth/me", context.headers);
   if (res.data.username !== username) {
     throw Error(

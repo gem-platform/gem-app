@@ -23,8 +23,7 @@
         data-ref="users-table"
       >
         <template v-slot:items="{ item }">
-          <td @click="users.openEditDialog(item)">{{ item.full_name }}</td>
-          <td @click="users.openEditDialog(item)">{{ item.username }}</td>
+          <td @click="users.openEditDialog(item)">{{ item.fullName }}</td>
           <td class="text-xs-right">
             <v-icon
               small
@@ -58,8 +57,8 @@
         @cancel="users.closeConfirmDeleteDialog()"
         @confirm="onDeleteConfirmed"
       >
-        <template v-slot:default="{ data = { full_name: '' } }">
-          <b>{{ data.full_name }}</b> will be deleted. Confirm?
+        <template v-slot:default="{ data = { fullName: '' } }">
+          <b>{{ data.fullName }}</b> will be deleted. Confirm?
         </template>
       </confirm-dialog>
     </template>
@@ -94,9 +93,8 @@ import EditUserDialog from "../components/EditUserDialog.vue";
 })
 export default class AdminUsersView extends Vue {
   private headers = [
-    { text: "Name", value: "full_name" },
-    { text: "Login", value: "username" },
-    { text: "Actions", align: "right", sortable: false, name: "full_name" }
+    { text: "Name", value: "fullName" },
+    { text: "Actions", align: "right", sortable: false, name: "fullName" }
   ];
 
   private mounted() {

@@ -2,7 +2,7 @@
 
 Feature("Admin/Users");
 
-const username = "krishna das";
+const username = "Krishna das";
 const usersPage = require("./pages/admin/users/admin_users_page");
 
 Before(I => {
@@ -14,7 +14,7 @@ Before(I => {
   // Wait for data loaded
   // I.waitForElement(usersPage.usersTable.root);
   // within(usersPage.usersTable.root, () => {
-  //   I.waitForText("secretary");
+  //   I.waitForText("Secretary");
   // });
 });
 
@@ -49,14 +49,14 @@ Scenario("I can delete user", I => {
 });
 
 Scenario("I see notification when user deleted", () => {
-  usersPage.usersTable.delete("secretary");
+  usersPage.usersTable.delete("Secretary");
   usersPage.confirmDialog.confirm();
   usersPage.snackbar.waitForOpen();
   usersPage.snackbar.contains("User deleted");
 }).tag("@snackbar");
 
 Scenario("I see 'Change Password' button for created user", I => {
-  usersPage.usersTable.clickEdit("secretary");
+  usersPage.usersTable.clickEdit("Secretary");
   within(usersPage.editDialog.root, () => {
     I.see("CHANGE PASSWORD");
   });
@@ -70,13 +70,13 @@ Scenario("I don't see 'Change Password' button for new user", I => {
 }).tag("@change-password");
 
 Scenario("I see dialog when I click 'Change Password' button", I => {
-  usersPage.usersTable.clickEdit("secretary");
+  usersPage.usersTable.clickEdit("Secretary");
   usersPage.editDialog.clickChangePassword();
   I.waitForVisible(usersPage.changePasswordDialog.root);
 }).tag("@change-password");
 
 Scenario("I can cancel 'Change Password' dialog", () => {
-  usersPage.usersTable.clickEdit("secretary");
+  usersPage.usersTable.clickEdit("Secretary");
   usersPage.editDialog.clickChangePassword();
   usersPage.changePasswordDialog.waitForOpen();
   usersPage.changePasswordDialog.clickCancel();
@@ -84,7 +84,7 @@ Scenario("I can cancel 'Change Password' dialog", () => {
 }).tag("@change-password");
 
 Scenario("I can change password", () => {
-  usersPage.usersTable.clickEdit("secretary");
+  usersPage.usersTable.clickEdit("Secretary");
   usersPage.editDialog.clickChangePassword();
   usersPage.changePasswordDialog.waitForOpen();
   usersPage.changePasswordDialog.submit("new_password");
@@ -92,7 +92,7 @@ Scenario("I can change password", () => {
 }).tag("@change-password");
 
 Scenario("I can change password after fail", () => {
-  usersPage.usersTable.clickEdit("secretary");
+  usersPage.usersTable.clickEdit("Secretary");
   usersPage.editDialog.clickChangePassword();
   usersPage.changePasswordDialog.waitForOpen();
   usersPage.changePasswordDialog.submit("");
@@ -101,7 +101,7 @@ Scenario("I can change password after fail", () => {
 }).tag("@change-password");
 
 Scenario("I see error message on fail", I => {
-  usersPage.usersTable.clickEdit("secretary");
+  usersPage.usersTable.clickEdit("Secretary");
   usersPage.editDialog.clickChangePassword();
   usersPage.changePasswordDialog.waitForOpen();
   usersPage.changePasswordDialog.submit("1");
@@ -109,7 +109,7 @@ Scenario("I see error message on fail", I => {
 }).tag("@change-password");
 
 Scenario("I see notification on success", () => {
-  usersPage.usersTable.clickEdit("secretary");
+  usersPage.usersTable.clickEdit("Secretary");
   usersPage.editDialog.clickChangePassword();
   usersPage.changePasswordDialog.waitForOpen();
   usersPage.changePasswordDialog.submit("1234567");
@@ -120,7 +120,7 @@ Scenario("I see notification on success", () => {
   .tag("@snackbar");
 
 Scenario("I see no error message after fail and reopen", I => {
-  usersPage.usersTable.clickEdit("secretary");
+  usersPage.usersTable.clickEdit("Secretary");
   usersPage.editDialog.clickChangePassword();
   usersPage.changePasswordDialog.waitForOpen();
   usersPage.changePasswordDialog.submit("123");
@@ -130,7 +130,7 @@ Scenario("I see no error message after fail and reopen", I => {
 }).tag("@change-password");
 
 Scenario("I see empty password field after reopen", async I => {
-  usersPage.usersTable.clickEdit("secretary");
+  usersPage.usersTable.clickEdit("Secretary");
   usersPage.editDialog.clickChangePassword();
   usersPage.changePasswordDialog.waitForOpen();
   usersPage.changePasswordDialog.submit("123");

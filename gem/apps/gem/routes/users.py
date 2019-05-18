@@ -29,9 +29,6 @@ async def create_user(user: User, s: Session = Depends(get_db)) -> models.User:
     # s.expire_on_commit = False
     try:
         user_db = map_user_to_model(user)
-        if not user_db.username:
-            # temporary fix as we do not ask username in the user creat form
-            user_db.username = user_db.full_name.lower()
         user_db.hashed_password = pwd_context.hash(user.password)
         s.add(user_db)
         s.commit()
@@ -49,7 +46,6 @@ async def update_user(user: User, s: Session = Depends(get_db)):
     if not user_db:
         return False
     user_db.username = user.username
-    user_db.full_name = user.full_name
     user_db.email = user.email
     user_db.disabled = user.disabled
     s.commit()

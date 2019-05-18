@@ -16,8 +16,7 @@ def map_model_to_user(model: models.User) -> User:
 
 def map_user_to_model(user: User) -> models.User:
     model = models.User(
-        username=user.username.lower(),
-        full_name=user.full_name,
+        username=user.username,
         email=user.email,
         disabled=user.disabled,
         role_id=user.role_id

@@ -45,7 +45,7 @@ def get_password_hash(password):
 
 def get_user(s: Session, username: str):
     s.expire_on_commit = False
-    user = s.query(models.User).filter_by(username=username.lower()).first()
+    user = s.query(models.User).filter_by(username=username).first()
     return user
 
 

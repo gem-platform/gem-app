@@ -7,8 +7,25 @@ export interface IUser extends IEntity {
   oid: number;
   username: string;
   email: string;
-  full_name: string;
   disabled: boolean;
+}
+
+export class User implements IUser {
+  public oid: number = -1;
+  public username: string = "";
+  public email: string = "";
+  public disabled: boolean = false;
+
+  constructor(data: IUser) {
+    this.oid = data.oid;
+    this.username = data.username;
+    this.email = data.email;
+    this.disabled = data.disabled;
+  }
+
+  get fullName(): string {
+    return this.username;
+  }
 }
 
 export interface IChangePassword {
@@ -17,10 +34,9 @@ export interface IChangePassword {
 }
 
 /** Empty user */
-export const EmptyUser: IUser = {
+export const EmptyUser: User = new User({
   disabled: false,
   email: "",
-  full_name: "",
   oid: -1,
   username: ""
-};
+});
