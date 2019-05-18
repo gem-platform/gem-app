@@ -43,6 +43,15 @@ const router = new Router({
       path: "/admin/proposals"
     },
     {
+      component: () =>
+        import(/* webpackChunkName: "admin" */ "./modules/admin/views/EventsView.vue"),
+      meta: {
+        requiresAuth: true
+      },
+      name: "admin-events",
+      path: "/admin/events"
+    },
+    {
       component: HomeView,
       meta: {
         requiresAuth: true
