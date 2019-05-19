@@ -28,6 +28,16 @@
     <v-flex xs12>
       <v-text-field v-model="user.email" label="Email" ref="email" required />
     </v-flex>
+    <v-flex xs12>
+      <v-select
+        v-model="user.role_id"
+        :items="roles"
+        label="Role"
+        item-text="name"
+        item-value="oid"
+        required
+      ></v-select>
+    </v-flex>
   </edit-dialog>
 </template>
 
@@ -44,6 +54,7 @@ export default class EditUserDialog extends Vue {
   @Prop({ default: false }) public visible!: boolean;
   @Prop({}) public readonly operation!: Operation;
   @Prop({ default: () => [] }) public readonly formsOfAddress!: string[];
+  @Prop({}) public readonly roles!: [];
 
   @Emit() private close() {
     return;

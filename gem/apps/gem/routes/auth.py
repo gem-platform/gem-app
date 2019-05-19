@@ -67,8 +67,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme), s: Session = Dep
         payload = decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         token_data = TokenPayload(**payload)
     except PyJWTError:
-        raise HTTPException(status_code=HTTP_403_FORBIDDEN,
-                            detail="Could not validate credentials")
+        raise HTTPException(status_code=401, detail="Not authenticated")
     user = get_user(s, username=token_data.username)
     return user if user else None
 

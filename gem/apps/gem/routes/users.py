@@ -5,7 +5,6 @@ from passlib.context import CryptContext
 from mappers.user import map_model_to_user, map_user_to_model
 from api.user import User
 from auth.role import RoleChecker
-from auth.const import ADMIN, SECRETARY
 from .auth import get_current_user
 from sqlalchemy.orm import Session
 from starlette.status import HTTP_403_FORBIDDEN
@@ -17,10 +16,10 @@ router = APIRouter()
 class ChangePassword(BaseModel):
     password: str = Schema("", title="Password")
 
-    @validator('password')
+    @validator("password")
     def should_be_at_least_6_chars_long(cls, v: str):
         if len(v) < 6:
-            raise ValueError('Should be at least 6 characters long')
+            raise ValueError("Should be at least 6 characters long")
         return v
 
 
@@ -33,10 +32,10 @@ async def create_user(user: User, s: Session = Depends(get_db)) -> models.User:
         s.add(user_db)
         s.commit()
         user.oid = user_db.id
-        user.name = user_db.name
     except Exception as e:
-        # log exception
-        return {"e": e}
+        # todo: log exception
+        print(e)
+        raise HTTPException(status_code=500, detail="Unable to create user")
     return user
 
 
@@ -67,13 +66,10 @@ async def delete_user(oid: int, s: Session = Depends(get_db)):
 
 @router.get("/")
 async def fetch_users_list(
-        # is_permitted: bool = Depends(RoleChecker(role=[ADMIN, SECRETARY], permissions=['all','user_list'])),
+        is_permitted: bool = Depends(RoleChecker(permissions=["user_list"])),
         s: Session = Depends(get_db)):
     users = s.query(models.User).all()  # type: [models.User]
-    user_list = []
-    for user in users:
-        user_list.append(map_model_to_user(user))
-    return user_list
+    return list(map(map_model_to_user, users))
 
 
 @router.put("/{oid}/changePassword")

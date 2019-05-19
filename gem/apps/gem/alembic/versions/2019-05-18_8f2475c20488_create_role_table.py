@@ -21,8 +21,7 @@ def upgrade():
         "role",
         sa.Column("id", sa.Integer, primary_key=True),
         sa.Column("name", sa.String(20), nullable=False),
-        sa.Column("permissions", sa.JSON, nullable=False),
-        sa.Column("rid", sa.Integer, nullable=False)
+        sa.Column("permissions", sa.JSON, nullable=False)
     )
 
 
