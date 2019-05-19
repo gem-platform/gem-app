@@ -22,11 +22,12 @@ def upgrade():
     session = orm.Session(bind=bind)
 
     session.add_all([
-        Role(id=0, name="Admin", permissions={"all": 1}, rid=1),
-        Role(id=1, name="Secretary", permissions={
-             "user_list": 1, "user_create": 1, "user_edit": 1}, rid=4),
-        Role(id=2, name="GBC", permissions={
-             "user_list": 1, "user_create": 1}, rid=3),
+        Role(id=0, name="Guest", permissions={}),
+        Role(id=1, name="Admin", permissions={"all": 1}),
+        Role(id=2, name="Secretary", permissions={
+             "user_list": 1, "user_create": 1, "user_edit": 1}),
+        Role(id=3, name="GBC", permissions={
+             "user_list": 1, "user_create": 1}),
     ])
 
     session.commit()
@@ -39,5 +40,6 @@ def downgrade():
     session.query(Role).filter(Role.id == 0).delete()
     session.query(Role).filter(Role.id == 1).delete()
     session.query(Role).filter(Role.id == 2).delete()
+    session.query(Role).filter(Role.id == 3).delete()
 
     session.commit()

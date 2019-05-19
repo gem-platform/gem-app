@@ -76,7 +76,7 @@ export default class UsersStoreModule extends VuexModule {
   /** Fetch */
 
   /** Fetches list of users from remote server. */
-  @Action public async fetch(): Promise<IUser[] | undefined> {
+  @Action public async fetch(): Promise<IUser[]> {
     try {
       this.fetchUsersStarted();
       const users = await service.fetch();
@@ -86,6 +86,7 @@ export default class UsersStoreModule extends VuexModule {
       const message = err.response.data.detail;
       log({ message });
       this.fetchUsersFailed(message);
+      throw new Error(message);
     }
   }
 

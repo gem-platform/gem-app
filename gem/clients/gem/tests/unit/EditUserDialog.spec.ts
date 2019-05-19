@@ -13,7 +13,8 @@ describe("EditUserDialog.vue", () => {
     disabled: false,
     email: "johndoe@email.com",
     name: "John Doe",
-    oid: 1
+    oid: 1,
+    role_id: 0
   };
 
   function getContext() {

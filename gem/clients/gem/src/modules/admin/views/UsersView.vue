@@ -7,6 +7,7 @@
         :user="ops.save.data"
         :operation="ops.save"
         :formsOfAddress="formsOfAddress"
+        :roles="roles"
         @close="users.closeEditDialog"
         @save="onSaveUserClicked"
         @change-password="onUserChangePassword"
@@ -80,8 +81,8 @@ import { formsOfAddress } from "@/modules/consts";
 
 import { Operation } from "@/lib/operations";
 import { Component, Vue } from "vue-property-decorator";
-import { IUser } from "../../types";
-import { AdminStore, UsersStore } from "../store";
+import { EmptyUser, IUser } from "../../types";
+import { AdminStore, RolesStore, UsersStore } from "../store";
 
 import ChangePasswordDialog from "../components/ChangePasswordDialog.vue";
 import ConfirmDialog from "../components/ConfirmDialog.vue";
@@ -97,8 +98,16 @@ export default class AdminUsersView extends Vue {
     { text: "Actions", align: "right", sortable: false, name: "fullName" }
   ];
 
-  private mounted() {
-    UsersStore.fetch();
+  private async mounted() {
+    try {
+      await RolesStore.fetch();
+      await UsersStore.fetch();
+    } catch {
+      AdminStore.openSnackbar({
+        color: "error",
+        message: this.ops.fetch.message
+      });
+    }
   }
 
   private get ops() {
@@ -107,6 +116,10 @@ export default class AdminUsersView extends Vue {
 
   private get users() {
     return UsersStore;
+  }
+
+  private get roles() {
+    return RolesStore.all;
   }
 
   private async onSaveUserClicked(data: IUser) {
@@ -121,7 +134,7 @@ export default class AdminUsersView extends Vue {
   }
 
   private onCreateClicked() {
-    UsersStore.openEditDialog();
+    UsersStore.openEditDialog({ ...EmptyUser, role_id: 0 });
   }
 
   private onDeleteClicked(user: IUser) {

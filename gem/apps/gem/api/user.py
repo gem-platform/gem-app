@@ -15,4 +15,4 @@ class User(BaseModel):
         min_length=6, max_length=128
     )
     disabled: bool = False
-    role_id: int = GUEST
+    role_id: int = 0

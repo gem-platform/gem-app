@@ -45,8 +45,7 @@ def get_password_hash(password):
 
 def get_user(s: Session, username: str):
     s.expire_on_commit = False
-    user = s.query(models.User).filter_by(name=username).first()
-    return user
+    return s.query(models.User).filter_by(name=username).first()
 
 
 def authenticate_user(s: Session, username: str, password: str) -> models.User:
@@ -62,13 +61,12 @@ def create_access_token(*, data: dict, expires_delta: timedelta = None) -> str:
     return encoded_jwt
 
 
-async def get_current_user(token: str = Depends(oauth2_scheme), s: Session = Depends(get_db)) -> models.User:
+async def get_current_user(token: str = Security(oauth2_scheme), s: Session = Depends(get_db)) -> models.User:
     try:
         payload = decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         token_data = TokenPayload(**payload)
     except PyJWTError:
-        raise HTTPException(status_code=HTTP_403_FORBIDDEN,
-                            detail="Could not validate credentials")
+        raise HTTPException(status_code=401, detail="Not authenticated")
     user = get_user(s, username=token_data.username)
     return user if user else None
 

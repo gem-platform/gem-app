@@ -26,5 +26,4 @@ class Role(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(20), nullable=False)
     permissions = Column(JSON, nullable=False)
-    rid = Column(Integer, nullable=False)
     users = relationship("User", back_populates="role")

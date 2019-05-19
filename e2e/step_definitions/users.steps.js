@@ -4,12 +4,16 @@ const I = require("../steps_file")();
 const context = require("./_context.js");
 
 When("I create user {string}", async name => {
-  const res = await I.sendPostRequest("/users/", {
-    name: name,
-    email: name + "@test.com",
-    password: "password",
-    role_id: 1
-  });
+  const res = await I.sendPostRequest(
+    "/users/",
+    {
+      name: name,
+      email: name + "@test.com",
+      password: "password",
+      role_id: 1
+    },
+    context.headers
+  );
   context.users[name] = res.data;
 });
 
@@ -18,11 +22,11 @@ When("I delete user {string}", name => {
   if (!user) {
     throw Error("No user found");
   }
-  I.sendDeleteRequest("/users/" + user.oid);
+  I.sendDeleteRequest("/users/" + user.oid, context.headers);
 });
 
 Then("User {string} exists", async name => {
-  const res = (await I.sendGetRequest("/users/")).data;
+  const res = (await I.sendGetRequest("/users/", context.headers)).data;
   const users = res.filter(x => x.name === name);
   if (users.length <= 0) {
     throw Error("No user found");
@@ -33,7 +37,7 @@ Then("User {string} exists", async name => {
 });
 
 Then("User {string} doesn't exist", async name => {
-  const res = (await I.sendGetRequest("/users/")).data;
+  const res = (await I.sendGetRequest("/users/", context.headers)).data;
   const users = res.filter(x => x.name == name);
   if (users.length > 0) {
     throw Error("User still exists");
@@ -69,11 +73,15 @@ When("I set a name for {string} as {string}", async (name, newName) => {
 });
 
 Given("{string} with password {string} exist", async (name, password) => {
-  const res = await I.sendPostRequest("/users/", {
-    name: name,
-    full_name: name,
-    email: name + "@test.com",
-    password: password
-  });
+  const res = await I.sendPostRequest(
+    "/users/",
+    {
+      name: name,
+      full_name: name,
+      email: name + "@test.com",
+      password: password
+    },
+    context.headers
+  );
   context.users[name] = res.data;
 });
