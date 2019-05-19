@@ -31,24 +31,6 @@ export class User implements IUser {
   }
 }
 
-export class User implements IUser {
-  public oid: number = -1;
-  public name: string = "";
-  public email: string = "";
-  public disabled: boolean = false;
-
-  constructor(data: IUser) {
-    this.oid = data.oid;
-    this.name = data.name;
-    this.email = data.email;
-    this.disabled = data.disabled;
-  }
-
-  get fullName(): string {
-    return this.name;
-  }
-}
-
 export interface IChangePassword {
   user: IUser;
   password: string;
