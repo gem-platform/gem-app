@@ -13,6 +13,12 @@ Before(async I => {
     "/admin/users",
     tokenCache
   );
+
+  // Wait for data loaded
+  I.waitForElement(usersPage.usersTable.root);
+  within(usersPage.usersTable.root, () => {
+    I.waitForText("Secretary");
+  });
 });
 
 Scenario("I can create a new user", I => {
