@@ -5,17 +5,8 @@ Feature("Admin/Users");
 const name = "Krishna das";
 const usersPage = require("./pages/admin/users/admin_users_page");
 
-Before(I => {
-  I.amOnPage("/");
-  I.login("Secretary", "secret");
-  I.waitForText("Welcome");
-  usersPage.open();
-
-  // Wait for data loaded
-  // I.waitForElement(usersPage.usersTable.root);
-  // within(usersPage.usersTable.root, () => {
-  //   I.waitForText("Secretary");
-  // });
+Before(async I => {
+  await I.loginFast("Secretary", "secret", "/admin/users");
 });
 
 Scenario("I can create a new user", I => {

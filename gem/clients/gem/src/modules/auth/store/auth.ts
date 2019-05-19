@@ -109,6 +109,14 @@ export default class AuthModule extends VuexModule {
   @Mutation private authenticationRequired() {
     this.message = "Authentication required";
   }
+
+  /**
+   * Set auth token.
+   * @param token Token to set.
+   */
+  @Mutation public setToken(token: string) {
+    this.token = token;
+  }
 }
 
 export const Auth = getModule(AuthModule);
