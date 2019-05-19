@@ -8,7 +8,7 @@ import {
   Mutation,
   VuexModule
 } from "vuex-module-decorators";
-import { EmptyUser, IChangePassword, IUser } from "../../types";
+import { EmptyUser, IChangePassword, IUser, User } from "../../types";
 import UsersService from "../services/users";
 
 const service = new UsersService();
@@ -16,7 +16,7 @@ const service = new UsersService();
 /** Authentication storage module */
 @Module({ namespaced: true, dynamic: true, name: "admin-users", store })
 export default class UsersStoreModule extends VuexModule {
-  public users: IUser[] = [];
+  public users: User[] = [];
 
   /** List of async operations. */
   public operations = {
@@ -76,7 +76,7 @@ export default class UsersStoreModule extends VuexModule {
   /** Fetch */
 
   /** Fetches list of users from remote server. */
-  @Action public async fetch(): Promise<IUser[] | undefined> {
+  @Action public async fetch(): Promise<IUser[]> {
     try {
       this.fetchUsersStarted();
       const users = await service.fetch();
@@ -86,6 +86,7 @@ export default class UsersStoreModule extends VuexModule {
       const message = err.response.data.detail;
       log({ message });
       this.fetchUsersFailed(message);
+      throw new Error(message);
     }
   }
 
@@ -96,7 +97,7 @@ export default class UsersStoreModule extends VuexModule {
 
   /** Users has been fetched successfully. */
   @Mutation private fetchUsersSucceeded(users: IUser[]) {
-    this.users = users;
+    this.users = users.map((x: IUser) => new User(x));
     this.operations.fetch.succeed();
   }
 
@@ -143,7 +144,7 @@ export default class UsersStoreModule extends VuexModule {
 
   /** User has been successfully created. */
   @Mutation private userCreated(user: IUser) {
-    this.users.push(user);
+    this.users.push(new User(user));
     this.operations.save.succeed("User created");
   }
 
@@ -225,7 +226,7 @@ export default class UsersStoreModule extends VuexModule {
 
   /** Getters */
 
-  get all(): IUser[] {
+  get all(): User[] {
     return this.users;
   }
 }

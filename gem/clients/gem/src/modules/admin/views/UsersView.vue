@@ -7,6 +7,7 @@
         :user="ops.save.data"
         :operation="ops.save"
         :formsOfAddress="formsOfAddress"
+        :roles="roles"
         @close="users.closeEditDialog"
         @save="onSaveUserClicked"
         @change-password="onUserChangePassword"
@@ -23,21 +24,21 @@
         data-ref="users-table"
       >
         <template v-slot:items="{ item }">
-          <td @click="users.openEditDialog(item)">{{ item.full_name }}</td>
+          <td @click="users.openEditDialog(item)">{{ item.fullName }}</td>
           <td class="text-xs-right">
             <v-icon
               small
               class="mr-2"
               @click="users.openEditDialog(item)"
               data-ref="edit-user"
-              :data-ref-name="item.full_name"
+              :data-ref-name="item.name"
               >edit</v-icon
             >
             <v-icon
               small
               @click="onDeleteClicked(item)"
               data-ref="delete-user"
-              :data-ref-name="item.full_name"
+              :data-ref-name="item.name"
               >delete</v-icon
             >
           </td>
@@ -57,8 +58,8 @@
         @cancel="users.closeConfirmDeleteDialog()"
         @confirm="onDeleteConfirmed"
       >
-        <template v-slot:default="{ data = { full_name: '' } }">
-          <b>{{ data.full_name }}</b> will be deleted. Confirm?
+        <template v-slot:default="{ data = { fullName: '' } }">
+          <b>{{ data.fullName }}</b> will be deleted. Confirm?
         </template>
       </confirm-dialog>
     </template>
@@ -80,8 +81,8 @@ import { formsOfAddress } from "@/modules/consts";
 
 import { Operation } from "@/lib/operations";
 import { Component, Vue } from "vue-property-decorator";
-import { IUser } from "../../types";
-import { AdminStore, UsersStore } from "../store";
+import { EmptyUser, IUser } from "../../types";
+import { AdminStore, RolesStore, UsersStore } from "../store";
 
 import ChangePasswordDialog from "../components/ChangePasswordDialog.vue";
 import ConfirmDialog from "../components/ConfirmDialog.vue";
@@ -93,12 +94,20 @@ import EditUserDialog from "../components/EditUserDialog.vue";
 })
 export default class AdminUsersView extends Vue {
   private headers = [
-    { text: "Name", value: "full_name" },
-    { text: "Actions", align: "right", sortable: false, name: "full_name" }
+    { text: "Name", value: "fullName" },
+    { text: "Actions", align: "right", sortable: false, name: "fullName" }
   ];
 
-  private mounted() {
-    UsersStore.fetch();
+  private async mounted() {
+    try {
+      await RolesStore.fetch();
+      await UsersStore.fetch();
+    } catch {
+      AdminStore.openSnackbar({
+        color: "error",
+        message: this.ops.fetch.message
+      });
+    }
   }
 
   private get ops() {
@@ -107,6 +116,10 @@ export default class AdminUsersView extends Vue {
 
   private get users() {
     return UsersStore;
+  }
+
+  private get roles() {
+    return RolesStore.all;
   }
 
   private async onSaveUserClicked(data: IUser) {
@@ -121,7 +134,7 @@ export default class AdminUsersView extends Vue {
   }
 
   private onCreateClicked() {
-    UsersStore.openEditDialog();
+    UsersStore.openEditDialog({ ...EmptyUser, role_id: 0 });
   }
 
   private onDeleteClicked(user: IUser) {

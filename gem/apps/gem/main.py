@@ -1,8 +1,10 @@
 from uvicorn import run
-from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
-
-from routes import debug, auth, users
+from fastapi import Depends, FastAPI
+from starlette.requests import Request
+from starlette.responses import Response
+from routes import debug, auth, users, roles
+from db import SessionLocal
 
 
 app = FastAPI(
@@ -12,11 +14,23 @@ app = FastAPI(
 app.include_router(debug.router, prefix="/debug", tags=["debug"])
 app.include_router(auth.router, prefix="/auth", tags=["auth"])
 app.include_router(users.router, prefix="/users", tags=["users"])
+app.include_router(roles.router, prefix="/roles", tags=["roles"])
 
 app.add_middleware(CORSMiddleware,
                    allow_origins=['*'],
                    allow_headers=['*'],
                    allow_methods=['*'])
+
+
+@app.middleware("http")
+async def db_session_middleware(request: Request, call_next):
+    response = Response("Internal server error", status_code=500)
+    try:
+        request.state.db = SessionLocal()
+        response = await call_next(request)
+    finally:
+        request.state.db.close()
+    return response
 
 
 if __name__ == "__main__":

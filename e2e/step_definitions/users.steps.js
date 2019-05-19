@@ -3,64 +3,65 @@
 const I = require("../steps_file")();
 const context = require("./_context.js");
 
-When("I create user {string}", async username => {
-  const res = await I.sendPostRequest("/users/", {
-    username: username,
-    full_name: username,
-    email: username + "@test.com",
-    password: "password"
-  });
-  context.users[username] = res.data;
+When("I create user {string}", async name => {
+  const res = await I.sendPostRequest(
+    "/users/",
+    {
+      name: name,
+      email: name + "@test.com",
+      password: "password",
+      role_id: 1
+    },
+    context.headers
+  );
+  context.users[name] = res.data;
 });
 
-When("I delete user {string}", username => {
-  const user = context.users[username];
+When("I delete user {string}", name => {
+  const user = context.users[name];
   if (!user) {
     throw Error("No user found");
   }
-  I.sendDeleteRequest("/users/" + user.oid);
+  I.sendDeleteRequest("/users/" + user.oid, context.headers);
 });
 
-Then("User {string} exists", async username => {
-  const res = (await I.sendGetRequest("/users/")).data;
-  const users = res.filter(x => x.username == username);
-  if (users.lenght <= 0) {
-    throw Error("No one user found");
+Then("User {string} exists", async name => {
+  const res = (await I.sendGetRequest("/users/", context.headers)).data;
+  const users = res.filter(x => x.name === name);
+  if (users.length <= 0) {
+    throw Error("No user found");
   }
-  if (users.lenght > 1) {
+  if (users.length > 1) {
     throw Error("Too many users found");
   }
 });
 
-Then("User {string} doesn't exist", async username => {
-  const res = (await I.sendGetRequest("/users/")).data;
-  const users = res.filter(x => x.username == username);
-  if (users.lenght > 0) {
+Then("User {string} doesn't exist", async name => {
+  const res = (await I.sendGetRequest("/users/", context.headers)).data;
+  const users = res.filter(x => x.name == name);
+  if (users.length > 0) {
     throw Error("User still exists");
   }
 });
 
 /** Set password for specified user */
-When(
-  "I set a password for {string} as {string}",
-  async (username, password) => {
-    const user = context.users[username];
-    if (!user) {
-      throw Error("No user found");
-    }
-
-    const url = "/users/" + user.oid + "/changePassword";
-    context.response = (await I.sendPutRequest(
-      url,
-      { password },
-      context.headers
-    )).data;
+When("I set a password for {string} as {string}", async (name, password) => {
+  const user = context.users[name];
+  if (!user) {
+    throw Error("No user found");
   }
-);
+
+  const url = "/users/" + user.oid + "/changePassword";
+  context.response = (await I.sendPutRequest(
+    url,
+    { password },
+    context.headers
+  )).data;
+});
 
 /** Set name for specified user */
-When("I set a name for {string} as {string}", async (username, newName) => {
-  const user = context.users[username];
+When("I set a name for {string} as {string}", async (name, newName) => {
+  const user = context.users[name];
   if (!user) {
     throw Error("No user found");
   }
@@ -71,12 +72,16 @@ When("I set a name for {string} as {string}", async (username, newName) => {
   context.response = (await I.sendPutRequest(url, user, context.headers)).data;
 });
 
-Given("{string} with password {string} exist", async (username, password) => {
-  const res = await I.sendPostRequest("/users/", {
-    username: username,
-    full_name: username,
-    email: username + "@test.com",
-    password: password
-  });
-  context.users[username] = res.data;
+Given("{string} with password {string} exist", async (name, password) => {
+  const res = await I.sendPostRequest(
+    "/users/",
+    {
+      name: name,
+      full_name: name,
+      email: name + "@test.com",
+      password: password
+    },
+    context.headers
+  );
+  context.users[name] = res.data;
 });

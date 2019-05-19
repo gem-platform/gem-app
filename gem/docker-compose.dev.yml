@@ -4,5 +4,6 @@ services:
     volumes:
       - ./clients/gem:/usr/src/app
   gem-app:
+    restart: always
     volumes:
       - ./apps/gem:/app
