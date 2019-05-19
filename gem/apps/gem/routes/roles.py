@@ -13,4 +13,3 @@ async def fetch_roles_list(
         s: Session = Depends(get_db)):
     roles = s.query(models.Role).all()  # type: [models.Role]
     return list(map(model2role, roles))
-

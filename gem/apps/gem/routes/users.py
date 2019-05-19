@@ -25,7 +25,6 @@ class ChangePassword(BaseModel):
 
 @router.post("/")
 async def create_user(user: User, s: Session = Depends(get_db)) -> models.User:
-    # s.expire_on_commit = False
     try:
         user_db = map_user_to_model(user)
         user_db.hashed_password = pwd_context.hash(user.password)
