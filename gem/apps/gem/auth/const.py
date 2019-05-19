@@ -1,4 +1,0 @@
-ADMIN = 1
-GUEST = 2
-GBC = 3
-SECRETARY = 4

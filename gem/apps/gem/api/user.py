@@ -1,5 +1,4 @@
 from pydantic import BaseModel, Schema
-from auth.const import GUEST
 
 
 class User(BaseModel):
