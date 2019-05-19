@@ -13,6 +13,9 @@ e2e/*.local.js
 # LOG FILES
 npm-debug.log*
 
+# VS Code
+.vscode
+
 # Idea
 .idea
 gem/apps/gem/routes/*.http
