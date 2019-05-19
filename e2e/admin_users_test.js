@@ -4,9 +4,15 @@ Feature("Admin/Users");
 
 const name = "Krishna das";
 const usersPage = require("./pages/admin/users/admin_users_page");
+var tokenCache = undefined;
 
 Before(async I => {
-  await I.loginFast("Secretary", "secret", "/admin/users");
+  tokenCache = await I.loginFast(
+    "Secretary",
+    "secret",
+    "/admin/users",
+    tokenCache
+  );
 });
 
 Scenario("I can create a new user", I => {

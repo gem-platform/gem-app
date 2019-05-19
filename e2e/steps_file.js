@@ -7,13 +7,22 @@ module.exports = function() {
       loginPage.sendForm(username, password);
     },
 
-    async loginFast(username, password, navigate = "/") {
-      const response = await this.sendPostRequest(
-        "/auth/token",
-        "username=" + username + "&password=" + password
-      );
-      var access_token = response.data.access_token;
+    async loginFast(
+      username,
+      password,
+      navigate = "/",
+      token_cache = undefined
+    ) {
+      var access_token = token_cache;
+      if (!access_token) {
+        const response = await this.sendPostRequest(
+          "/auth/token",
+          "username=" + username + "&password=" + password
+        );
+        var access_token = response.data.access_token;
+      }
       this.amOnPage(navigate + "?token=" + access_token);
+      return access_token;
     },
 
     wipeout: function(path) {
