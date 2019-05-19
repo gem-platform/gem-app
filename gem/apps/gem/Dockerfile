@@ -1,12 +1,14 @@
 FROM tiangolo/uvicorn-gunicorn-fastapi:python3.7-alpine3.8
 
 # Install dependencies openssl-dev
+COPY Pipfile /app/Pipfile
+COPY Pipfile.lock /app/Pipfile.lock
 RUN apk --no-cache add alpine-sdk gcc libffi-dev python3-dev postgresql-dev && \
-    pip install pipenv --no-cache-dir
+    pip install pipenv --no-cache-dir && \
+    pipenv install --system --dev
 
 # Install app
 COPY . /app
-RUN pipenv install --system --dev
 COPY prestart.sh /app/prestart.sh
 ENV PORT=9000
 
