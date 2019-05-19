@@ -4,5 +4,5 @@
 echo "wait for DB to be running..."
 sleep 10
 
-# Mmgrate
+# Migrate
 PYTHONPATH=. alembic upgrade head

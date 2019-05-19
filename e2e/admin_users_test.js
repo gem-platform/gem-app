@@ -4,12 +4,15 @@ Feature("Admin/Users");
 
 const name = "Krishna das";
 const usersPage = require("./pages/admin/users/admin_users_page");
+var tokenCache = undefined;
 
-Before(I => {
-  I.amOnPage("/");
-  I.login("Secretary", "secret");
-  I.waitForText("Welcome");
-  usersPage.open();
+Before(async I => {
+  tokenCache = await I.loginFast(
+    "Secretary",
+    "secret",
+    "/admin/users",
+    tokenCache
+  );
 
   // Wait for data loaded
   I.waitForElement(usersPage.usersTable.root);
