@@ -73,6 +73,12 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
+    // Set token if it is provided as a query string
+    // Works only for development environment
+    if (to.query.token && process.env.NODE_ENV === "development") {
+      Auth.setToken(to.query.token.toString());
+    }
+
     if (!Auth.isAuthenticated) {
       next("/login");
       return;

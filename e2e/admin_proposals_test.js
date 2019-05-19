@@ -4,19 +4,20 @@ Feature("Admin/Proposals");
 
 const proposalTitle = "Proposal";
 const proposalsPage = require("./pages/admin/proposals/admin_proposals_page");
+var tokenCache = undefined;
 
-Before(I => {
+Before(async I => {
   I.amOnPage("/");
-  I.login("Secretary", "secret");
-  I.waitForText("Welcome");
-  proposalsPage.open();
+  tokenCache = await I.loginFast(
+    "Secretary",
+    "secret",
+    "/admin/proposals",
+    tokenCache
+  );
 
   // Wait for data loaded
   I.waitForElement(proposalsPage.proposalsTable.root);
   proposalsPage.createProposal(proposalTitle);
-  // within(proposalsPage.proposalsTable.root, () => {
-  //   I.waitForText("Secretary");
-  // });
 });
 
 Scenario("I can create a new proposal", I => {
@@ -33,7 +34,9 @@ Scenario("I see the error message if proposal creation failed", I => {
 Scenario("I see snackbar message if operation was succeeded", () => {
   proposalsPage.snackbar.waitForOpen();
   proposalsPage.snackbar.contains("Proposal created/updated");
-}).tag("@proposal").tag("@snackbar");
+})
+  .tag("@proposal")
+  .tag("@snackbar");
 
 Scenario("I can delete proposal", I => {
   within(proposalsPage.proposalsTable.root, function() {
@@ -51,4 +54,6 @@ Scenario("I see notification when proposal deleted", () => {
   proposalsPage.confirmDialog.confirm();
   proposalsPage.snackbar.waitForOpen();
   proposalsPage.snackbar.contains("Proposal deleted");
-}).tag("@proposal").tag("@snackbar");
+})
+  .tag("@proposal")
+  .tag("@snackbar");

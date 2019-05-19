@@ -2,14 +2,17 @@
 
 Feature("Admin/Users");
 
-const username = "Krishna das";
+const name = "Krishna das";
 const usersPage = require("./pages/admin/users/admin_users_page");
+var tokenCache = undefined;
 
-Before(I => {
-  I.amOnPage("/");
-  I.login("Secretary", "secret");
-  I.waitForText("Welcome");
-  usersPage.open();
+Before(async I => {
+  tokenCache = await I.loginFast(
+    "Secretary",
+    "secret",
+    "/admin/users",
+    tokenCache
+  );
 
   // Wait for data loaded
   I.waitForElement(usersPage.usersTable.root);
@@ -19,9 +22,9 @@ Before(I => {
 });
 
 Scenario("I can create a new user", I => {
-  usersPage.createUser(username);
+  usersPage.createUser(name);
   within(usersPage.usersTable.root, function() {
-    I.see(username);
+    I.see(name);
   });
 });
 
@@ -31,20 +34,20 @@ Scenario("I see the error message if user creation failed", I => {
 });
 
 Scenario("I see snackbar message if operation was succeeded", () => {
-  usersPage.createUser(username);
+  usersPage.createUser(name);
   usersPage.snackbar.waitForOpen();
   usersPage.snackbar.contains("User created/updated");
 }).tag("@snackbar");
 
 Scenario("I can delete user", I => {
-  usersPage.createUser(username);
+  usersPage.createUser(name);
   within(usersPage.usersTable.root, function() {
-    usersPage.usersTable.delete(username);
+    usersPage.usersTable.delete(name);
   });
   usersPage.confirmDialog.confirm();
   within(usersPage.usersTable, function() {
-    usersPage.usersTable.waitForDetached(username);
-    I.dontSee(username);
+    usersPage.usersTable.waitForDetached(name);
+    I.dontSee(name);
   });
 });
 

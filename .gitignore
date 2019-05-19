@@ -13,8 +13,12 @@ e2e/*.local.js
 # LOG FILES
 npm-debug.log*
 
+# VS Code
+.vscode
+
 # Idea
-.idea
+.idea/
+.idea/httpRequests
 gem/apps/gem/routes/*.http
 
 # VS Code
@@ -23,3 +27,6 @@ gem/apps/gem/routes/*.http
 # Any persistent data like:
 # db, ssl keys, media files
 .data
+
+# env folders
+venv/

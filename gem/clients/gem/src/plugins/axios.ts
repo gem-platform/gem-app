@@ -20,7 +20,7 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(undefined, err => {
   return new Promise((resolve, reject) => {
     if (
-      (err.response.status === 401 || err.response.status === 403) &&
+      err.response.status === 401 &&
       err.response.config &&
       !err.response.config.__isRetryRequest &&
       store.getters["auth/isAuthenticated"]

@@ -24,10 +24,10 @@ module.exports = {
     I.waitForVisible(this.editDialog.root);
   },
 
-  createUser(username, waitForClose = true) {
+  createUser(name, waitForClose = true) {
     this.clickCreateUser();
     within(this.editDialog.root, () => {
-      this.editDialog.submit(username);
+      this.editDialog.submit(name);
     });
     if (waitForClose) {
       I.waitForInvisible(this.editDialog.root);
