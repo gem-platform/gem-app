@@ -40,5 +40,6 @@ def downgrade():
     session.query(Role).filter(Role.id == 0).delete()
     session.query(Role).filter(Role.id == 1).delete()
     session.query(Role).filter(Role.id == 2).delete()
+    session.query(Role).filter(Role.id == 3).delete()
 
     session.commit()
