@@ -48,3 +48,8 @@ export const EmptyUser: User = new User({
 export interface IRole extends IEntity {
   name: string;
 }
+
+export interface IOperationResult {
+  message: string;
+  data: any;
+}

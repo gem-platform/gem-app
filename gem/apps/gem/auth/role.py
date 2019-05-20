@@ -5,7 +5,7 @@ from starlette.exceptions import HTTPException
 from starlette.status import HTTP_403_FORBIDDEN
 
 
-class RoleChecker:
+class AuthenticatedUser:
     """
     Checking user role & permissions
     """
@@ -16,9 +16,9 @@ class RoleChecker:
     def __call__(self, user: User = Depends(auth.get_current_active_user)):
         permissions = user.role.permissions
         if self.is_super_user(permissions):
-            return True
+            return user
         self.check_permissions(permissions)
-        return True
+        return user
 
     def is_super_user(self, permissions):
         return "all" in permissions and permissions["all"] == 1

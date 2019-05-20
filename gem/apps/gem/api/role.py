@@ -7,3 +7,8 @@ class Role(BaseModel):
         "", title="Name of the role",
         min_length=3, max_length=24
     )
+
+
+class RoleOut(BaseModel):
+    oid: int = 0
+    name: str = ""

@@ -66,22 +66,28 @@ When("I set a name for {string} as {string}", async (name, newName) => {
     throw Error("No user found");
   }
 
-  user.full_name = newName;
+  user.name = newName;
 
   const url = "/users/" + user.oid;
   context.response = (await I.sendPutRequest(url, user, context.headers)).data;
 });
 
 Given("{string} with password {string} exist", async (name, password) => {
+  // Login as admin to be able to create new user
+  const response = (await I.sendPostRequest(
+    "/auth/token",
+    "username=admin&password=secret"
+  )).data;
+
+  // Create a new user
   const res = await I.sendPostRequest(
     "/users/",
     {
       name: name,
-      full_name: name,
       email: name + "@test.com",
       password: password
     },
-    context.headers
+    { Authorization: "Bearer " + response.access_token }
   );
   context.users[name] = res.data;
 });

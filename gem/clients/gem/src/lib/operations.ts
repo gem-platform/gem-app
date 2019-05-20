@@ -11,6 +11,7 @@ export class Operation {
   public state: OperationState;
   public message: string;
   public data: any;
+  public response: any = [];
 
   constructor(
     state: OperationState = OperationState.NotStarted,
@@ -25,6 +26,7 @@ export class Operation {
   public clear() {
     this.message = "";
     this.state = OperationState.NotStarted;
+    this.response = [];
   }
 
   public startConfirmation(data?: any) {
@@ -41,11 +43,13 @@ export class Operation {
   public succeed(message: string = "") {
     this.message = message;
     this.state = OperationState.Succeeded;
+    this.response = [];
   }
 
-  public fail(message: string = "") {
+  public fail(message: string = "", detail?: any) {
     this.message = message;
     this.state = OperationState.Failed;
+    this.response = detail;
   }
 
   public cancel() {

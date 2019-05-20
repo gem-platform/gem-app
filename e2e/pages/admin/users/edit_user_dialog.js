@@ -4,6 +4,7 @@ module.exports = {
   root: "[data-ref='edit-user-dialog']",
   fields: {
     name: "[aria-label='Name']",
+    password: "[aria-label='Password']",
     email: "[aria-label='Email']"
   },
   buttons: {
@@ -11,8 +12,9 @@ module.exports = {
     changePassword: "[data-ref='change-password']"
   },
 
-  submit(name) {
+  submit(name, password="password") {
     I.fillField(this.fields.name, name);
+    I.fillField(this.fields.password, password);
     I.click(this.buttons.save);
   },
 
