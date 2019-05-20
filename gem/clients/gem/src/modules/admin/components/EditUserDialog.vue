@@ -91,7 +91,7 @@ export default class EditUserDialog extends mixins(ValidationMixin) {
   }
 
   public get validationErrors() {
-    return this.operation.response;
+    return this.operation ? this.operation.response : [];
   }
 }
 </script>
