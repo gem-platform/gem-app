@@ -1,16 +1,18 @@
-from sqlalchemy.orm import Session
-from starlette.middleware.cors import CORSMiddleware
 from datetime import datetime, timedelta
-from fastapi import Depends, FastAPI, HTTPException, Security, APIRouter
+
+from fastapi import APIRouter, Depends, FastAPI, HTTPException, Security
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from jwt import PyJWTError, encode, decode
+from jwt import PyJWTError, decode, encode
 from passlib.context import CryptContext
 from pydantic import BaseModel
+from sqlalchemy.orm import Session
+from starlette.middleware.cors import CORSMiddleware
 from starlette.requests import Request
 from starlette.status import HTTP_403_FORBIDDEN
-from db import models, get_db
 
-from api.user import User
+from api.user import UserOut
+from db import get_db, models
+from mappers.user import model2user
 
 # to get a string like this run:
 # openssl rand -hex 32
@@ -92,6 +94,6 @@ async def route_login_access_token(form_data: OAuth2PasswordRequestForm = Depend
     return {"access_token": access_token, "token_type": "bearer"}
 
 
-@router.get("/me", response_model=User)
-async def read_users_me(current_user: User = Depends(get_current_active_user)):
-    return current_user
+@router.get("/me", response_model=UserOut)
+async def read_users_me(current_user: models.User = Depends(get_current_active_user)):
+    return model2user(current_user)

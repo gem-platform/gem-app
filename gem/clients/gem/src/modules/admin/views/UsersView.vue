@@ -134,7 +134,7 @@ export default class AdminUsersView extends Vue {
   }
 
   private onCreateClicked() {
-    UsersStore.openEditDialog({ ...EmptyUser, role_id: 0 });
+    UsersStore.openEditDialog({ ...EmptyUser });
   }
 
   private onDeleteClicked(user: IUser) {

@@ -16,8 +16,14 @@
       >
     </template>
 
-    <v-flex xs12 sm6>
-      <v-text-field v-model="user.name" label="Name" required ref="name" />
+    <v-flex xs12 sm6 data-ref="name-block">
+      <v-text-field
+        v-model="user.name"
+        label="Name"
+        required
+        ref="name"
+        :error-messages="validationMessage('body.user.name', validationErrors)"
+      />
     </v-flex>
     <v-flex xs12 sm3>
       <v-combobox label="Form of address" :items="formsOfAddress" />
@@ -28,9 +34,9 @@
     <v-flex xs12>
       <v-text-field v-model="user.email" label="Email" ref="email" required />
     </v-flex>
-    <v-flex xs12>
+    <v-flex xs12 data-ref="role-block">
       <v-select
-        v-model="user.role_id"
+        v-model="user.role.oid"
         :items="roles"
         label="Role"
         item-text="name"
@@ -38,18 +44,31 @@
         required
       ></v-select>
     </v-flex>
+    <v-flex xs12 v-if="isNew" data-ref="password-block">
+      <v-text-field
+        v-model="user.password"
+        label="Password"
+        ref="password"
+        required
+        :error-messages="
+          validationMessage('body.user.password', validationErrors)
+        "
+      />
+    </v-flex>
   </edit-dialog>
 </template>
 
 <script lang="ts">
 import { Operation } from "@/lib/operations";
 import { IUser } from "@/modules/types.ts";
+import { mixins } from "vue-class-component";
 import { Component, Emit, Model, Prop, Vue } from "vue-property-decorator";
 import { EmptyUser } from "../../types";
+import ValidationMixin from "../mixins/ValidationMixin";
 import EditDialog from "./EditDialog.vue";
 
 @Component({ components: { EditDialog } })
-export default class EditUserDialog extends Vue {
+export default class EditUserDialog extends mixins(ValidationMixin) {
   @Prop({ default: () => EmptyUser }) public readonly user!: IUser;
   @Prop({ default: false }) public visible!: boolean;
   @Prop({}) public readonly operation!: Operation;
@@ -69,6 +88,10 @@ export default class EditUserDialog extends Vue {
 
   get isNew(): boolean {
     return this.user.oid === -1;
+  }
+
+  public get validationErrors() {
+    return this.operation ? this.operation.response : [];
   }
 }
 </script>
