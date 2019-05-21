@@ -8,7 +8,7 @@ export interface IUser extends IEntity {
   name: string;
   email: string;
   disabled: boolean;
-  role_id: number;
+  role: IRole;
 }
 
 export class User implements IUser {
@@ -16,14 +16,14 @@ export class User implements IUser {
   public name: string = "";
   public email: string = "";
   public disabled: boolean = false;
-  public role_id: number = -1;
+  public role: IRole = { oid: 0, name: "" };
 
   constructor(data: IUser) {
     this.oid = data.oid;
     this.name = data.name;
     this.email = data.email;
     this.disabled = data.disabled;
-    this.role_id = data.role_id;
+    this.role = data.role;
   }
 
   get fullName(): string {
@@ -60,7 +60,10 @@ export const EmptyUser: User = new User({
   email: "",
   name: "",
   oid: -1,
-  role_id: -1
+  role: {
+    name: "",
+    oid: 0
+  }
 });
 
 export const EmptyProposal: IProposal = {
@@ -81,4 +84,9 @@ export const EmptyEvent: IEvent = {
 
 export interface IRole extends IEntity {
   name: string;
+}
+
+export interface IOperationResult {
+  message: string;
+  data: any;
 }

@@ -2,7 +2,6 @@ from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Schema, validator
 
 from api.event import Event
-from api.user import User
 from db import models, session_scope
 from mappers.event import event2model, model2event
 
@@ -14,7 +13,7 @@ router = APIRouter()
 @router.post("/")
 async def create_event(
         event: Event,
-        current_user: User = Depends(get_current_active_user)) -> models.Event:
+        current_user: models.User = Depends(get_current_active_user)) -> models.Event:
     """Create new event using specified data."""
     with session_scope() as s:
         event_db = event2model(event, s)
@@ -27,7 +26,7 @@ async def create_event(
 async def update_event(
         oid: int,
         event: Event,
-        current_user: User = Depends(get_current_active_user)):
+        current_user: models.User = Depends(get_current_active_user)):
     """Update proposal"""
     with session_scope() as s:
         event_db = s.query(models.Event).filter_by(
@@ -52,7 +51,7 @@ async def update_event(
 @router.delete("/{oid}")
 async def delete_event(
         oid: int,
-        current_user: User = Depends(get_current_active_user)):
+        current_user: models.User = Depends(get_current_active_user)):
     """Delete proposal using specified ID."""
     with session_scope() as s:
         event_db = s.query(models.Event).filter_by(
@@ -65,7 +64,7 @@ async def delete_event(
 
 @router.get("/")
 async def fetch_events_list(
-        current_user: User = Depends(get_current_active_user)):
+        current_user: models.User = Depends(get_current_active_user)):
     """Fetch list of proposals"""
     with session_scope() as s:
         events = s.query(models.Event).all()  # type: models.Event
@@ -75,7 +74,7 @@ async def fetch_events_list(
 @router.get("/{oid}")
 async def fetch_event(
         oid: int,
-        current_user: User = Depends(get_current_active_user)):
+        current_user: models.User = Depends(get_current_active_user)):
     with session_scope() as s:
         event_db = s.query(models.Event).filter_by(
             id=oid).first()  # type: models.Event

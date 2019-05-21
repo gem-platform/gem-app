@@ -8,7 +8,13 @@ import {
   Mutation,
   VuexModule
 } from "vuex-module-decorators";
-import { EmptyUser, IChangePassword, IUser, User } from "../../types";
+import {
+  EmptyUser,
+  IChangePassword,
+  IOperationResult,
+  IUser,
+  User
+} from "../../types";
 import UsersService from "../services/users";
 
 const service = new UsersService();
@@ -126,11 +132,15 @@ export default class UsersStoreModule extends VuexModule {
       return user;
     } catch (err) {
       const message =
-        (err.response.data.detail instanceof Array
-          ? err.response.data.detail[0].msg
-          : err.message) || "Can't save user";
-      log({ message });
-      this.saveUserFailed(message);
+        err.response.status !== 422
+          ? err.response.data.detail instanceof String
+            ? err.response.data.detail
+            : err.message
+          : "Validation failed";
+      this.saveUserFailed({
+        data: err.response.data.detail,
+        message
+      });
     }
   }
 
@@ -138,8 +148,8 @@ export default class UsersStoreModule extends VuexModule {
     this.operations.save.start();
   }
 
-  @Mutation private saveUserFailed(error: string) {
-    this.operations.save.fail(error);
+  @Mutation private saveUserFailed({ message, data }: IOperationResult) {
+    this.operations.save.fail(message, data);
   }
 
   /** User has been successfully created. */

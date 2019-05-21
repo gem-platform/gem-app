@@ -1,26 +1,28 @@
 from db import models
-from api.user import User
+from api.user import UserOut, UserIn
+from passlib.context import CryptContext
+from mappers.role import model2role
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
-def map_model_to_user(model: models.User) -> User:
-    user = User(
+def model2user(model: models.User) -> UserOut:
+    user = UserOut(
         oid=model.id,
         name=model.name,
-        full_name=model.full_name,
         email=model.email,
         disabled=model.disabled,
-        role_id=model.role_id
+        role=model2role(model.role)
     )
     return user
 
 
-def map_user_to_model(user: User) -> models.User:
-    model = models.User(
-        name=user.name,
-        email=user.email,
-        disabled=user.disabled,
-        role_id=user.role_id
-    )
-    if user.oid > 0:
-        model.id = user.oid
-    return model
+def user2model(user: UserIn, model: models.User = None) -> models.User:
+    result = model if model else models.User()
+    result.name = user.name
+    result.email = user.email
+    result.disabled = user.disabled
+    result.role_id = user.role_id
+    if hasattr(user, "password") and user.password:
+        result.hashed_password = pwd_context.hash(user.password)
+    return result

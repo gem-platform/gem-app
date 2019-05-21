@@ -1,9 +1,9 @@
 from db import models
-from api.role import Role
+from api.role import Role, RoleOut
 
 
-def model2role(model: models.Role) -> Role:
-    return Role(
+def model2role(model: models.Role) -> RoleOut:
+    return RoleOut(
         oid=model.id,
         name=model.name
     )

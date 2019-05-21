@@ -18,4 +18,9 @@ export default class UsersService extends CrudService<IUser> {
     const res = await Axios.put(url, { password });
     return res.data;
   }
+
+  protected transformOut(entity: IUser): any {
+    // transform role into role_id
+    return { ...entity, role_id: entity.role.oid, role: undefined };
+  }
 }

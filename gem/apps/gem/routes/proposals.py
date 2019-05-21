@@ -2,7 +2,6 @@ from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Schema
 
 from api.proposal import Proposal
-from api.user import User
 from db import models, session_scope
 from mappers.proposal import map_model_to_proposal, map_proposal_to_model
 
@@ -14,7 +13,7 @@ router = APIRouter()
 @router.post("/")
 async def create_proposal(
         proposal: Proposal,
-        current_user: User = Depends(get_current_active_user)) -> models.Proposal:
+        current_user: models.User = Depends(get_current_active_user)) -> models.Proposal:
     """Create new proposal using specified data."""
     with session_scope() as s:
         proposal_db = map_proposal_to_model(proposal)
@@ -27,7 +26,7 @@ async def create_proposal(
 async def update_proposal(
         oid: int,
         proposal: Proposal,
-        current_user: User = Depends(get_current_active_user)):
+        current_user: models.User = Depends(get_current_active_user)):
     """Update proposal"""
     with session_scope() as s:
         proposal_db = s.query(models.Proposal).filter_by(
@@ -45,7 +44,7 @@ async def update_proposal(
 @router.delete("/{oid}")
 async def delete_proposal(
         oid: int,
-        current_user: User = Depends(get_current_active_user)):
+        current_user: models.User = Depends(get_current_active_user)):
     """Delete proposal using specified ID."""
     with session_scope() as s:
         proposal_db = s.query(models.Proposal).filter_by(
@@ -59,7 +58,7 @@ async def delete_proposal(
 
 @router.get("/")
 async def fetch_proposals_list(
-        current_user: User = Depends(get_current_active_user)):
+        current_user: models.User = Depends(get_current_active_user)):
     """Fetch list of proposals"""
     with session_scope() as s:
         proposals = s.query(models.Proposal).all()  # type: models.Proposal
@@ -69,7 +68,7 @@ async def fetch_proposals_list(
 @router.get("/{oid}")
 async def fetch_proposal(
         oid: int,
-        current_user: User = Depends(get_current_active_user)):
+        current_user: models.User = Depends(get_current_active_user)):
     """Fetch list of proposals"""
     with session_scope() as s:
         proposal_db = s.query(models.Proposal).filter_by(
@@ -82,7 +81,7 @@ async def fetch_proposal(
 @router.post("/{oid}/lock")
 async def lock_proposal(
         oid: int,
-        current_user: User = Depends(get_current_active_user)):
+        current_user: models.User = Depends(get_current_active_user)):
     """Create new proposal using specified data."""
     with session_scope() as s:
         proposal_db = s.query(models.Proposal).filter_by(
