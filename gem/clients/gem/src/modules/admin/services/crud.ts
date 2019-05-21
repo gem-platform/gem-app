@@ -22,7 +22,9 @@ export default class CrudService<T extends IEntity> {
    * @returns Created entity.
    */
   public async create(entity: T): Promise<T> {
-    return (await Axios.post(this.url + "/", this.transform(entity))).data;
+    const url = this.url + "/";
+    const entityToSend = this.transformOut(entity);
+    return (await Axios.post(url, entityToSend)).data;
   }
 
   /**
@@ -31,10 +33,9 @@ export default class CrudService<T extends IEntity> {
    * @returns Updated entity.
    */
   public async update(entity: T): Promise<T> {
-    return (await Axios.put(
-      this.url + "/" + entity.oid,
-      this.transform(entity)
-    )).data;
+    const url = this.url + "/" + entity.oid;
+    const entityToSend = this.transformOut(entity);
+    return (await Axios.put(url, entityToSend)).data;
   }
 
   /**
@@ -42,7 +43,8 @@ export default class CrudService<T extends IEntity> {
    * @returns List of entities.
    */
   public async fetch(): Promise<T[]> {
-    return (await Axios.get(this.url)).data;
+    const entities = (await Axios.get(this.url)).data;
+    return entities.map((x: any) => this.transformIn(x));
   }
 
   /**
@@ -51,14 +53,25 @@ export default class CrudService<T extends IEntity> {
    * @returns Removed entity.
    */
   public async delete(entity: T): Promise<T> {
-    return (await Axios.delete(this.url + "/" + entity.oid)).data;
+    const url = this.url + "/" + entity.oid;
+    return (await Axios.delete(url)).data;
   }
 
   /**
-   * Transforms entity.
+   * Transforms entity before send.
    * @param entity Entity to transform.
+   * @returns Transformed entity.
    */
-  protected transform(entity: T): any {
+  protected transformOut(entity: T): any {
+    return entity;
+  }
+
+  /**
+   * Transforms entity after receive.
+   * @param entity Entity to transform.
+   * @returns Transformed entity.
+   */
+  protected transformIn(entity: any): T {
     return entity;
   }
 }

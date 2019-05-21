@@ -19,7 +19,7 @@ export default class UsersService extends CrudService<IUser> {
     return res.data;
   }
 
-  protected transform(entity: IUser): any {
+  protected transformOut(entity: IUser): any {
     // transform role into role_id
     return { ...entity, role_id: entity.role.oid, role: undefined };
   }
