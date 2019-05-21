@@ -16,7 +16,7 @@
       >
     </template>
 
-    <v-flex xs12 sm6>
+    <v-flex xs12 sm6 data-ref="name-block">
       <v-text-field
         v-model="user.name"
         label="Name"
@@ -34,9 +34,9 @@
     <v-flex xs12>
       <v-text-field v-model="user.email" label="Email" ref="email" required />
     </v-flex>
-    <v-flex xs12>
+    <v-flex xs12 data-ref="role-block">
       <v-select
-        v-model="user.role_id"
+        v-model="user.role.oid"
         :items="roles"
         label="Role"
         item-text="name"
@@ -44,7 +44,7 @@
         required
       ></v-select>
     </v-flex>
-    <v-flex xs12 v-if="isNew">
+    <v-flex xs12 v-if="isNew" data-ref="password-block">
       <v-text-field
         v-model="user.password"
         label="Password"

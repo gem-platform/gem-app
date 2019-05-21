@@ -4,17 +4,7 @@ const I = require("../steps_file")();
 const context = require("./_context.js");
 
 When("I create user {string}", async name => {
-  const res = await I.sendPostRequest(
-    "/users/",
-    {
-      name: name,
-      email: name + "@test.com",
-      password: "password",
-      role_id: 1
-    },
-    context.headers
-  );
-  context.users[name] = res.data;
+  context.response = await createUser({ name }, context.token);
 });
 
 When("I delete user {string}", name => {
@@ -80,14 +70,23 @@ Given("{string} with password {string} exist", async (name, password) => {
   )).data;
 
   // Create a new user
+  context.response = await createUser(
+    { name, password },
+    response.access_token
+  );
+});
+
+async function createUser({ name, role_id = 0, password = "password" }, token) {
   const res = await I.sendPostRequest(
     "/users/",
     {
-      name: name,
+      name,
       email: name + "@test.com",
-      password: password
+      password,
+      role_id
     },
-    { Authorization: "Bearer " + response.access_token }
+    { Authorization: "Bearer " + token }
   );
-  context.users[name] = res.data;
-});
+  context.users[name] = { ...res.data, role_id: res.data.role.oid };
+  return res;
+}

@@ -22,25 +22,25 @@ Before(async I => {
 });
 
 Scenario("I can create a new user", I => {
-  usersPage.createUser(name);
+  usersPage.createUser({ name });
   within(usersPage.usersTable.root, function() {
     I.see(name);
   });
 });
 
 Scenario("I see the error message if user creation failed", I => {
-  usersPage.createUser("", false);
+  usersPage.createUser({ name: "" }, false);
   I.waitForVisible(usersPage.editDialog.root + " .error");
 });
 
 Scenario("I see snackbar message if operation was succeeded", () => {
-  usersPage.createUser(name);
+  usersPage.createUser({ name });
   usersPage.snackbar.waitForOpen();
   usersPage.snackbar.contains("User created/updated");
 }).tag("@snackbar");
 
 Scenario("I can delete user", I => {
-  usersPage.createUser(name);
+  usersPage.createUser({ name });
   within(usersPage.usersTable.root, function() {
     usersPage.usersTable.delete(name);
   });
@@ -144,3 +144,37 @@ Scenario("I see empty password field after reopen", async I => {
   );
   if (value) throw Error("Password field is not empty");
 }).tag("@change-password");
+
+Scenario("I see validation error for password field", I => {
+  usersPage.createUser({ name: "Gita Govinda dd", password: "" }, false);
+  within(usersPage.editDialog.blocks.password, function() {
+    I.see("ensure this value has at least 6 characters");
+  });
+}).tag("@validation");
+
+Scenario("I see validation error for name field", I => {
+  usersPage.createUser({ name: "-", password: "1234567890" }, false);
+  within(usersPage.editDialog.blocks.name, function() {
+    I.see("ensure this value has at least 3 characters");
+  });
+}).tag("@validation");
+
+Scenario("I can change a role for user", I => {
+  const user = {
+    name: "Sakshi Gopal das",
+    password: "1234567890",
+    role: "Admin"
+  };
+
+  // create user
+  usersPage.createUser(user, false);
+  within(usersPage.usersTable.root, function() {
+    I.waitForText(user.name);
+  });
+
+  // see same role at edit page
+  usersPage.usersTable.clickEdit(user.name);
+  within(usersPage.editDialog.blocks.role, function() {
+    I.see(user.role);
+  });
+}).tag("@role");

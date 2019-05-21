@@ -22,7 +22,7 @@ export default class CrudService<T extends IEntity> {
    * @returns Created entity.
    */
   public async create(entity: T): Promise<T> {
-    return (await Axios.post(this.url + "/", entity)).data;
+    return (await Axios.post(this.url + "/", this.transform(entity))).data;
   }
 
   /**
@@ -31,7 +31,10 @@ export default class CrudService<T extends IEntity> {
    * @returns Updated entity.
    */
   public async update(entity: T): Promise<T> {
-    return (await Axios.put(this.url + "/", entity)).data;
+    return (await Axios.put(
+      this.url + "/" + entity.oid,
+      this.transform(entity)
+    )).data;
   }
 
   /**
@@ -49,5 +52,13 @@ export default class CrudService<T extends IEntity> {
    */
   public async delete(entity: T): Promise<T> {
     return (await Axios.delete(this.url + "/" + entity.oid)).data;
+  }
+
+  /**
+   * Transforms entity.
+   * @param entity Entity to transform.
+   */
+  protected transform(entity: T): any {
+    return entity;
   }
 }

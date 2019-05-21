@@ -9,7 +9,7 @@ class UserIn(BaseModel):
     )
     email: str = ""
     disabled: bool = False
-    role_id: int = 0
+    role_id: int
 
 
 class UserCreate(UserIn):
