@@ -45,3 +45,8 @@ Feature: Manage accounts
     And I set a name for "Krishna" as "Krishna das"
     And I log in as "Krishna das" / "keep_password"
     Then I logged in as "Krishna das"
+
+  @role
+  Scenario: Secretary can change a role
+    When I set a role for "Krishna" as "GBC"
+    Then Role of a "Krishna" is "GBC"

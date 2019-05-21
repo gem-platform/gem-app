@@ -72,6 +72,16 @@ async def fetch_users_list(
     return list(map(model2user, users))
 
 
+@router.get("/{oid}")
+async def fetch_user(
+        oid: int,
+        current_user: models.User = Depends(user_with_users_access),
+        session: Session = Depends(get_db)):
+    """Get user."""
+    user = __get_user(session, oid)
+    return model2user(user)
+
+
 @router.put("/{oid}/changePassword")
 async def change_password(
         oid: int,
