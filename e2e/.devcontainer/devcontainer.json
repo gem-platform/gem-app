@@ -1,0 +1,14 @@
+{
+  "name": "GEM e2e",
+  "dockerComposeFile": [
+    "../../gem/docker-compose.yml",
+    "./docker-compose.yml"
+  ],
+  "service": "e2e",
+  "workspaceFolder": "/tests",
+  "shutdownAction": "stopCompose",
+  "appPort": 8080,
+  "extensions": [
+    "actboy168.tasks"
+  ]
+}
