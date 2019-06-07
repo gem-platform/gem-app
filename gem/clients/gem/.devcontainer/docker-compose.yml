@@ -1,0 +1,6 @@
+version: "3"
+services:
+  gem-client:
+    volumes:
+      - ./clients/gem:/workspaces/gem-client
+    command: sleep infinity

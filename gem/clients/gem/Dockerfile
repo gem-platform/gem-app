@@ -1,15 +1,15 @@
-FROM node:11.13.0-alpine
+FROM node:12.4.0-stretch-slim
 
 # Install all the dependences
-WORKDIR /usr/src/lib
+WORKDIR /tmp/build
 COPY package.json .
 RUN npm install && \
-    mkdir -p /usr/src/app && \
-    mv /usr/src/lib/node_modules /usr/src/app/
+    mkdir -p /workspaces/gem-client && \
+    mv /tmp/build/node_modules /workspaces/gem-client
 
 # Copy sources
-WORKDIR /usr/src/app
-COPY . /usr/src/app
+WORKDIR /workspaces/gem-client
+COPY . .
 
 # Run app
 CMD ["npm",  "run", "serve", "--port $GEM_CLIENT_PORT"]

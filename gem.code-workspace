@@ -1,71 +1,7 @@
 {
-  "folders": [
-    {
-      "name": "GEM Client",
-      "path": "gem/clients/gem"
-    },
-    {
-      "name": "Documentation",
-      "path": "doc"
-    },
-    {
-      "name": "GEM App",
-      "path": "gem/apps/gem"
-    },
-    {
-      "name": "E2E Tests",
-      "path": "e2e"
-    }
-  ],
-  "extensions": {
-    "recommendations": [
-      "ms-python.python",
-      "mubaidr.vuejs-extension-pack",
-      "msjsdiag.debugger-for-chrome",
-      "mikestead.dotenv",
-      "PeterJausovec.vscode-docker",
-      "aaron-bond.better-comments",
-      "esbenp.prettier-vscode",
-      "njpwerner.autodocstring",
-      "samuelcolvin.jinjahtml",
-      "prograhammer.tslint-vue"
-    ]
-  },
-  "settings": {
-    "files.exclude": {
-      "**/.git": true,
-      "**/.svn": true,
-      "**/.hg": true,
-      "**/CVS": true,
-      "**/.DS_Store": true,
-      "**/node_modules": true,
-      "**/coverage": true,
-      "**/__pycache__": true
-    },
-    "eslint.autoFixOnSave": true,
-    "eslint.validate": [
-      {
-        "autoFix": true,
-        "language": "javascript"
-      },
-      {
-        "autoFix": true,
-        "language": "vue"
-      },
-      {
-        "autoFix": true,
-        "language": "typescript"
-      }
-    ],
-    "cSpell.words": [
-      "Serializers",
-      "Vuetify",
-      "cors",
-      "pydantic",
-      "snackbar",
-      "socketio",
-      "uvicorn",
-      "vuex"
-    ]
-  }
+	"folders": [
+		{
+			"path": "."
+		}
+	]
 }

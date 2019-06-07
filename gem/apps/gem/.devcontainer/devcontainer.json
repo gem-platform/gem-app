@@ -1,0 +1,10 @@
+{
+  "name": "GEM App",
+  "dockerComposeFile": ["../../../docker-compose.yml", "docker-compose.yml"],
+  "service": "gem-app",
+  "workspaceFolder": "/app",
+  "shutdownAction": "stopCompose",
+  "appPort": 9000,
+  "extensions": ["actboy168.tasks", "ms-python.python"],
+  "postCreateCommand": "pipenv install --dev"
+}
