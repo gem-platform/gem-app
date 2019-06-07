@@ -4,11 +4,11 @@ FROM node:12.4.0-stretch-slim
 WORKDIR /tmp/build
 COPY package.json .
 RUN npm install && \
-    mkdir -p /workspaces/gem-app && \
-    mv /tmp/build/node_modules /workspaces/gem-app
+    mkdir -p /workspaces/gem-client && \
+    mv /tmp/build/node_modules /workspaces/gem-client
 
 # Copy sources
-WORKDIR /workspaces/gem-app
+WORKDIR /workspaces/gem-client
 COPY . .
 
 # Run app

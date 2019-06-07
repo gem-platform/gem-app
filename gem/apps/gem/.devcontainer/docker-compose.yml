@@ -1,0 +1,10 @@
+version: "3"
+services:
+  # specific configuration for development environment
+  gem-app:
+    # do not start service
+    command: sleep infinity
+
+    # mount source code to the container
+    volumes:
+      - ./apps/gem:/app

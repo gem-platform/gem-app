@@ -1,0 +1,24 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Run GEM Web Client",
+      "promptOnClose": true,
+      "type": "npm",
+      "script": "serve",
+      "problemMatcher": []
+    },
+    {
+      "label": "Lint code",
+      "type": "npm",
+      "script": "lint",
+      "problemMatcher": ["$eslint-stylish"]
+    },
+    {
+      "label": "Run unit tests",
+      "type": "npm",
+      "script": "test:unit",
+      "problemMatcher": []
+    }
+  ]
+}
