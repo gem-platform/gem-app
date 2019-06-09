@@ -1,5 +1,10 @@
 {
   "python.linting.enabled": true,
   "python.linting.lintOnSave": true,
-  "python.pythonPath": "/root/.local/share/virtualenvs/app-4PlAip0Q/bin/python"
+  "python.pythonPath": "/root/.local/share/virtualenvs/app-4PlAip0Q/bin/python",
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/__pycache__": true
+  }
 }
