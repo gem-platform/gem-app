@@ -3,5 +3,18 @@
 		{
 			"path": "."
 		}
-	]
+	],
+	"extensions": {
+		"recommendations": [
+			"ms-vscode-remote.vscode-remote-extensionpack"
+		]
+	},
+	"settings": {
+		"files.exclude": {
+			"**/.git": true,
+			"**/.DS_Store": true,
+			"**/__pycache__": true,
+			"**/node_modules": true,
+		}
+	}
 }

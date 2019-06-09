@@ -1,9 +1,13 @@
 {
   "name": "GEM Web Client",
-  "dockerComposeFile": ["../../../docker-compose.yml", "./docker-compose.yml"],
+  "dockerComposeFile": [
+    "../../../docker-compose.yml",
+    "../../../docker-compose.dev.yml",
+    "./docker-compose.yml"
+  ],
   "service": "gem-client",
   "workspaceFolder": "/workspaces/gem-client",
-  "shutdownAction": "stopCompose",
+  "shutdownAction": "none",
   "appPort": 8080,
   "extensions": [
     "dbaeumer.vscode-eslint",
@@ -18,7 +22,12 @@
     "octref.vetur",
     "dariofuzinato.vue-peek",
     "mubaidr.vuejs-extension-pack",
-    "actboy168.tasks"
+    "actboy168.tasks",
+    "vscode-icons-team.vscode-icons"
   ],
-  "postCreateCommand": "npm install"
+  "postCreateCommand": "npm install",
+  "settings": {
+    "workbench.iconTheme": "vscode-icons",
+    "workbench.colorTheme": "Quiet Light"
+  }
 }
