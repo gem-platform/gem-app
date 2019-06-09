@@ -3,8 +3,17 @@
   "dockerComposeFile": ["../../../docker-compose.yml", "docker-compose.yml"],
   "service": "gem-app",
   "workspaceFolder": "/app",
-  "shutdownAction": "stopCompose",
+  "shutdownAction": "none",
   "appPort": 9000,
-  "extensions": ["actboy168.tasks", "ms-python.python"],
-  "postCreateCommand": "pipenv install --dev"
+  "extensions": [
+    "actboy168.tasks",
+    "ms-python.python",
+    "vscode-icons-team.vscode-icons",
+    "liviuschera.noctis"
+  ],
+  "postCreateCommand": "pipenv install --dev",
+  "settings": {
+    "workbench.iconTheme": "vscode-icons",
+    "workbench.colorTheme": "Noctis Viola"
+  }
 }
