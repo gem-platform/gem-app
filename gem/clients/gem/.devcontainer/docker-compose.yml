@@ -1,0 +1,14 @@
+version: "3"
+services:
+  gem-client:
+    # donot start client. We will start it
+    # by task "Run GEM Client"
+    command: sleep infinity
+    volumes:
+      - gem-client-vscode-server:/root/.vscode-server
+
+# mount to avoid vscode extension reinstalls
+# in case of some strange issues just remove 
+# docker volume rm gem_gem-client-vscode-server
+volumes:
+  gem-client-vscode-server:

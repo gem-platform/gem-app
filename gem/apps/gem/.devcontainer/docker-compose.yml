@@ -1,0 +1,15 @@
+version: "3"
+services:
+  gem-app:
+    # do not start service. We well
+    # start it by studio itself for debugging
+    # purposes
+    command: sleep infinity
+    volumes:
+      - gem-app-vscode-server:/root/.vscode-server
+
+# mount to avoid vscode extension reinstalls
+# in case of some strange issues just remove 
+# docker volume rm gem_gem-app-vscode-server
+volumes:
+  gem-app-vscode-server:

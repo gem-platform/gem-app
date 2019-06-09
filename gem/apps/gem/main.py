@@ -37,4 +37,7 @@ async def db_session_middleware(request: Request, call_next):
 
 
 if __name__ == "__main__":
-    run("main:app", host="0.0.0.0", port=9000, debug=True, reload=True)
+    # start app without hotreload. it's imposible to debug app
+    # with hot reload enabled, because app starts in another thread
+    run(app, host="0.0.0.0", port=9000)
+    # run("main:app", host="0.0.0.0", port=9000, debug=True, reload=True)

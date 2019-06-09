@@ -1,9 +1,6 @@
 exports.config = {
   output: "./output",
   helpers: {
-    Puppeteer: {
-      url: "http://localhost:8080"
-    },
     REST: {
       endpoint: "http://localhost:9000",
       defaultHeaders: {
@@ -13,6 +10,12 @@ exports.config = {
     },
     Cleaner: {
       require: "./cleaner_helper.js"
+    },
+    Puppeteer: {
+      url: "http://localhost:8080",
+      chrome: {
+        args: ["--no-sandbox"]
+      }
     }
   },
   include: {
