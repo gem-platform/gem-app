@@ -1,6 +1,10 @@
 {
   "name": "GEM App",
-  "dockerComposeFile": ["../../../docker-compose.yml", "docker-compose.yml"],
+  "dockerComposeFile": [
+    "../../../docker-compose.yml", 
+    "../../../docker-compose.dev.yml", 
+    "docker-compose.yml"
+  ],
   "service": "gem-app",
   "workspaceFolder": "/app",
   "shutdownAction": "none",
@@ -11,7 +15,7 @@
     "vscode-icons-team.vscode-icons",
     "liviuschera.noctis"
   ],
-  "postCreateCommand": "pipenv install --dev",
+  "postCreateCommand": "pipenv install --dev --system",
   "settings": {
     "workbench.iconTheme": "vscode-icons",
     "workbench.colorTheme": "Noctis Viola"

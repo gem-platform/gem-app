@@ -1,6 +1,10 @@
 {
   "name": "GEM Web Client",
-  "dockerComposeFile": ["../../../docker-compose.yml", "./docker-compose.yml"],
+  "dockerComposeFile": [
+    "../../../docker-compose.yml",
+    "../../../docker-compose.dev.yml",
+    "./docker-compose.yml"
+  ],
   "service": "gem-client",
   "workspaceFolder": "/workspaces/gem-client",
   "shutdownAction": "none",
