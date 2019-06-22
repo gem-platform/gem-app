@@ -18,12 +18,12 @@ npm-debug.log*
 .idea/httpRequests
 gem/apps/gem/routes/*.http
 
-# VS Code
-.vscode
-
 # Any persistent data like:
 # db, ssl keys, media files
 .data
 
 # env folders
 venv/
+
+# Python
+.pytest_cache
