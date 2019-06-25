@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-layout column>
       <!-- Control panel -->
-      <v-btn block outline @click="onCreateClicked" data-ref="create-new-user">
+      <v-btn block outline @click="onCreateClicked" data-ref="create-new">
         <v-icon dark>add</v-icon>Create
       </v-btn>
 

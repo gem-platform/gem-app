@@ -24,3 +24,6 @@ gem/apps/gem/routes/*.http
 
 # env folders
 venv/
+
+# Python
+.pytest_cache

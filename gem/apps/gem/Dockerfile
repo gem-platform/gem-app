@@ -1,10 +1,10 @@
 FROM tiangolo/uvicorn-gunicorn-fastapi:python3.7
 
 # Install pipenv and dependencies
-RUN pip install pipenv --no-cache-dir 
 COPY Pipfile* /app/
-RUN pipenv install --system
-
+RUN pip install pipenv --no-cache-dir && \
+    pipenv install --system && \
+    pipenv install --dev --system
 
 # Install app
 COPY . /app

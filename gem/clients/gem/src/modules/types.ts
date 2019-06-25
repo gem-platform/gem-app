@@ -31,6 +31,24 @@ export class User implements IUser {
   }
 }
 
+/** Proposal */
+export interface IProposal extends IEntity {
+  oid: number;
+  title: string;
+  content: string;
+  locked: boolean;
+}
+
+/** Event */
+export interface IEvent extends IEntity {
+  oid: number;
+  title: string;
+  agenda: string;
+  start: Date;
+  end: Date;
+  proposals: number[];
+}
+
 export interface IChangePassword {
   user: IUser;
   password: string;
@@ -47,6 +65,22 @@ export const EmptyUser: User = new User({
     oid: 0
   }
 });
+
+export const EmptyProposal: IProposal = {
+  content: "",
+  locked: false,
+  oid: -1,
+  title: ""
+};
+
+export const EmptyEvent: IEvent = {
+  agenda: "",
+  end: new Date(),
+  oid: -1,
+  proposals: [],
+  start: new Date(),
+  title: ""
+};
 
 export interface IRole extends IEntity {
   name: string;

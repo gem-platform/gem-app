@@ -8,5 +8,4 @@ router = APIRouter()
 @router.post("/wipeout")
 async def debug_wipeout():
     recreate_db()
-    print("Wipedout")
     return {"done": True}

@@ -13,9 +13,11 @@
     "actboy168.tasks",
     "ms-python.python",
     "vscode-icons-team.vscode-icons",
-    "liviuschera.noctis"
+    "liviuschera.noctis",
+    "littlefoxteam.vscode-python-test-adapter",
+    "jairhenrique.pytest-snippets",
+    "gruntfuggly.todo-tree"
   ],
-  "postCreateCommand": "pipenv install --dev --system",
   "settings": {
     "workbench.iconTheme": "vscode-icons",
     "workbench.colorTheme": "Noctis Viola"

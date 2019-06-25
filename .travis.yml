@@ -73,6 +73,7 @@ before_install:
   - (cd gem && chmod +x ./wait.sh && ./wait.sh)
 
 script:
+  - (cd gem && docker-compose exec gem-app pipenv run pytest)
   - (cd gem && docker-compose exec gem-client npm run test:unit -- --coverage --coverageDirectory=/coverage)
   - (cd coverage && ls && npx codecov --token=$CODECOV_TOKEN --root=".")
-  - (cd e2e && npx codeceptjs run --steps --verbose)
+  - (cd e2e && npx codeceptjs run)

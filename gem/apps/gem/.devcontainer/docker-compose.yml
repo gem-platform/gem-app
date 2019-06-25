@@ -5,6 +5,8 @@ services:
     # start it by studio itself for debugging
     # purposes
     command: sleep infinity
+    
+    # cache vscode extensions
     volumes:
       - gem-app-vscode-server:/root/.vscode-server
 

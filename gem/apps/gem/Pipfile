@@ -6,6 +6,10 @@ verify_ssl = true
 [dev-packages]
 autopep8 = "*"
 pylint = "*"
+pep8 = "*"
+pytest = "*"
+starlette = "*"
+requests = "*"
 
 [packages]
 fastapi = "==0.20.0"

@@ -13,7 +13,7 @@ module.exports = {
   usersTable,
   changePasswordDialog,
 
-  createButton: "[data-ref='create-new-user']",
+  createButton: "[data-ref='create-new']",
 
   open() {
     I.amOnPage("/admin/users");

@@ -26,7 +26,7 @@ describe("EditUserDialog.vue", () => {
     const name = wrapper.find({ ref: "name" });
     const email = wrapper.find({ ref: "email" });
     const close = wrapper.find("[data-ref='close']");
-    const save = wrapper.find("[data-ref='save-user']");
+    const save = wrapper.find("[data-ref='save']");
     return { wrapper, alert, name, email, close, save };
   }
 

@@ -6,5 +6,10 @@
     "**/.git": true,
     "**/.DS_Store": true,
     "**/__pycache__": true
-  }
+  },
+  "python.testing.pyTestArgs": [
+    "tests"
+  ],
+  "python.testing.nosetestsEnabled": false,
+  "python.testing.pyTestEnabled": true
 }

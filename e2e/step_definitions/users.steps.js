@@ -33,11 +33,7 @@ Then("User {string} doesn't exist", async name => {
 /** Set password for specified user */
 When("I set a password for {string} as {string}", async (name, password) => {
   const url = "/users/" + getUser(name).oid + "/changePassword";
-  context.response = (await I.sendPutRequest(
-    url,
-    { password },
-    context.headers
-  )).data;
+  context.response = await I.sendPutRequest(url, { password }, context.headers);
 });
 
 When("I set a name for {string} as {string}", async (name, newName) => {
@@ -51,7 +47,7 @@ When("I set a role for {string} as {string}", async (name, role) => {
   const user = getUser(name);
   user.role_id = getRoleIdByName(role);
   const url = "/users/" + user.oid;
-  context.response = (await I.sendPutRequest(url, user, context.headers)).data;
+  context.response = await I.sendPutRequest(url, user, context.headers);
 });
 
 Then("Role of a {string} is {string}", async (name, role) => {

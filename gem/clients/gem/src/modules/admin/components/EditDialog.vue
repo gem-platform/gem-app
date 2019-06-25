@@ -5,7 +5,7 @@
     hide-overlay
     transition="dialog-bottom-transition"
   >
-    <v-card data-ref="edit-user-dialog">
+    <v-card data-ref="edit-dialog">
       <v-toolbar light color="amber" flat>
         <v-btn icon light @click="close" data-ref="close">
           <v-icon>close</v-icon>
@@ -20,9 +20,9 @@
             light
             flat
             @click="save"
-            data-ref="save-user"
+            data-ref="save"
             :loading="isLoading"
-            :disabled="isLoading"
+            :disabled="!canSave || isLoading"
             >Save</v-btn
           >
         </v-toolbar-items>
@@ -49,6 +49,7 @@ import { Component, Emit, Model, Prop, Vue } from "vue-property-decorator";
 
 @Component
 export default class EditDialog extends Vue {
+  @Prop({ default: true }) public canSave!: boolean;
   @Prop({ default: false }) public visible!: boolean;
   @Prop({ default: "Edit" }) public title!: string;
   @Prop({ default: false }) public readonly showSuccessAlert!: boolean;
