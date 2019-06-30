@@ -67,7 +67,16 @@ const router = new Router({
       },
       name: "about",
       path: "/about"
-    }
+    },
+        {
+      component: () =>
+        import(/* webpackChunkName: "admin" */ "./modules/admin/views/LawsView.vue"),
+      meta: {
+        requiresAuth: true
+      },
+      name: "admin-laws",
+      path: "/admin/laws"
+    },
   ]
 });
 

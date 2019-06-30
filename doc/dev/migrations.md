@@ -20,3 +20,23 @@ def upgrade():
 def downgrade():
     op.drop_table('user')
 ```
+
+## Useful commands 
+
+### Apply migration
+
+```sh
+alembic upgrade heads
+```
+
+### Show history
+
+```sh
+alembic history
+```
+
+### Current head revision
+
+```sh
+alembic current
+```

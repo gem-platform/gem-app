@@ -4,7 +4,7 @@ from starlette.middleware.cors import CORSMiddleware
 from fastapi import Depends, FastAPI
 from starlette.requests import Request
 from starlette.responses import Response
-from routes import debug, auth, users, roles, proposals, events
+from routes import debug, auth, users, roles, proposals, events, laws
 from db import SessionLocal
 
 
@@ -18,6 +18,7 @@ app.include_router(users.router, prefix="/users", tags=["users"])
 app.include_router(proposals.router, prefix="/proposals", tags=["proposals"])
 app.include_router(events.router, prefix="/events", tags=["events"])
 app.include_router(roles.router, prefix="/roles", tags=["roles"])
+app.include_router(laws.router, prefix="/laws", tags=["laws"])
 
 app.add_middleware(CORSMiddleware,
                    allow_origins=['*'],

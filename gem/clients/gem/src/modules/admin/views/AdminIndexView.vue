@@ -1,12 +1,11 @@
 <template>
   <v-container fluid fill-height>
-    <v-layout>
-      <v-flex xs12 sm8 md4>
-        Admin page
-        <router-link to="users" append>Manage users</router-link>
-        <router-link to="proposals" append>Manage proposals</router-link>
-        <router-link to="events" append>Manage events</router-link>
-      </v-flex>
+    <v-layout column>
+      Admin page
+      <router-link to="users" append>Manage users</router-link>
+      <router-link to="proposals" append>Manage proposals</router-link>
+      <router-link to="events" append>Manage events</router-link>
+      <router-link to="laws" append>Manage law</router-link>
     </v-layout>
   </v-container>
 </template>
@@ -15,5 +14,6 @@
 import { Component, Vue } from "vue-property-decorator";
 
 @Component
-export default class AdminIndexView extends Vue {}
+export default class AdminIndexView extends Vue {
+}
 </script>

@@ -55,3 +55,10 @@ class Event(Base):
     end = Column(DateTime(timezone=True))
     proposals = relationship("Proposal", secondary=event_proposals)
 
+class Law(Base):
+    __tablename__ = "law"
+    id = Column(Integer, primary_key=True)
+    title = Column(String(250), nullable=False)
+    content = Column(UnicodeText(), nullable=True)
+    locked = Column(Boolean, nullable=False, default=False)
+

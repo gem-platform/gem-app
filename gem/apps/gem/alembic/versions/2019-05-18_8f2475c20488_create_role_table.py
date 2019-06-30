@@ -1,7 +1,7 @@
 """create role table
 
 Revision ID: 8f2475c20488
-Revises: 3f6b178d7e33
+Revises: a669f2bc2a57
 Create Date: 2019-05-18 12:35:08.928551
 
 """
@@ -11,7 +11,7 @@ import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 revision = "8f2475c20488"
-down_revision = "3f6b178d7e33"
+down_revision = "a669f2bc2a57"
 branch_labels = None
 depends_on = None
 
