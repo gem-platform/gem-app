@@ -17,6 +17,7 @@ const service = new EventsService();
 @Module({ namespaced: true, dynamic: true, name: "admin-events", store })
 export default class EventsStoreModule extends VuexModule {
   public events: IEvent[] = [];
+  public showStartDateDialog: boolean = false;
 
   /** List of async operations. */
   public operations = {
@@ -40,6 +41,14 @@ export default class EventsStoreModule extends VuexModule {
   /** Close edit dialog. */
   @Mutation public closeEditDialog(): void {
     this.operations.save.clear();
+  }
+
+  @Mutation public openStartDateDialog(): void {
+    this.showStartDateDialog = true;
+  }
+
+  @Mutation public closeStartDateDialog(): void {
+    this.showStartDateDialog = false;
   }
 
   /**
