@@ -1,83 +1,81 @@
 from fastapi import APIRouter, Depends, HTTPException
-from pydantic import BaseModel, Schema, validator
+from sqlalchemy.orm import Session
 
-from api.event import Event
-from db import models, session_scope
-from mappers.event import event2model, model2event
+from api.event import Event, EventType
+from auth.role import AuthenticatedUser
+from db import get_db, models
+from mappers.event import model2event, event2model
 
-from .auth import get_current_active_user
-
+user_with_users_access = AuthenticatedUser(permissions=["user_list"])
 router = APIRouter()
 
 
-@router.post("/")
+def __get_event(session, oid):
+    event_db = session.query(models.Event).filter_by(id=oid).first()
+    if not event_db:
+        raise HTTPException(status_code=404, detail="Event not found")
+    return event_db
+
+
+@router.post(
+    "/",
+    summary="Create a new event",
+    response_model=Event)
 async def create_event(
         event: Event,
-        current_user: models.User = Depends(get_current_active_user)) -> models.Event:
-    """Create new event using specified data."""
-    with session_scope() as s:
-        event_db = event2model(event, s)
-        s.add(event_db)
-        s.flush()  # save to db to be able to obtain ID for mapping below
-        return model2event(event_db)
+        current_user: models.User = Depends(user_with_users_access),
+        session: Session = Depends(get_db)) -> Event:
+    """Create a new user."""
+    event_db = event2model(event, session)
+    session.add(event_db)
+    session.commit()
+    return model2event(event_db)
 
 
-@router.put("/{oid}")
+@router.put(
+    "/{oid}",
+    summary="Update event",
+    response_model=Event)
 async def update_event(
         oid: int,
         event: Event,
-        current_user: models.User = Depends(get_current_active_user)):
-    """Update proposal"""
-    with session_scope() as s:
-        event_db = s.query(models.Event).filter_by(
-            id=oid).first()  # type: models.Event
-        if not event_db:
-            raise HTTPException(status_code=404, detail="Event not found")
-        event_db.title = event.title
-        event_db.agenda = event.agenda
-        event_db.start = event.start
-        event_db.end = event.end
-
-        # todo: check proposal exists
-        proposals = s.query(models.Proposal).filter(
-            models.Proposal.id.in_(event.proposals)).all()
-        event_db.proposals.extend(proposals)
-        s.flush()
-
-        # event_db.proposals_id = event.proposals
-        return model2event(event_db)
+        current_user: models.User = Depends(user_with_users_access),
+        session: Session = Depends(get_db)) -> Event:
+    """Update event."""
+    event_db = __get_event(session, oid)
+    event2model(event, session, model = event_db)
+    session.commit()
+    return model2event(event_db)
 
 
-@router.delete("/{oid}")
+@router.delete(
+    "/{oid}",
+    summary="Delete event")
 async def delete_event(
         oid: int,
-        current_user: models.User = Depends(get_current_active_user)):
-    """Delete proposal using specified ID."""
-    with session_scope() as s:
-        event_db = s.query(models.Event).filter_by(
-            id=oid).first()  # type: models.Event
-        if not event_db:
-            raise HTTPException(status_code=404, detail="Event not found")
-        s.delete(event_db)
-        return model2event(event_db)
+        current_user: models.User = Depends(user_with_users_access),
+        session: Session = Depends(get_db)):
+    """Delete user."""
+    event_db = __get_event(session, oid)
+    session.delete(event_db)
+    session.commit()
+    return model2event(event_db)
 
 
 @router.get("/")
 async def fetch_events_list(
-        current_user: models.User = Depends(get_current_active_user)):
-    """Fetch list of proposals"""
-    with session_scope() as s:
-        events = s.query(models.Event).all()  # type: models.Event
-        return list(map(model2event, events))
+        current_user: models.User = Depends(user_with_users_access),
+        session: Session = Depends(get_db)):
+    """Get list of users."""
+    users = session.query(models.Event).all()  # type: [models.User]
+    return list(map(model2event, users))
 
 
 @router.get("/{oid}")
 async def fetch_event(
         oid: int,
-        current_user: models.User = Depends(get_current_active_user)):
-    with session_scope() as s:
-        event_db = s.query(models.Event).filter_by(
-            id=oid).first()  # type: models.Event
-        if not event_db:
-            raise HTTPException(status_code=404, detail="Event not found")
-        return model2event(event_db)
+        current_user: models.User = Depends(user_with_users_access),
+        session: Session = Depends(get_db)):
+    """Get user."""
+    user = __get_event(session, oid)
+    return model2event(user)
