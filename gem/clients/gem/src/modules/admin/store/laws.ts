@@ -14,7 +14,7 @@ import LawsService from "../services/laws";
 const service = new LawsService();
 
 /** Authentication storage module */
-@Module({namespaced: true, dynamic: true, name: "admin-laws", store})
+@Module({ namespaced: true, dynamic: true, name: "admin-laws", store })
 export default class LawsStoreModule extends VuexModule {
   public laws: ILaw[] = [];
 
@@ -36,7 +36,7 @@ export default class LawsStoreModule extends VuexModule {
   public openEditDialog(law: ILaw = EmptyLaw): void {
     // make a copy. do not mutate original one
     // original one should be mutated if user press save button
-    this.operations.save.startConfirmation({...law});
+    this.operations.save.startConfirmation({ ...law });
   }
 
   /** Close edit dialog. */
@@ -74,7 +74,7 @@ export default class LawsStoreModule extends VuexModule {
       return laws;
     } catch (err) {
       const message = err.response.data.detail;
-      log({message});
+      log({ message });
       this.fetchLawsFailed(message);
     }
   }
@@ -122,7 +122,7 @@ export default class LawsStoreModule extends VuexModule {
         (err.response.data.detail instanceof Array
           ? err.response.data.detail[0].msg
           : err.message) || "Can't save law";
-      log({message});
+      log({ message });
       this.saveLawFailed(message);
     }
   }
@@ -159,9 +159,7 @@ export default class LawsStoreModule extends VuexModule {
    * @param law Law to delete.
    */
   @Action
-  public async delete(
-    law: ILaw
-  ): Promise<ILaw | undefined> {
+  public async delete(law: ILaw): Promise<ILaw | undefined> {
     try {
       this.deleteLawStarted();
       const result = await service.delete(law);
@@ -169,7 +167,7 @@ export default class LawsStoreModule extends VuexModule {
       return result;
     } catch (err) {
       const message = err.response.data.detail;
-      log({message});
+      log({ message });
       this.deleteLawFailed(message);
     }
   }

@@ -31,14 +31,16 @@
               class="mr-2"
               @click="laws.openEditDialog(item)"
               data-ref="edit-law"
-              :data-ref-title="item.title">
+              :data-ref-title="item.title"
+            >
               edit
             </v-icon>
             <v-icon
               small
               @click="onDeleteClicked(item)"
               data-ref="delete-law"
-              :data-ref-title="item.title">
+              :data-ref-title="item.title"
+            >
               delete
             </v-icon>
           </td>
@@ -79,12 +81,12 @@ import Crud from "../components/Crud.vue";
 import EditLawDialog from "../components/EditLawDialog.vue";
 
 @Component({
-  components: {ConfirmDialog, Crud, EditLawDialog}
+  components: { ConfirmDialog, Crud, EditLawDialog }
 })
 export default class AdminLawsView extends Vue {
   private headers = [
-    {text: "Title", value: "title"},
-    {text: "Actions", align: "right", sortable: false, name: "full_name"}
+    { text: "Title", value: "title" },
+    { text: "Actions", align: "right", sortable: false, name: "full_name" }
   ];
 
   private mounted() {

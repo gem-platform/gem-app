@@ -14,6 +14,5 @@
 import { Component, Vue } from "vue-property-decorator";
 
 @Component
-export default class AdminIndexView extends Vue {
-}
+export default class AdminIndexView extends Vue {}
 </script>

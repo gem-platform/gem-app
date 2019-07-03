@@ -68,7 +68,7 @@ const router = new Router({
       name: "about",
       path: "/about"
     },
-        {
+    {
       component: () =>
         import(/* webpackChunkName: "admin" */ "./modules/admin/views/LawsView.vue"),
       meta: {
@@ -76,7 +76,7 @@ const router = new Router({
       },
       name: "admin-laws",
       path: "/admin/laws"
-    },
+    }
   ]
 });
 

@@ -16,7 +16,7 @@ export class User implements IUser {
   public name: string = "";
   public email: string = "";
   public disabled: boolean = false;
-  public role: IRole = {oid: 0, name: ""};
+  public role: IRole = { oid: 0, name: "" };
 
   constructor(data: IUser) {
     this.oid = data.oid;

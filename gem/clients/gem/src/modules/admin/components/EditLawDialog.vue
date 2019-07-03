@@ -7,12 +7,7 @@
     @save="save"
   >
     <v-flex xs12>
-      <v-text-field
-        v-model="law.title"
-        label="Title"
-        required
-        ref="title"
-      />
+      <v-text-field v-model="law.title" label="Title" required ref="title" />
     </v-flex>
     <v-flex xs12>
       <ckeditor
@@ -41,8 +36,8 @@ import EditDialog from "./EditDialog.vue";
   }
 })
 export default class EditUserDialog extends Vue {
-  @Prop({default: () => EmptyLaw}) public readonly law!: ILaw;
-  @Prop({default: false}) public visible!: boolean;
+  @Prop({ default: () => EmptyLaw }) public readonly law!: ILaw;
+  @Prop({ default: false }) public visible!: boolean;
   @Prop({}) public readonly operation!: Operation;
 
   private get editor() {
@@ -65,6 +60,5 @@ export default class EditUserDialog extends Vue {
   get isNew(): boolean {
     return this.law.oid === -1;
   }
-
 }
 </script>
