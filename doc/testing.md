@@ -32,7 +32,7 @@ npx codeceptjs run
 ## How to perform js unit test run
 
 ```bash
-node_modules/@vue/cli-service/bin/vue-cli-service.js test:unit --colors --verbose
+npm run test:unit
 ```
 
 ## How to perform python unit test run

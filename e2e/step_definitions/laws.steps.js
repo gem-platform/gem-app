@@ -77,29 +77,3 @@ Given("Law {string} created", async title => {
     throw Error("Unable to create law");
   }
 });
-
-/** Lock law for modification */
-When("I lock law {string} for modification", async title => {
-  const law = context.laws[title];
-  if (!law) {
-    throw Error("No law found");
-  }
-
-  const url = "/laws/" + law.oid + "/lock";
-  context.response = await I.sendPostRequest(url, {}, context.headers);
-});
-
-/** Check law is locked */
-When("Law {string} is locked", async title => {
-  const law = context.laws[title];
-  if (!law) {
-    throw Error("No law found");
-  }
-
-  const url = "/laws/" + law.oid;
-  context.response = await I.sendGetRequest(url, context.headers);
-
-  if (!context.response.data.locked) {
-    throw Error("Law " + title + " is not locked");
-  }
-});

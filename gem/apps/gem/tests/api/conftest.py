@@ -45,6 +45,5 @@ def event() -> dict:
 def law() -> dict:
     return {
         "title": "new law",
-        "content": "content",
-        "locked": False
+        "content": "content"
     }

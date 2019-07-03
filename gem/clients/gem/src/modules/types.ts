@@ -96,12 +96,10 @@ export interface ILaw extends IEntity {
   oid: number;
   title: string;
   content: string;
-  locked: boolean;
 }
 
 export const EmptyLaw: ILaw = {
   content: "",
-  locked: false,
   oid: -1,
   title: ""
 };

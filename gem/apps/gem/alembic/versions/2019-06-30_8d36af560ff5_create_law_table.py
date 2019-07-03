@@ -21,8 +21,7 @@ def upgrade():
         "law",
         sa.Column("id", sa.Integer, primary_key=True),
         sa.Column("title", sa.String(250), nullable=False),
-        sa.Column("content", sa.UnicodeText(), nullable=True),
-        sa.Column("locked", sa.Boolean, nullable=False, default=False)
+        sa.Column("content", sa.UnicodeText(), nullable=True)
     )
 
 

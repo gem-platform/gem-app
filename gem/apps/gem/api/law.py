@@ -12,6 +12,3 @@ class Law(BaseModel):
         "",
         title="Content"
     )
-    locked: bool = Schema(
-        False,
-        title="Is a law locked for modification?")

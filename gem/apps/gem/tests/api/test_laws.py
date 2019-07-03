@@ -87,20 +87,3 @@ def test_fetch_law(client: TestClient, law):
     response = client.get("/laws/1")
     assert response.status_code == 200
     assert response.json() == {"oid": 1, **law}
-
-# Lock law
-
-
-def test_lock_law(client: TestClient, law):
-    response = client.post("/laws/", json=law)
-    response = client.post("/laws/1/lock")
-    assert response.status_code == 200
-    assert response.json() == {"status": "ok"}
-
-
-def test_update_locked_law(client: TestClient, law):
-    response = client.post("/laws/", json=law)
-    response = client.post("/laws/1/lock")
-    response = client.put("/laws/1", json=law)
-    assert response.status_code == 400
-    assert response.json() == {"detail": "Law is locked for modification"}

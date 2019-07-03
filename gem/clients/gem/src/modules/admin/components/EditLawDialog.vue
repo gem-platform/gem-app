@@ -3,28 +3,9 @@
     title="Edit law"
     :visible="visible"
     :operation="operation"
-    :canSave="!isLocked"
     @close="close"
     @save="save"
   >
-    <template v-if="!isNew" #actions>
-      <v-btn
-        light
-        flat
-        @click="onLockClicked"
-        data-ref="lock"
-        v-if="!isLocked && canLock"
-      >
-        Lock
-      </v-btn>
-    </template>
-
-    <v-flex xs12>
-      <v-alert type="info" v-model="isLocked" ref="locked-alert">
-        This law is locked for modification
-      </v-alert>
-    </v-flex>
-
     <v-flex xs12>
       <v-text-field
         v-model="law.title"
@@ -81,22 +62,9 @@ export default class EditUserDialog extends Vue {
     return this.law;
   }
 
-  @Emit("lock")
-  private onLockClicked() {
-    return this.law;
-  }
-
   get isNew(): boolean {
     return this.law.oid === -1;
   }
 
-  get isLocked(): boolean {
-    return this.law.locked;
-  }
-
-  get canLock(): boolean {
-    // For future usage
-    return false;
-  }
 }
 </script>

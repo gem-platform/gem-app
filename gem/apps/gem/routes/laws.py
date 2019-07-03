@@ -33,9 +33,6 @@ async def update_law(
             id=oid).first()  # type: models.Law
         if not law_db:
             raise HTTPException(status_code=404, detail="Law not found")
-        if law_db.locked:
-            raise HTTPException(
-                status_code=400, detail="Law is locked for modification")
         law_db.title = law.title
         law_db.content = law.content
         return map_model_to_law(law_db)

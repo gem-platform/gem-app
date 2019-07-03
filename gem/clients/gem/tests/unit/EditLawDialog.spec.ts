@@ -11,7 +11,6 @@ Vue.use(Vuetify);
 describe("EditLawDialog.vue", () => {
   const law: ILaw = {
     content: "content",
-    locked: false,
     oid: 1,
     title: "Law"
   };
@@ -25,12 +24,11 @@ describe("EditLawDialog.vue", () => {
       }
     });
     const alert = wrapper.find(".v-alert");
-    const lockedAlert = wrapper.find({ ref: "locked-alert" });
     const title = wrapper.find({ ref: "title" });
     const content = wrapper.find({ ref: "content" });
     const close = wrapper.find("[data-ref='close']");
     const save = wrapper.find("[data-ref='save']");
-    return { wrapper, alert, title, content, close, save, lockedAlert };
+    return { wrapper, alert, title, content, close, save };
   }
 
   it("renders props.law when passed", () => {
@@ -81,21 +79,5 @@ describe("EditLawDialog.vue", () => {
       operation: new Operation(OperationState.Succeeded, "Success")
     });
     expect(context.alert.props().value).toBeFalsy();
-  });
-
-  it("save is disabled if law is locked", () => {
-    const context = getContext();
-    context.wrapper.setProps({
-      law: { ...law, locked: true }
-    });
-    expect(context.save.props().disabled).toBeTruthy();
-  });
-
-  it("locked badge is visible if law is locked", () => {
-    const context = getContext();
-    context.wrapper.setProps({
-      law: { ...law, locked: true }
-    });
-    expect(context.lockedAlert.props().value).toBeTruthy();
   });
 });

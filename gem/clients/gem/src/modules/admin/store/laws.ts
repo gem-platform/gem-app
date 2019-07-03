@@ -106,9 +106,7 @@ export default class LawsStoreModule extends VuexModule {
    * @return User.
    */
   @Action
-  public async save(
-    law: ILaw
-  ): Promise<ILaw | undefined> {
+  public async save(law: ILaw): Promise<ILaw | undefined> {
     try {
       this.saveLawStarted();
       if (law.oid && law.oid !== -1) {
@@ -192,46 +190,6 @@ export default class LawsStoreModule extends VuexModule {
   @Mutation
   private deleteLawFailed(message: string = "") {
     this.operations.delete.fail(message);
-  }
-
-  /**
-   * Lock pecified law for modification.
-   * @param law Law.
-   */
-  @Action
-  public async lock(law: ILaw) {
-    try {
-      this.lockStarted();
-      const res = await service.lock(law);
-      this.lockSucceeded(law);
-      return res;
-    } catch (err) {
-      const message =
-        (err.response.data.detail instanceof Array
-          ? err.response.data.detail[0].msg
-          : err.message) || "Can't lock law";
-      log({message});
-      this.lockFailed(message);
-    }
-  }
-
-  @Mutation
-  private lockStarted() {
-    this.operations.lock.start();
-  }
-
-  @Mutation
-  private lockSucceeded(law: ILaw) {
-    const original = this.laws.find(x => x.oid === law.oid);
-    if (original) {
-      original.locked = true;
-    }
-    this.operations.lock.succeed();
-  }
-
-  @Mutation
-  private lockFailed(message: string = "") {
-    this.operations.lock.fail(message);
   }
 
   /** Getters */
