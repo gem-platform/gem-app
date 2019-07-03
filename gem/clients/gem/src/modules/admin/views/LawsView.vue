@@ -125,9 +125,5 @@ export default class AdminLawsView extends Vue {
       message: res ? "Law deleted" : "Unable to delete law"
     });
   }
-
-  private onLockLaw(law: ILaw) {
-    LawsStore.lock(law);
-  }
 }
 </script>
