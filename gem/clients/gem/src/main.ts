@@ -7,6 +7,7 @@ import router from "./router";
 import store from "./store";
 
 import "./plugins/axios";
+import "./plugins/fragment";
 
 Vue.config.productionTip = false;
 

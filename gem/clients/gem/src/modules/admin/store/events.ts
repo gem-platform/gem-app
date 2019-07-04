@@ -43,13 +43,6 @@ export default class EventsStoreModule extends VuexModule {
     this.operations.save.clear();
   }
 
-  @Mutation public openStartDateDialog(): void {
-    this.showStartDateDialog = true;
-  }
-
-  @Mutation public closeStartDateDialog(): void {
-    this.showStartDateDialog = false;
-  }
 
   /**
    * Open event delete confirmation dialog.
