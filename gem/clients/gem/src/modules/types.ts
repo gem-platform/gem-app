@@ -90,3 +90,16 @@ export interface IOperationResult {
   message: string;
   data: any;
 }
+
+/** Law */
+export interface ILaw extends IEntity {
+  oid: number;
+  title: string;
+  content: string;
+}
+
+export const EmptyLaw: ILaw = {
+  content: "",
+  oid: -1,
+  title: ""
+};

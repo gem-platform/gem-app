@@ -1,7 +1,7 @@
 """create event tables
 
 Revision ID: a669f2bc2a57
-Revises: 3f6b178d7e33
+Revises: 1608e62141d3
 Create Date: 2019-05-10 16:50:59.379318
 
 """

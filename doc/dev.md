@@ -18,6 +18,12 @@ docker-compose build
 docker-compose up
 ```
 
+With dev config
+
+```bash
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+```
+
 But sometimes it is required to start GEM application on a host machine (for debugging purposes for example). So below is how to start GEM app manually:
 
 ### Import all the environment variables

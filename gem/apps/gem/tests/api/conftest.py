@@ -40,3 +40,10 @@ def event() -> dict:
         "end": datetime.now(tz=timezone.utc).isoformat(),
         "proposals": []
     }
+
+@fixture
+def law() -> dict:
+    return {
+        "title": "new law",
+        "content": "content"
+    }

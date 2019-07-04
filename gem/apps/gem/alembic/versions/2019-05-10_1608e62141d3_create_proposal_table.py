@@ -1,7 +1,7 @@
 """create proposal table
 
 Revision ID: 1608e62141d3
-Revises: a669f2bc2a57
+Revises: 3f6b178d7e33
 Create Date: 2019-05-10 16:45:44.424288
 
 """

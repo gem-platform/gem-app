@@ -15,14 +15,29 @@
 
 - `e2e/features` features
 - `e2e/tests` end to end tests
-- `gem/apps/gem/tests` unit tests
+- `gem/apps/gem/tests` python unit tests
+- `gem/clients/gem/tests/unit` js unit tests
 
 ## How to perform e2e test run
 
 ### On host machine
 
+Before you need run docker container with the site up and running
 ```bash
 cd e2e
 npm install
 npx codeceptjs run
+```
+
+## How to perform js unit test run
+
+```bash
+npm run test:unit
+```
+
+## How to perform python unit test run
+
+```bash
+cd tests
+pytest
 ```
