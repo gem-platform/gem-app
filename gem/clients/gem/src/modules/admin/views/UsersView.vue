@@ -102,7 +102,7 @@ export default class AdminUsersView extends Vue {
     try {
       await RolesStore.fetch();
       await UsersStore.fetch();
-    } catch {
+    } catch(e) {
       AdminStore.openSnackbar({
         color: "error",
         message: this.ops.fetch.message
