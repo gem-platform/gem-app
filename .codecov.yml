@@ -11,16 +11,16 @@ coverage:
       default:
         target: 90%
         threshold: null
-      gem-app:
-        flags: gem-app
+      app:
+        flags: app
         target: 90%
-      gem-client:
+      client:
         target: 50%
-        flags: gem-client
+        flags: client
 flags:
-  gem-app:  
+  app:  
     paths:
       - app
-  gem-client:
+  client:
     paths:
-      - workspaces/gem-client/
+      - workspaces/client/
