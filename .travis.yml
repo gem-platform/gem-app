@@ -73,6 +73,8 @@ before_install:
   - (cd gem && chmod +x ./wait.sh && ./wait.sh)
 
 script:
+  - ci_env=`bash <(curl -s https://codecov.io/env)`
+  - env
   - (cd gem && docker-compose exec gem-app pytest --cov-report=xml:/coverage/coverage.xml --cov=.)
   - (cd coverage/apps/gem && ls && npx codecov --token=$CODECOV_TOKEN --root="." -F app)
   
