@@ -20,7 +20,7 @@ coverage:
 flags:
   app:  
     paths:
-      - app
+      - gem/apps/gem
   client:
     paths:
-      - workspaces/client/
+      - gem/client/gem
