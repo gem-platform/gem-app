@@ -29,7 +29,7 @@ def upgrade():
 
     op.create_table(
         'event_proposal',
-        sa.Column("evnet_id", sa.Integer, sa.ForeignKey(
+        sa.Column("event_id", sa.Integer, sa.ForeignKey(
             "event.id"), primary_key=True),
         sa.Column("proposal_id", sa.Integer, sa.ForeignKey(
             "proposal.id"), primary_key=True)
@@ -37,5 +37,5 @@ def upgrade():
 
 
 def downgrade():
-    op.drop_table('event')
     op.drop_table('event_proposal')
+    op.drop_table('event')

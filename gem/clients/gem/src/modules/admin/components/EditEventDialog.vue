@@ -1,63 +1,78 @@
 <template>
   <edit-dialog
-    title="Edit user"
+    title="Edit event"
     :visible="visible"
     :operation="operation"
     @close="close"
     @save="save"
   >
-    <template v-if="!isNew" #actions>
-      <v-btn
-        light
-        flat
-        @click="onChangePasswordClicked"
-        data-ref="change-password"
-        >Change Password</v-btn
-      >
-    </template>
-
-    <v-flex xs12 sm6>
-      <v-text-field v-model="user.full_name" label="Name" required ref="name" />
-    </v-flex>
-    <v-flex xs12 sm3>
-      <v-combobox label="Form of address" :items="formsOfAddress" />
-    </v-flex>
-    <v-flex xs12 sm3>
-      <v-text-field label="Postfix" required ref="postfix" />
+    <v-flex xs12>
+      <v-text-field v-model="event.title" label="Title" required ref="title" />
     </v-flex>
     <v-flex xs12>
-      <v-text-field v-model="user.email" label="Email" ref="email" required />
+      <v-textarea v-model="event.agenda" label="Agenda" required ref="agenda" />
     </v-flex>
+    <v-flex xs12>
+      <v-select
+        v-model="event.type"
+        :items="types"
+        label="Type"
+        item-text="type"
+        item-value="value"
+        required
+      >
+      </v-select>
+    </v-flex>
+
+    <many-days-event-date-picker v-if="isManyDaysEvent" />
+    <one-day-event-time-picker
+      v-else
+      @dates-changed="onDatesChanged"
+      :date.sync="date"
+    />
   </edit-dialog>
 </template>
 
 <script lang="ts">
 import { Operation } from "@/lib/operations";
-import { IUser } from "@/modules/types.ts";
+import { EmptyEvent, IEvent } from "@/modules/types.ts";
 import { Component, Emit, Model, Prop, Vue } from "vue-property-decorator";
 import { EmptyUser } from "../../types";
-import EditDialog from "./EditDialog.vue";
 
-@Component({ components: { EditDialog } })
-export default class EditUserDialog extends Vue {
-  @Prop({ default: () => EmptyUser }) public readonly user!: IUser;
+import EditDialog from "./EditDialog.vue";
+import ManyDaysEventDatePicker from "./ManyDaysEventDatePicker.vue";
+import OneDayEventTimePicker from "./OneDayEventTimePicker.vue";
+
+@Component({
+  components: { EditDialog, OneDayEventTimePicker, ManyDaysEventDatePicker }
+})
+export default class EditEventDialog extends Vue {
+  @Prop({ default: () => EmptyEvent }) public readonly event!: IEvent;
   @Prop({ default: false }) public visible!: boolean;
   @Prop({}) public readonly operation!: Operation;
-  @Prop({ default: () => [] }) public readonly formsOfAddress!: string[];
+
+  private date: string = "2011-11-11";
+
+  private types = [
+    { type: "Meeting", value: "meeting" },
+    { type: "Review", value: "review" },
+    { type: "Event", value: "event" }
+  ];
+
+  private get isManyDaysEvent() {
+    return this.event.type === "review";
+  }
+
+  private onDatesChanged(date) {
+    console.log(date);
+  }
 
   @Emit() private close() {
     return;
   }
+
   @Emit() private save() {
-    return this.user;
-  }
-
-  @Emit("change-password") private onChangePasswordClicked() {
-    return this.user;
-  }
-
-  get isNew(): boolean {
-    return this.user.oid === -1;
+    return this.event;
   }
 }
 </script>
