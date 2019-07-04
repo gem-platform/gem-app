@@ -1,6 +1,26 @@
 ignore:
   - ".data"
 
-fixes:
-  - "workspaces/gem-client/::gem/clients/gem/"
-  - "app/::gem/apps/gem/"
+# fixes:
+#   - "workspaces/gem-client/::gem/clients/gem/"
+#   - "app/::gem/apps/gem/"
+
+coverage:
+  status:
+    project:
+      default:
+        target: 90%
+        threshold: null
+      gem-app:
+        flags: gem-app
+        target: 90%
+      gem-client:
+        target: 50%
+        flags: gem-client
+flags:
+  gema-app:  
+    paths:
+      - app
+  gem-client:
+    paths:
+      - workspaces/gem-client/
