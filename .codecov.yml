@@ -1,2 +1,5 @@
 ignore:
   - ".data"
+
+fixes:
+  - "workspaces/gem-client/::gem/clients/gem/"
