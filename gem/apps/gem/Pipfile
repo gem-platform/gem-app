@@ -10,6 +10,7 @@ pep8 = "*"
 pytest = "*"
 starlette = "*"
 requests = "*"
+pytest-cov = "*"
 
 [packages]
 fastapi = "==0.20.0"

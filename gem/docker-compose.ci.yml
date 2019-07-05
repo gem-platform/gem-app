@@ -2,4 +2,7 @@ version: "3"
 services:
   gem-client:
     volumes:
-      - ../coverage:/coverage
+      - ../coverage/clients/gem:/coverage
+  gem-app:
+    volumes:
+      - ../coverage/apps/gem:/coverage
