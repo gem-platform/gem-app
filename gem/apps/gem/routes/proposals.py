@@ -1,8 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
-from pydantic import BaseModel, Schema
 
-from api.proposal import Proposal
 from db import models, session_scope
+from forms.proposal import Proposal
 from mappers.proposal import map_model_to_proposal, map_proposal_to_model
 
 from .auth import get_current_active_user

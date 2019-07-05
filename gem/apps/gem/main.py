@@ -1,7 +1,7 @@
 from uvicorn import run
 from starlette.middleware.cors import CORSMiddleware
 
-from fastapi import Depends, FastAPI
+from fastapi import FastAPI
 from starlette.requests import Request
 from starlette.responses import Response
 from routes import debug, auth, users, roles, proposals, events, laws

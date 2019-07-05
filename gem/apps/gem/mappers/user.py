@@ -1,5 +1,5 @@
 from db import models
-from api.user import UserOut, UserIn
+from forms.user import UserOut, UserIn
 from passlib.context import CryptContext
 from mappers.role import model2role
 

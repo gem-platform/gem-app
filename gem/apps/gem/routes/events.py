@@ -1,8 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
-from pydantic import BaseModel, Schema, validator
 
-from api.event import Event
 from db import models, session_scope
+from forms.event import Event
 from mappers.event import event2model, model2event
 
 from .auth import get_current_active_user

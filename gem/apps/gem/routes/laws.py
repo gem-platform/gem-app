@@ -1,9 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
-from pydantic import BaseModel, Schema
 
-from api.law import Law
 from db import models, session_scope
-from mappers.law import map_model_to_law, map_law_to_model
+from forms.law import Law
+from mappers.law import map_law_to_model, map_model_to_law
 
 from .auth import get_current_active_user
 

@@ -1,5 +1,5 @@
 from db import models
-from api.law import Law
+from forms.law import Law
 
 
 def map_model_to_law(model: models.Law) -> Law:

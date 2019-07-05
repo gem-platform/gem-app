@@ -2,9 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 
-from api.user import ChangePassword, UserIn, UserOut, UserCreate
 from auth.role import AuthenticatedUser
 from db import get_db, models
+from forms.user import ChangePassword, UserCreate, UserIn, UserOut
 from mappers.user import model2user, user2model
 
 user_with_users_access = AuthenticatedUser(permissions=["user_list"])

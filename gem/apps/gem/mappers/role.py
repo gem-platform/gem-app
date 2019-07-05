@@ -1,5 +1,5 @@
 from db import models
-from api.role import Role, RoleOut
+from forms.role import Role, RoleOut
 
 
 def model2role(model: models.Role) -> RoleOut:

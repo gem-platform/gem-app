@@ -1,5 +1,5 @@
 from db import models
-from api.event import Event
+from forms.event import Event
 
 
 def event2model(event: Event, session) -> models.Event:

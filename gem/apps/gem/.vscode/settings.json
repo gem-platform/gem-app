@@ -7,9 +7,10 @@
     "**/.DS_Store": true,
     "**/__pycache__": true
   },
-  "python.testing.pyTestArgs": [
+  "python.testing.pytestArgs": [
     "tests"
   ],
   "python.testing.nosetestsEnabled": false,
-  "python.testing.pyTestEnabled": true
+  "python.testing.pytestEnabled": true,
+  "python.linting.flake8Enabled": true
 }

@@ -1,5 +1,5 @@
 from db import models
-from api.proposal import Proposal
+from forms.proposal import Proposal
 
 
 def map_model_to_proposal(model: models.Proposal) -> Proposal:

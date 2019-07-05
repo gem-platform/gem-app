@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from auth.role import AuthenticatedUser
 from db import get_db
-from db.models import User, Role
+from db.models import Role, User
 from mappers.role import model2role
 
 router = APIRouter()

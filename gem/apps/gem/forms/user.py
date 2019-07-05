@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Schema, validator
-from api.role import RoleOut
+
+from forms.role import RoleOut
 
 
 class UserIn(BaseModel):
