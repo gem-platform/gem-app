@@ -1,88 +1,107 @@
-from fastapi import APIRouter, Depends, HTTPException
+from typing import List
 
-from db import models, session_scope
-from forms.law import Law
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
+
+from auth.role import AuthenticatedUser
+from db import db_session
+from db.models import Law, User
+from forms.law import LawForm
 from mappers.law import map_law_to_model, map_model_to_law
 
-from .auth import get_current_active_user
-
 router = APIRouter()
+user_with_admin_access = AuthenticatedUser(permissions=["user_list"])
+
+__MSG_NOT_FOUND = "Law not found"
 
 
-@router.post("/")
+def __get_law(session, oid) -> Law:
+    law_db = session.query(Law).filter_by(id=oid).first()
+    if not law_db:
+        raise HTTPException(status_code=404, detail=__MSG_NOT_FOUND)
+    return law_db
+
+
+@router.post(
+    "/",
+    summary="Create a new law",
+    response_model=LawForm)
 async def create_law(
-        law: Law,
-        current_user: models.User = Depends(get_current_active_user)) -> models.Law:
+        law: LawForm,
+        user: User = Depends(user_with_admin_access),
+        session: Session = Depends(db_session)) -> LawForm:
     """Create new law using specified data."""
-    with session_scope() as s:
-        law_db = map_law_to_model(law)
-        s.add(law_db)
-        s.flush()  # save to db to be able to obtain ID for mapping below
-        return map_model_to_law(law_db)
+    law_db = map_law_to_model(law)
+    session.add(law_db)
+    session.commit()  # save to db to be able to obtain ID for mapping below
+    return map_model_to_law(law_db)
 
 
-@router.put("/{oid}")
+@router.put(
+    "/{oid}",
+    summary="Update law",
+    response_model=LawForm)
 async def update_law(
         oid: int,
-        law: Law,
-        current_user: models.User = Depends(get_current_active_user)):
+        law: LawForm,
+        user: User = Depends(user_with_admin_access),
+        session: Session = Depends(db_session)):
     """Update law"""
-    with session_scope() as s:
-        law_db = s.query(models.Law).filter_by(
-            id=oid).first()  # type: models.Law
-        if not law_db:
-            raise HTTPException(status_code=404, detail="Law not found")
-        law_db.title = law.title
-        law_db.content = law.content
-        return map_model_to_law(law_db)
+    law_db = __get_law(session, oid)
+    law_db.title = law.title
+    law_db.content = law.content
+    return map_model_to_law(law_db)
 
 
-@router.delete("/{oid}")
+@router.delete(
+    "/{oid}",
+    summary="Delete law")
 async def delete_law(
         oid: int,
-        current_user: models.User = Depends(get_current_active_user)):
+        user: User = Depends(user_with_admin_access),
+        session: Session = Depends(db_session)):
     """Delete law using specified ID."""
-    with session_scope() as s:
-        law_db = s.query(models.Law).filter_by(
-            id=oid).first()  # type: models.Law
-        if not law_db:
-            raise HTTPException(status_code=404, detail="Law not found")
-        s.delete(law_db)
-        law = map_model_to_law(law_db)
-        return law
+    law_db = __get_law(session, oid)
+    session.delete(law_db)
+    law = map_model_to_law(law_db)
+    session.commit()
+    return law
 
 
-@router.get("/")
+@router.get(
+    "/",
+    summary="Fetch list of laws",
+    response_model=List[LawForm])
 async def fetch_laws_list(
-        current_user: models.User = Depends(get_current_active_user)):
+        user: User = Depends(user_with_admin_access),
+        session: Session = Depends(db_session)):
     """Fetch list of laws"""
-    with session_scope() as s:
-        laws = s.query(models.Law).all()  # type: models.Law
-        return list(map(map_model_to_law, laws))
+    laws = session.query(Law).all()  # type: [Law]
+    return list(map(map_model_to_law, laws))
 
 
-@router.get("/{oid}")
+@router.get(
+    "/{oid}",
+    summary="Fetch one proposal",
+    response_model=LawForm)
 async def fetch_law(
         oid: int,
-        current_user: models.User = Depends(get_current_active_user)):
+        user: User = Depends(user_with_admin_access),
+        session: Session = Depends(db_session)):
     """Fetch list of laws"""
-    with session_scope() as s:
-        law_db = s.query(models.Law).filter_by(
-            id=oid).first()  # type: models.Law
-        if not law_db:
-            raise HTTPException(status_code=404, detail="Law not found")
-        return map_model_to_law(law_db)
+    law_db = __get_law(session, oid)
+    return map_model_to_law(law_db)
 
 
-@router.post("/{oid}/lock")
+@router.post(
+    "/{oid}/lock",
+    summary="Lock proposal for modification")
 async def lock_law(
         oid: int,
-        current_user: models.User = Depends(get_current_active_user)):
-    """Create new law using specified data."""
-    with session_scope() as s:
-        law_db = s.query(models.Law).filter_by(
-            id=oid).first()  # type: models.Law
-        if not law_db:
-            raise HTTPException(status_code=404, detail="Law not found")
-        law_db.locked = True
-        return {"status": "ok"}
+        user: User = Depends(user_with_admin_access),
+        session: Session = Depends(db_session)):
+    """Locks proposal for modification."""
+    law_db = __get_law(session, oid)
+    law_db.locked = True
+    session.commit()
+    return {"status": "ok"}
