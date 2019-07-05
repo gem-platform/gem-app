@@ -3,7 +3,7 @@ services:
   gem-client:
     volumes:
       - ./clients/gem:/workspaces/gem-client
-  
+
   gem-app:
     restart: always
     volumes:

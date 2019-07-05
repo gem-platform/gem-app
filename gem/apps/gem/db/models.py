@@ -2,7 +2,6 @@ from sqlalchemy import Column, Integer, String, Boolean, DateTime, UnicodeText, 
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy.orm import relationship
 
 Base = declarative_base()
 
@@ -55,9 +54,9 @@ class Event(Base):
     end = Column(DateTime(timezone=True))
     proposals = relationship("Proposal", secondary=event_proposals)
 
+
 class Law(Base):
     __tablename__ = "law"
     id = Column(Integer, primary_key=True)
     title = Column(String(250), nullable=False)
     content = Column(UnicodeText(), nullable=True)
-
