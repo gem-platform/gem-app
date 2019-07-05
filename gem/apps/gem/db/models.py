@@ -1,7 +1,8 @@
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, UnicodeText, ForeignKey, Table, JSON
-from sqlalchemy.orm import relationship
+from sqlalchemy import (JSON, Boolean, Column, DateTime, ForeignKey, Integer,
+                        String, Table, UnicodeText)
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.orm import relationship
 
 Base = declarative_base()
 
@@ -15,7 +16,7 @@ class User(Base):
     disabled = Column(Boolean, nullable=False)
     role_id = Column(Integer, ForeignKey("role.id"), nullable=False)
     role = relationship("Role", back_populates="users")
-    
+
     @hybrid_property
     def full_name(self):
         return self.name
@@ -34,6 +35,7 @@ event_proposals = Table(
     Column('event_id', Integer, ForeignKey('event.id')),
     Column('proposal_id', Integer, ForeignKey('proposal.id'))
 )
+
 
 class Proposal(Base):
     __tablename__ = "proposal"

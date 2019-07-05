@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Schema
 
 
-class Proposal(BaseModel):
+class ProposalForm(BaseModel):
     oid: int = 0
     title: str = Schema(
         "",

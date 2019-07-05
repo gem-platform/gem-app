@@ -65,7 +65,7 @@ def add_default_user():
 
 
 # Dependency
-def get_db(request: Request):
+def db_session(request: Request):
     return request.state.db
 
 

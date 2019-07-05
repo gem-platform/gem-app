@@ -8,7 +8,7 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from forms.user import UserOut
-from db import get_db, models
+from db import db_session, models
 from mappers.user import model2user
 
 # to get a string like this run:
@@ -60,7 +60,7 @@ def create_access_token(*, data: dict, expires_delta: timedelta = None) -> str:
     return encoded_jwt
 
 
-async def get_current_user(token: str = Security(oauth2_scheme), s: Session = Depends(get_db)) -> models.User:
+async def get_current_user(token: str = Security(oauth2_scheme), s: Session = Depends(db_session)) -> models.User:
     try:
         payload = decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         token_data = TokenPayload(**payload)
@@ -80,7 +80,7 @@ async def get_current_active_user(current_user: models.User = Depends(get_curren
 
 @router.post("/token", response_model=Token)
 async def route_login_access_token(form_data: OAuth2PasswordRequestForm = Depends(),
-                                   s: Session = Depends(get_db)):
+                                   s: Session = Depends(db_session)):
     user = authenticate_user(s, form_data.username, form_data.password)
     if not user:
         raise HTTPException(

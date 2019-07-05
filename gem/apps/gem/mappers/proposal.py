@@ -1,9 +1,9 @@
-from db import models
-from forms.proposal import Proposal
+from db.models import Proposal
+from forms.proposal import ProposalForm
 
 
-def map_model_to_proposal(model: models.Proposal) -> Proposal:
-    return Proposal(
+def map_model_to_proposal(model: Proposal) -> ProposalForm:
+    return ProposalForm(
         oid=model.id,
         title=model.title,
         content=model.content,
@@ -11,8 +11,8 @@ def map_model_to_proposal(model: models.Proposal) -> Proposal:
     )
 
 
-def map_proposal_to_model(proposal: Proposal) -> models.Proposal:
-    model = models.Proposal(
+def map_proposal_to_model(proposal: ProposalForm) -> Proposal:
+    model = Proposal(
         title=proposal.title,
         content=proposal.content,
         locked=proposal.locked
