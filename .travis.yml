@@ -74,9 +74,9 @@ before_install:
 
 script:
   - (cd gem && docker-compose exec gem-app pytest --cov-report=xml:/coverage/coverage.xml --cov=.)
-  - (cd coverage/apps/gem && ls && npx codecov --token=$CODECOV_TOKEN --root="." -cF app)
+  - (cd coverage/apps/gem && ls && npx codecov --token=$CODECOV_TOKEN --root="." -c -F app)
 
   - (cd gem && docker-compose exec gem-client npm run test:unit -- --coverage --coverageDirectory=/coverage)
-  - (cd coverage/clients/gem && ls && npx codecov --token=$CODECOV_TOKEN --root="." -cF client)
+  - (cd coverage/clients/gem && ls && npx codecov --token=$CODECOV_TOKEN --root="." -c -F client)
   
   - (cd e2e && npx codeceptjs run)

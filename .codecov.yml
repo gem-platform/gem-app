@@ -3,4 +3,8 @@ ignore:
 
 fixes:
   - "workspaces/gem-client/::gem/clients/gem/"
-  - "::gem/apps/gem/"
+  - "app/::gem/apps/gem/"
+
+flags:
+  client:
+  app:
