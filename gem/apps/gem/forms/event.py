@@ -11,7 +11,7 @@ class EventType(str, Enum):
     review = "review"
 
 
-class Event(BaseModel):
+class EventForm(BaseModel):
     oid: int = 0
     type: EventType
     title: str = Schema(

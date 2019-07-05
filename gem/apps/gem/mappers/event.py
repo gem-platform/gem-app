@@ -1,9 +1,9 @@
-from db import models
-from forms.event import Event
+from db.models import Event, Proposal
+from forms.event import EventForm
 
 
-def event2model(event: Event, session) -> models.Event:
-    model = models.Event(
+def event2model(event: EventForm, session) -> Event:
+    model = Event(
         type=event.type,
         title=event.title,
         agenda=event.agenda,
@@ -12,8 +12,8 @@ def event2model(event: Event, session) -> models.Event:
     )
 
     # add proposals to an event
-    proposals = session.query(models.Proposal).filter(
-        models.Proposal.id.in_(event.proposals)).all()
+    proposals = session.query(Proposal).filter(
+        Proposal.id.in_(event.proposals)).all()
     model.proposals.extend(proposals)
 
     if event.oid > 0:
@@ -21,8 +21,8 @@ def event2model(event: Event, session) -> models.Event:
     return model
 
 
-def model2event(model: models.Event) -> Event:
-    return Event(
+def model2event(model: Event) -> EventForm:
+    return EventForm(
         oid=model.id,
         type=model.type,
         title=model.title,
