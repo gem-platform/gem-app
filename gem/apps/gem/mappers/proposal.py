@@ -11,9 +11,9 @@ def model2proposal(model: Proposal) -> ProposalOut:
     )
 
 
-def proposal2model(proposal: ProposalIn) -> Proposal:
-    return Proposal(
-        title=proposal.title,
-        content=proposal.content,
-        locked=proposal.locked
-    )
+def proposal2model(proposal: ProposalIn, model: Proposal = None) -> Proposal:
+    result = model if model else Proposal()
+    result.title = proposal.title
+    result.content = proposal.content
+    result.locked = proposal.locked
+    return result

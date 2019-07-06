@@ -51,8 +51,7 @@ async def update_proposal(
     proposal_db = __get_proposal(session, oid)
     if proposal_db.locked:
         raise HTTPException(status_code=400, detail=__MSG_IS_LOCKED)
-    proposal_db.title = proposal.title
-    proposal_db.content = proposal.content
+    proposal2model(proposal, proposal_db)
     session.commit()
     return model2proposal(proposal_db)
 
