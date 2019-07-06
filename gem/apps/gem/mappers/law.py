@@ -10,8 +10,8 @@ def model2law(model: Law) -> LawOut:
     )
 
 
-def law2model(law: LawIn) -> Law:
-    return Law(
-        title=law.title,
-        content=law.content
-    )
+def law2model(law: LawIn, model: Law = None) -> Law:
+    result = model if model else Law()
+    result.title = law.title
+    result.content = law.content
+    return result
