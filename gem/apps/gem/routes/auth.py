@@ -8,7 +8,8 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from forms.user import UserOut
-from db import db_session, models
+from db import db_session
+from db.models import User
 from mappers.user import model2user
 
 # to get a string like this run:
@@ -44,10 +45,10 @@ def get_password_hash(password):
 
 def get_user(s: Session, username: str):
     s.expire_on_commit = False
-    return s.query(models.User).filter_by(name=username).first()
+    return s.query(User).filter_by(name=username).first()
 
 
-def authenticate_user(s: Session, username: str, password: str) -> models.User:
+def authenticate_user(s: Session, username: str, password: str) -> User:
     user = get_user(s, username)
     return user if user and verify_password(password, user.hashed_password) else False
 
@@ -60,7 +61,10 @@ def create_access_token(*, data: dict, expires_delta: timedelta = None) -> str:
     return encoded_jwt
 
 
-async def get_current_user(token: str = Security(oauth2_scheme), s: Session = Depends(db_session)) -> models.User:
+async def get_current_user(
+        token: str = Security(oauth2_scheme),
+        s: Session = Depends(db_session)) -> User:
+    """Returns current user."""
     try:
         payload = decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         token_data = TokenPayload(**payload)
@@ -70,7 +74,9 @@ async def get_current_user(token: str = Security(oauth2_scheme), s: Session = De
     return user if user else None
 
 
-async def get_current_active_user(current_user: models.User = Depends(get_current_user)):
+async def get_current_active_user(
+        current_user: User = Depends(get_current_user)):
+    """Return current active user."""
     if not current_user:
         raise HTTPException(status_code=401, detail="Not authenticated")
     if current_user.disabled:
@@ -92,5 +98,5 @@ async def route_login_access_token(form_data: OAuth2PasswordRequestForm = Depend
 
 
 @router.get("/me", response_model=UserOut)
-async def read_users_me(current_user: models.User = Depends(get_current_active_user)):
+async def read_users_me(current_user: User = Depends(get_current_active_user)):
     return model2user(current_user)
