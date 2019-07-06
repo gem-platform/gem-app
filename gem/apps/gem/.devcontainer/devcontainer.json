@@ -15,7 +15,8 @@
     "vscode-icons-team.vscode-icons",
     "littlefoxteam.vscode-python-test-adapter",
     "jairhenrique.pytest-snippets",
-    "gruntfuggly.todo-tree"
+    "gruntfuggly.todo-tree",
+    "ryanluker.vscode-coverage-gutters"
   ],
   "settings": {
     "workbench.iconTheme": "vscode-icons"

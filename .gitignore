@@ -27,3 +27,5 @@ venv/
 
 # Python
 .pytest_cache
+cov.xml
+.coverage

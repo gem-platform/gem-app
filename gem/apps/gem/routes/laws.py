@@ -92,17 +92,3 @@ async def fetch_law(
     """Fetch list of laws"""
     law_db = __get_law(session, oid)
     return model2law(law_db)
-
-
-@router.post(
-    "/{oid}/lock",
-    summary="Lock proposal for modification")
-async def lock_law(
-        oid: int,
-        user: User = Depends(user_with_admin_access),
-        session: Session = Depends(db_session)):
-    """Locks proposal for modification."""
-    law_db = __get_law(session, oid)
-    law_db.locked = True
-    session.commit()
-    return {"status": "ok"}

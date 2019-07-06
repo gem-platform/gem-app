@@ -39,10 +39,6 @@ def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
 
 
-def get_password_hash(password):
-    return pwd_context.hash(password)
-
-
 def get_user(s: Session, username: str):
     s.expire_on_commit = False
     return s.query(User).filter_by(name=username).first()

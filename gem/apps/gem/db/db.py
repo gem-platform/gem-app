@@ -10,11 +10,12 @@ engine = create_engine(DATABASE_URI)
 SessionLocal = sessionmaker(bind=engine)
 
 
-def recreate_db():
+def recreate_db(seed: bool = True):
     Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
-    add_default_roles()
-    add_default_user()
+    if seed:
+        add_default_roles()
+        add_default_user()
 
 
 def add_default_roles():

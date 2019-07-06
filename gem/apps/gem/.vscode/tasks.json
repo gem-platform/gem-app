@@ -12,7 +12,7 @@
         {
             "label": "Run Tests",
             "type": "shell",
-            "command": "pytest",
+            "command": "pytest --cov-report xml:cov.xml --cov .",
             "problemMatcher": []
         },
         {

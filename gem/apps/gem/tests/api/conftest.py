@@ -4,21 +4,28 @@ from pytest import fixture
 from main import app
 
 
-@fixture
-def uclient() -> TestClient:
+def __client(auth: bool = True, seed: bool = True) -> TestClient:
     client = TestClient(app)
-    client.post("/debug/wipeout")
+    credentials = {"username": "Secretary", "password": "secret"}
+
+    client.post("/debug/wipeout" + "?seed=true" if seed else "")
+
+    if auth:
+        response = client.post("/auth/token", credentials)
+        access_token = response.json()["access_token"]
+        client.headers["Authorization"] = "Bearer " + access_token
+
     return client
 
 
 @fixture
-def client(uclient: TestClient) -> TestClient:
-    res = uclient.post(
-        "/auth/token",
-        {"username": "Secretary", "password": "secret"})
-    access_token = res.json()["access_token"]
-    uclient.headers["Authorization"] = "Bearer " + access_token
-    return uclient
+def uclient() -> TestClient:
+    return __client(False, True)
+
+
+@fixture
+def client() -> TestClient:
+    return __client(True, True)
 
 
 @fixture
@@ -47,4 +54,15 @@ def law() -> dict:
     return {
         "title": "new law",
         "content": "content"
+    }
+
+
+@fixture
+def user() -> dict:
+    return {
+        "name": "Krishna das",
+        "password": "password123456",
+        "email": "krishna.das@gmail.com",
+        "disabled": False,
+        "role_id": 1
     }
