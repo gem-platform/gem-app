@@ -2,7 +2,6 @@ from pydantic import BaseModel, Schema
 
 
 class ProposalForm(BaseModel):
-    oid: int = 0
     title: str = Schema(
         "",
         title="Title",
@@ -15,3 +14,11 @@ class ProposalForm(BaseModel):
     locked: bool = Schema(
         False,
         title="Is proposal locked for modification?")
+
+
+class ProposalIn(ProposalForm):
+    pass
+
+
+class ProposalOut(ProposalForm):
+    oid: int = 0

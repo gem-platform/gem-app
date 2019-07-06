@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from auth.role import AuthenticatedUser
 from db import db_session
 from db.models import Proposal, User
-from forms.proposal import ProposalForm
+from forms.proposal import ProposalIn, ProposalOut
 from mappers.proposal import map_model_to_proposal, map_proposal_to_model
 
 router = APIRouter()
@@ -26,11 +26,11 @@ def __get_proposal(session, oid) -> Proposal:
 @router.post(
     "/",
     summary="Create a new proposals",
-    response_model=ProposalForm)
+    response_model=ProposalOut)
 async def create_proposal(
-        proposal: ProposalForm,
+        proposal: ProposalIn,
         user: User = Depends(user_with_admin_access),
-        session: Session = Depends(db_session)) -> ProposalForm:
+        session: Session = Depends(db_session)) -> ProposalOut:
     """Create new proposal using specified data."""
     proposal_db = map_proposal_to_model(proposal)
     session.add(proposal_db)
@@ -41,10 +41,10 @@ async def create_proposal(
 @router.put(
     "/{oid}",
     summary="Update proposal",
-    response_model=ProposalForm)
+    response_model=ProposalOut)
 async def update_proposal(
         oid: int,
-        proposal: ProposalForm,
+        proposal: ProposalIn,
         user: User = Depends(user_with_admin_access),
         session: Session = Depends(db_session)):
     """Update proposal"""
@@ -74,7 +74,7 @@ async def delete_proposal(
 @router.get(
     "/",
     summary="Fetch list of proposals",
-    response_model=List[ProposalForm])
+    response_model=List[ProposalOut])
 async def fetch_proposals_list(
         user: User = Depends(user_with_admin_access),
         session: Session = Depends(db_session)):
@@ -86,11 +86,11 @@ async def fetch_proposals_list(
 @router.get(
     "/{oid}",
     summary="Fetch one proposal",
-    response_model=ProposalForm)
+    response_model=ProposalOut)
 async def fetch_proposal(
         oid: int,
         user: User = Depends(user_with_admin_access),
-        session: Session = Depends(db_session)):
+        session: Session = Depends(db_session)) -> ProposalOut:
     """Fetch list of proposals"""
     proposal_db = __get_proposal(session, oid)
     return map_model_to_proposal(proposal_db)
