@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Schema
 
 
-class ProposalForm(BaseModel):
+class Proposal(BaseModel):
     title: str = Schema(
         "",
         title="Title",
@@ -16,9 +16,9 @@ class ProposalForm(BaseModel):
         title="Is proposal locked for modification?")
 
 
-class ProposalIn(ProposalForm):
+class ProposalIn(Proposal):
     pass
 
 
-class ProposalOut(ProposalForm):
+class ProposalOut(Proposal):
     oid: int = 0

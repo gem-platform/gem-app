@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from auth.role import AuthenticatedUser
 from db import db_session
 from db.models import Event, Proposal, User
-from forms.event import EventForm
+from forms.event import EventIn, EventOut
 from mappers.event import event2model, model2event
 
 router = APIRouter()
@@ -25,11 +25,11 @@ def __get_event(session, oid) -> Event:
 @router.post(
     "/",
     summary="Create a new event",
-    response_model=EventForm)
+    response_model=EventOut)
 async def create_event(
-        event: EventForm,
+        event: EventIn,
         user: User = Depends(user_with_admin_access),
-        session: Session = Depends(db_session)) -> EventForm:
+        session: Session = Depends(db_session)) -> EventOut:
     """Create new event using specified data."""
     event_db = event2model(event, session)
     session.add(event_db)
@@ -40,12 +40,12 @@ async def create_event(
 @router.put(
     "/{oid}",
     summary="Update event",
-    response_model=EventForm)
+    response_model=EventOut)
 async def update_event(
         oid: int,
-        event: EventForm,
+        event: EventIn,
         user: User = Depends(user_with_admin_access),
-        session: Session = Depends(db_session)):
+        session: Session = Depends(db_session)) -> EventOut:
     """Update event"""
     event_db = __get_event(session, oid)
     event_db.title = event.title
@@ -80,7 +80,7 @@ async def delete_event(
 @router.get(
     "/",
     summary="Fetch list of events",
-    response_model=List[EventForm])
+    response_model=List[EventOut])
 async def fetch_events_list(
         user: User = Depends(user_with_admin_access),
         session: Session = Depends(db_session)):
@@ -92,11 +92,11 @@ async def fetch_events_list(
 @router.get(
     "/{oid}",
     summary="Fetch one proposal",
-    response_model=EventForm)
+    response_model=EventOut)
 async def fetch_event(
         oid: int,
         user: User = Depends(user_with_admin_access),
-        session: Session = Depends(db_session)):
+        session: Session = Depends(db_session)) -> EventOut:
     """Fetch list of events"""
     event_db = __get_event(session, oid)
     return model2event(event_db)

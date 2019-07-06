@@ -3,13 +3,16 @@ from pydantic import BaseModel, Schema, validator
 from forms.role import RoleOut
 
 
-class UserIn(BaseModel):
+class User(BaseModel):
     name: str = Schema(
         "", title="User's name",
         min_length=3, max_length=128
     )
     email: str = ""
     disabled: bool = False
+
+
+class UserIn(User):
     role_id: int
 
 
@@ -27,11 +30,8 @@ class UserCreate(UserIn):
         return v
 
 
-class UserOut(BaseModel):
+class UserOut(User):
     oid: int = 0
-    name: str = ""
-    email: str = ""
-    disabled: bool = False
     role: RoleOut
 
 

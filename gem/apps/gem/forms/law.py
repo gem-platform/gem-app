@@ -1,8 +1,7 @@
 from pydantic import BaseModel, Schema
 
 
-class LawForm(BaseModel):
-    oid: int = 0
+class Law(BaseModel):
     title: str = Schema(
         "",
         title="Title",
@@ -12,3 +11,11 @@ class LawForm(BaseModel):
         "",
         title="Content"
     )
+
+
+class LawIn(Law):
+    pass
+
+
+class LawOut(Law):
+    oid: int = 0

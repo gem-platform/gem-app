@@ -7,9 +7,9 @@ from passlib.context import CryptContext
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
-from forms.user import UserOut
 from db import db_session
 from db.models import User
+from forms.user import UserOut
 from mappers.user import model2user
 
 # to get a string like this run:

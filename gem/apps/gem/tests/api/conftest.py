@@ -41,6 +41,7 @@ def event() -> dict:
         "proposals": []
     }
 
+
 @fixture
 def law() -> dict:
     return {

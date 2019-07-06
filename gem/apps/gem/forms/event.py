@@ -11,8 +11,7 @@ class EventType(str, Enum):
     review = "review"
 
 
-class EventForm(BaseModel):
-    oid: int = 0
+class Event(BaseModel):
     type: EventType
     title: str = Schema(
         "",
@@ -29,3 +28,11 @@ class EventForm(BaseModel):
         if values["start"] > v:
             raise ValueError("End date should be greater than the start date")
         return v
+
+
+class EventIn(Event):
+    pass
+
+
+class EventOut(Event):
+    oid: int = 0

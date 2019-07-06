@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from auth.role import AuthenticatedUser
 from db import db_session
 from db.models import Law, User
-from forms.law import LawForm
+from forms.law import LawIn, LawOut
 from mappers.law import map_law_to_model, map_model_to_law
 
 router = APIRouter()
@@ -25,11 +25,11 @@ def __get_law(session, oid) -> Law:
 @router.post(
     "/",
     summary="Create a new law",
-    response_model=LawForm)
+    response_model=LawOut)
 async def create_law(
-        law: LawForm,
+        law: LawIn,
         user: User = Depends(user_with_admin_access),
-        session: Session = Depends(db_session)) -> LawForm:
+        session: Session = Depends(db_session)) -> LawOut:
     """Create new law using specified data."""
     law_db = map_law_to_model(law)
     session.add(law_db)
@@ -40,10 +40,10 @@ async def create_law(
 @router.put(
     "/{oid}",
     summary="Update law",
-    response_model=LawForm)
+    response_model=LawOut)
 async def update_law(
         oid: int,
-        law: LawForm,
+        law: LawIn,
         user: User = Depends(user_with_admin_access),
         session: Session = Depends(db_session)):
     """Update law"""
@@ -71,7 +71,7 @@ async def delete_law(
 @router.get(
     "/",
     summary="Fetch list of laws",
-    response_model=List[LawForm])
+    response_model=List[LawOut])
 async def fetch_laws_list(
         user: User = Depends(user_with_admin_access),
         session: Session = Depends(db_session)):
@@ -83,7 +83,7 @@ async def fetch_laws_list(
 @router.get(
     "/{oid}",
     summary="Fetch one proposal",
-    response_model=LawForm)
+    response_model=LawOut)
 async def fetch_law(
         oid: int,
         user: User = Depends(user_with_admin_access),
