@@ -53,6 +53,7 @@ async def update_proposal(
         raise HTTPException(status_code=400, detail=__MSG_IS_LOCKED)
     proposal_db.title = proposal.title
     proposal_db.content = proposal.content
+    session.commit()
     return map_model_to_proposal(proposal_db)
 
 

@@ -50,6 +50,7 @@ async def update_law(
     law_db = __get_law(session, oid)
     law_db.title = law.title
     law_db.content = law.content
+    session.commit()
     return map_model_to_law(law_db)
 
 
