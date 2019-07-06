@@ -44,4 +44,3 @@ Feature: Manage proposals
     When I lock proposal "Test proposal" for modification
     Then I set a title for "Test proposal" as "New proposal"
     And I see the error "Proposal is locked for modification"
-  
