@@ -7,7 +7,7 @@ from auth.role import AuthenticatedUser
 from db import db_session
 from db.models import Proposal, User
 from forms.proposal import ProposalIn, ProposalOut
-from mappers.proposal import map_model_to_proposal, map_proposal_to_model
+from mappers.proposal import model2proposal, proposal2model
 
 router = APIRouter()
 user_with_admin_access = AuthenticatedUser(permissions=["user_list"])
@@ -32,10 +32,10 @@ async def create_proposal(
         user: User = Depends(user_with_admin_access),
         session: Session = Depends(db_session)) -> ProposalOut:
     """Create new proposal using specified data."""
-    proposal_db = map_proposal_to_model(proposal)
+    proposal_db = proposal2model(proposal)
     session.add(proposal_db)
     session.commit()  # save to db to be able to obtain ID for mapping below
-    return map_model_to_proposal(proposal_db)
+    return model2proposal(proposal_db)
 
 
 @router.put(
@@ -54,7 +54,7 @@ async def update_proposal(
     proposal_db.title = proposal.title
     proposal_db.content = proposal.content
     session.commit()
-    return map_model_to_proposal(proposal_db)
+    return model2proposal(proposal_db)
 
 
 @router.delete(
@@ -67,7 +67,7 @@ async def delete_proposal(
     """Delete proposal using specified ID."""
     proposal_db = __get_proposal(session, oid)
     session.delete(proposal_db)
-    proposal = map_model_to_proposal(proposal_db)
+    proposal = model2proposal(proposal_db)
     session.commit()
     return proposal
 
@@ -81,7 +81,7 @@ async def fetch_proposals_list(
         session: Session = Depends(db_session)):
     """Fetch list of proposals"""
     proposals = session.query(Proposal).all()  # type: [Proposal]
-    return list(map(map_model_to_proposal, proposals))
+    return list(map(model2proposal, proposals))
 
 
 @router.get(
@@ -94,7 +94,7 @@ async def fetch_proposal(
         session: Session = Depends(db_session)) -> ProposalOut:
     """Fetch list of proposals"""
     proposal_db = __get_proposal(session, oid)
-    return map_model_to_proposal(proposal_db)
+    return model2proposal(proposal_db)
 
 
 @router.post(

@@ -2,7 +2,7 @@ from db.models import Law
 from forms.law import LawIn, LawOut
 
 
-def map_model_to_law(model: Law) -> LawOut:
+def model2law(model: Law) -> LawOut:
     return LawOut(
         oid=model.id,
         title=model.title,
@@ -10,7 +10,7 @@ def map_model_to_law(model: Law) -> LawOut:
     )
 
 
-def map_law_to_model(law: LawIn) -> Law:
+def law2model(law: LawIn) -> Law:
     return Law(
         title=law.title,
         content=law.content

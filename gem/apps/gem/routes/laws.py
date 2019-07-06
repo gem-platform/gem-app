@@ -7,7 +7,7 @@ from auth.role import AuthenticatedUser
 from db import db_session
 from db.models import Law, User
 from forms.law import LawIn, LawOut
-from mappers.law import map_law_to_model, map_model_to_law
+from mappers.law import law2model, model2law
 
 router = APIRouter()
 user_with_admin_access = AuthenticatedUser(permissions=["user_list"])
@@ -31,10 +31,10 @@ async def create_law(
         user: User = Depends(user_with_admin_access),
         session: Session = Depends(db_session)) -> LawOut:
     """Create new law using specified data."""
-    law_db = map_law_to_model(law)
+    law_db = law2model(law)
     session.add(law_db)
     session.commit()  # save to db to be able to obtain ID for mapping below
-    return map_model_to_law(law_db)
+    return model2law(law_db)
 
 
 @router.put(
@@ -51,7 +51,7 @@ async def update_law(
     law_db.title = law.title
     law_db.content = law.content
     session.commit()
-    return map_model_to_law(law_db)
+    return model2law(law_db)
 
 
 @router.delete(
@@ -64,7 +64,7 @@ async def delete_law(
     """Delete law using specified ID."""
     law_db = __get_law(session, oid)
     session.delete(law_db)
-    law = map_model_to_law(law_db)
+    law = model2law(law_db)
     session.commit()
     return law
 
@@ -78,7 +78,7 @@ async def fetch_laws_list(
         session: Session = Depends(db_session)):
     """Fetch list of laws"""
     laws = session.query(Law).all()  # type: [Law]
-    return list(map(map_model_to_law, laws))
+    return list(map(model2law, laws))
 
 
 @router.get(
@@ -91,7 +91,7 @@ async def fetch_law(
         session: Session = Depends(db_session)):
     """Fetch list of laws"""
     law_db = __get_law(session, oid)
-    return map_model_to_law(law_db)
+    return model2law(law_db)
 
 
 @router.post(
