@@ -43,11 +43,7 @@ export default class AdminUsersView extends Vue {
     return undefined;
   }
 
-  /** On delete entity confirmed */
-  @Emit("delete") private onDeleteConfirmed() {
-    return;
-  }
-
+  /** Admin store */
   private get admin() {
     return AdminStore;
   }
