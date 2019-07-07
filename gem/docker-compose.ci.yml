@@ -4,5 +4,6 @@ services:
     volumes:
       - ../coverage/clients/gem:/coverage
   gem-app:
+    command: coverage run main.py
     volumes:
       - ../coverage/apps/gem:/coverage

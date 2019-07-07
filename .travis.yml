@@ -73,10 +73,15 @@ before_install:
   - (cd gem && chmod +x ./wait.sh && ./wait.sh)
 
 script:
+  # gem app backend unit tests
   - (cd gem && docker-compose exec gem-app bash -c "pytest --cov=. && cd .. && cp ./app/.coverage . && coverage xml -o /coverage/coverage.xml")
   - (cd coverage/apps/gem && ls && npx codecov --token=$CODECOV_TOKEN --root="." -c -F unit)
 
+  # gem client unit tests
   - (cd gem && docker-compose exec gem-client npm run test:unit -- --coverage --coverageDirectory=/coverage)
   - (cd coverage/clients/gem && ls && npx codecov --token=$CODECOV_TOKEN --root="." -c -F unit)
 
+  # integrational tests
   - (cd e2e && npx codeceptjs run)
+  - (cd gem && docker-compose exec gem-app bash -c "cd .. && cp ./app/.coverage . && coverage xml -o /coverage/coverage.xml")
+  - (cd coverage/apps/gem && ls && npx codecov --token=$CODECOV_TOKEN --root="." -c -F integrational)
