@@ -2,8 +2,11 @@
   <v-card class="elevation-12">
     <!-- Header -->
     <v-toolbar dark color="primary">
-      <v-toolbar-title>Login</v-toolbar-title>
+      <v-toolbar-title>
+        {{ $t("login") }}
+      </v-toolbar-title>
       <v-spacer></v-spacer>
+      <login-form-locale-switch />
     </v-toolbar>
 
     <!-- Content -->
@@ -18,14 +21,14 @@
         <v-text-field
           v-model="username"
           prepend-icon="person"
-          label="Login"
+          :label="$t('login')"
           type="text"
           name="username"
         />
         <v-text-field
           v-model="password"
           prepend-icon="lock"
-          label="Password"
+          :label="$t('password')"
           type="password"
           name="password"
         />
@@ -40,7 +43,7 @@
         @click="onLoginButtonClicked"
         name="submit"
         ref="submit"
-        >Login
+        >{{ $t("enter") }}
       </v-btn>
     </v-card-actions>
   </v-card>
@@ -50,7 +53,9 @@
 import { Component, Emit, Prop, Vue } from "vue-property-decorator";
 import { ICredentials } from "../types";
 
-@Component
+import LoginFormLocaleSwitch from "./LoginFormLocaleSwitch.vue";
+
+@Component({ components: { LoginFormLocaleSwitch } })
 export default class LoginForm extends Vue {
   /** Error message to display. Show nothing if message is not provided. */
   @Prop({ default: "" }) public message!: string;
@@ -69,3 +74,14 @@ export default class LoginForm extends Vue {
   }
 }
 </script>
+
+<i18n>
+en:
+  login: "Login"
+  password: "Password"
+  enter: "Login"
+ru:
+  login: "Логин"
+  password: "Пароль"
+  enter: "Войти"
+</i18n>
