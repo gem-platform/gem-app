@@ -26,7 +26,7 @@ def downgrade():
 ### Apply migration
 
 ```sh
-alembic upgrade heads
+alembic upgrade head
 ```
 
 ### Show history
