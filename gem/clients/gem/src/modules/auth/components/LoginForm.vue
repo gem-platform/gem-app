@@ -3,10 +3,10 @@
     <!-- Header -->
     <v-toolbar dark color="primary">
       <v-toolbar-title>
-        {{ $t("login") }}
+        {{ $t("title") }}
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <login-form-locale-switch />
+      <locale-switch />
     </v-toolbar>
 
     <!-- Content -->
@@ -53,9 +53,9 @@
 import { Component, Emit, Prop, Vue } from "vue-property-decorator";
 import { ICredentials } from "../types";
 
-import LoginFormLocaleSwitch from "./LoginFormLocaleSwitch.vue";
+import LocaleSwitch from "./LocaleSwitch.vue";
 
-@Component({ components: { LoginFormLocaleSwitch } })
+@Component({ components: { LocaleSwitch } })
 export default class LoginForm extends Vue {
   /** Error message to display. Show nothing if message is not provided. */
   @Prop({ default: "" }) public message!: string;
@@ -77,10 +77,12 @@ export default class LoginForm extends Vue {
 
 <i18n>
 en:
+  title: "GEM Online"
   login: "Login"
   password: "Password"
   enter: "Login"
 ru:
+  title: "GEM Онлайн"
   login: "Логин"
   password: "Пароль"
   enter: "Войти"

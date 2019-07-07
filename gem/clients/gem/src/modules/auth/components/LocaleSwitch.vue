@@ -14,7 +14,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import { ICredentials } from "../types";
 
 @Component({})
-export default class LoginForm extends Vue {
+export default class LocaleSwitch extends Vue {
   private changeLocale(locale: string) {
     this.$i18n.locale = locale;
   }
