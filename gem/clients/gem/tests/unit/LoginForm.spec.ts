@@ -1,9 +1,11 @@
 import LoginForm from "@/modules/auth/components/LoginForm.vue";
 import { mount } from "@vue/test-utils";
 import Vue from "vue";
+import VueI18n from "vue-i18n";
 import Vuetify from "vuetify";
 
 Vue.use(Vuetify);
+Vue.use(VueI18n);
 
 describe("LoginForm.vue", () => {
   document.body.setAttribute("data-app", "true");
