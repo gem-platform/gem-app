@@ -87,7 +87,7 @@ async def route_login_access_token(form_data: OAuth2PasswordRequestForm = Depend
     user = authenticate_user(s, form_data.username, form_data.password)
     if not user:
         raise HTTPException(
-            status_code=400, detail="credentials.incorrect")
+            status_code=400, detail="Incorrect name or password")
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
         data={"username": user.name}, expires_delta=access_token_expires)

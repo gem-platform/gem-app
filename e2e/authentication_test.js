@@ -21,7 +21,7 @@ Scenario("I able to login with valid credentials", I => {
 
 Scenario("I'm unable to login with invalid credentials", I => {
   I.login(validLogin, invalidPassword);
-  I.waitForText("Incorrect email or password");
+  I.waitForText("Incorrect name or password");
 });
 
 Scenario("Redirects to login page if token was expired", I => {
