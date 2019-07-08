@@ -1,5 +1,5 @@
-import { EmptyUser, IUser } from "@/modules/types";
 import { Operation } from "@/lib/operations";
+import { EmptyUser, IUser } from "@/modules/types";
 import store from "@/store";
 import {
   Action,
@@ -42,12 +42,6 @@ export default class AuthModule extends VuexModule {
   /** Authentication token. Get from localStorage if user was previously authenticated. */
   public token: string = localStorage.getItem("token") || emptyToken;
 
-  // /** Last authentication error. */
-  // public message: string = "";
-
-  // /** Error details */
-  // public details: any = {};
-
   /** Authenticated user data. */
   public user: IUser = { ...EmptyUser };
 
@@ -75,8 +69,8 @@ export default class AuthModule extends VuexModule {
       } else {
         const message = err.response.data.detail;
         this.authenticationFailed({
-          message: message || "Unknown error",
-          details: []
+          details: [],
+          message: message || "Unknown error"
         });
       }
       return false;
