@@ -15,10 +15,10 @@ const i18n = new VueI18n({ silentTranslationWarn: true });
 describe("LoginForm.vue", () => {
   function getContext() {
     document.body.setAttribute("data-app", "true");
-    const wrapper = mount(LocaleSwitch, { i18n, stubs: {Fragment: true} });
+    const wrapper = mount(LocaleSwitch, { i18n, stubs: { Fragment: true } });
     const en = wrapper.find({ ref: "en" });
     const ru = wrapper.find({ ref: "ru" });
-    return { en,ru,wrapper };
+    return { en, ru, wrapper };
   }
 
   it("click en", () => {

@@ -1,4 +1,5 @@
 import { EmptyUser, IUser } from "@/modules/types";
+import { Operation } from "@/lib/operations";
 import store from "@/store";
 import {
   Action,
@@ -17,6 +18,11 @@ const emptyToken = "";
 /** Authentication storage module */
 @Module({ namespaced: true, dynamic: true, name: "auth", store })
 export default class AuthModule extends VuexModule {
+  /** List of async operations. */
+  public operations = {
+    login: new Operation()
+  };
+
   /**
    * Is user authenticated?
    * @returns true if authenticated, otherwise false.
@@ -36,8 +42,11 @@ export default class AuthModule extends VuexModule {
   /** Authentication token. Get from localStorage if user was previously authenticated. */
   public token: string = localStorage.getItem("token") || emptyToken;
 
-  /** Last authentication error. */
-  public message: string = "";
+  // /** Last authentication error. */
+  // public message: string = "";
+
+  // /** Error details */
+  // public details: any = {};
 
   /** Authenticated user data. */
   public user: IUser = { ...EmptyUser };
@@ -49,17 +58,27 @@ export default class AuthModule extends VuexModule {
    */
   @Action public async login(credentials: ICredentials): Promise<boolean> {
     try {
+      this.authenticationStarted();
       const token = await service.login(credentials);
       this.authenticationSucceeded(token);
       return true;
     } catch (err) {
       if (!err.response) {
-        this.authenticationFailed("server.offline");
-        return false;
+        // there is no connection to the backed. it may be down
+        this.authenticationFailed({ message: "server.offline" });
+      } else if (err.response.status === 422) {
+        // validation failed. unprocessable form
+        this.authenticationFailed({
+          message: "form.invalid",
+          details: err.response.data.detail
+        });
+      } else {
+        const message = err.response.data.detail;
+        this.authenticationFailed({
+          message: message || "Unknown error",
+          details: []
+        });
       }
-
-      const message = err.response.data.detail;
-      this.authenticationFailed(message || "Unknown error");
       return false;
     }
   }
@@ -88,13 +107,17 @@ export default class AuthModule extends VuexModule {
     this.user = user;
   }
 
+  @Mutation private authenticationStarted() {
+    this.operations.login.start();
+  }
+
   /**
    * Authentication succeeded.
    * @param token Authentication token.
    */
   @Mutation private authenticationSucceeded(token: IAuthToken) {
     this.token = token.access_token;
-    this.message = "";
+    this.operations.login.succeed();
     localStorage.setItem("token", token.access_token);
   }
 
@@ -102,9 +125,9 @@ export default class AuthModule extends VuexModule {
    * Authentication failed.
    * @param message Error message.
    */
-  @Mutation private authenticationFailed(message: string) {
+  @Mutation private authenticationFailed({ message, details = {} }) {
     this.token = "";
-    this.message = message;
+    this.operations.login.fail(message, details);
     localStorage.removeItem("token");
   }
 
@@ -112,7 +135,7 @@ export default class AuthModule extends VuexModule {
    * Authentication required.
    */
   @Mutation private authenticationRequired() {
-    this.message = "Authentication required";
+    // this.message = "Authentication required";
   }
 
   /**
