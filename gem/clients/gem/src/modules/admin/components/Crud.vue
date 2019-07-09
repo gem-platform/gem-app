@@ -2,7 +2,13 @@
   <v-container fluid>
     <v-layout column>
       <!-- Control panel -->
-      <v-btn block outline @click="onCreateClicked" data-ref="create-new">
+      <v-btn
+        block
+        outline
+        @click="onCreateClicked"
+        data-ref="create-new"
+        ref="create-new"
+      >
         <v-icon dark>add</v-icon>Create
       </v-btn>
 
@@ -43,11 +49,7 @@ export default class AdminUsersView extends Vue {
     return undefined;
   }
 
-  /** On delete entity confirmed */
-  @Emit("delete") private onDeleteConfirmed() {
-    return;
-  }
-
+  /** Admin store */
   private get admin() {
     return AdminStore;
   }

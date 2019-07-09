@@ -104,3 +104,9 @@ def test_update_locked_proposal(client: TestClient, proposal):
     response = client.put("/proposals/1", json=proposal)
     assert response.status_code == 400
     assert response.json() == {"detail": "Proposal is locked for modification"}
+
+
+def test_send_oid_ignored(client: TestClient, proposal):
+    response = client.post("/proposals/", json={"oid": 99, **proposal})
+    assert response.status_code == 200
+    assert response.json()["oid"] != 99

@@ -1,17 +1,15 @@
 from datetime import datetime, timedelta
 
-from fastapi import APIRouter, Depends, FastAPI, HTTPException, Security
+from fastapi import APIRouter, Depends, HTTPException, Security
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jwt import PyJWTError, decode, encode
 from passlib.context import CryptContext
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
-from starlette.middleware.cors import CORSMiddleware
-from starlette.requests import Request
-from starlette.status import HTTP_403_FORBIDDEN
 
-from api.user import UserOut
-from db import get_db, models
+from db import db_session
+from db.models import User
+from forms.user import UserOut
 from mappers.user import model2user
 
 # to get a string like this run:
@@ -41,16 +39,12 @@ def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
 
 
-def get_password_hash(password):
-    return pwd_context.hash(password)
-
-
 def get_user(s: Session, username: str):
     s.expire_on_commit = False
-    return s.query(models.User).filter_by(name=username).first()
+    return s.query(User).filter_by(name=username).first()
 
 
-def authenticate_user(s: Session, username: str, password: str) -> models.User:
+def authenticate_user(s: Session, username: str, password: str) -> User:
     user = get_user(s, username)
     return user if user and verify_password(password, user.hashed_password) else False
 
@@ -63,7 +57,10 @@ def create_access_token(*, data: dict, expires_delta: timedelta = None) -> str:
     return encoded_jwt
 
 
-async def get_current_user(token: str = Security(oauth2_scheme), s: Session = Depends(get_db)) -> models.User:
+async def get_current_user(
+        token: str = Security(oauth2_scheme),
+        s: Session = Depends(db_session)) -> User:
+    """Returns current user."""
     try:
         payload = decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         token_data = TokenPayload(**payload)
@@ -73,7 +70,9 @@ async def get_current_user(token: str = Security(oauth2_scheme), s: Session = De
     return user if user else None
 
 
-async def get_current_active_user(current_user: models.User = Depends(get_current_user)):
+async def get_current_active_user(
+        current_user: User = Depends(get_current_user)):
+    """Return current active user."""
     if not current_user:
         raise HTTPException(status_code=401, detail="Not authenticated")
     if current_user.disabled:
@@ -83,7 +82,7 @@ async def get_current_active_user(current_user: models.User = Depends(get_curren
 
 @router.post("/token", response_model=Token)
 async def route_login_access_token(form_data: OAuth2PasswordRequestForm = Depends(),
-                                   s: Session = Depends(get_db)):
+                                   s: Session = Depends(db_session)):
     user = authenticate_user(s, form_data.username, form_data.password)
     if not user:
         raise HTTPException(
@@ -95,5 +94,5 @@ async def route_login_access_token(form_data: OAuth2PasswordRequestForm = Depend
 
 
 @router.get("/me", response_model=UserOut)
-async def read_users_me(current_user: models.User = Depends(get_current_active_user)):
+async def read_users_me(current_user: User = Depends(get_current_active_user)):
     return model2user(current_user)

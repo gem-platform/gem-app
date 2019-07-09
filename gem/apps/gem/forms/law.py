@@ -2,7 +2,6 @@ from pydantic import BaseModel, Schema
 
 
 class Law(BaseModel):
-    oid: int = 0
     title: str = Schema(
         "",
         title="Title",
@@ -12,3 +11,11 @@ class Law(BaseModel):
         "",
         title="Content"
     )
+
+
+class LawIn(Law):
+    pass
+
+
+class LawOut(Law):
+    oid: int = 0

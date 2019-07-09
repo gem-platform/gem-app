@@ -64,8 +64,6 @@
 import { Component, Emit, Prop, Vue } from "vue-property-decorator";
 import { ICredentials } from "../types";
 
-// todo: move to right place
-import ValidationMixin from "../../admin/mixins/ValidationMixin";
 import LocaleSwitch from "./LocaleSwitch.vue";
 
 @Component({ components: { LocaleSwitch } })

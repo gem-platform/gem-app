@@ -1,9 +1,9 @@
-from db import models
-from api.proposal import Proposal
+from db.models import Proposal
+from forms.proposal import ProposalIn, ProposalOut
 
 
-def map_model_to_proposal(model: models.Proposal) -> Proposal:
-    return Proposal(
+def model2proposal(model: Proposal) -> ProposalOut:
+    return ProposalOut(
         oid=model.id,
         title=model.title,
         content=model.content,
@@ -11,12 +11,9 @@ def map_model_to_proposal(model: models.Proposal) -> Proposal:
     )
 
 
-def map_proposal_to_model(proposal: Proposal) -> models.Proposal:
-    model = models.Proposal(
-        title=proposal.title,
-        content=proposal.content,
-        locked=proposal.locked
-    )
-    if proposal.oid > 0:
-        model.id = proposal.oid
-    return model
+def proposal2model(proposal: ProposalIn, model: Proposal = None) -> Proposal:
+    result = model if model else Proposal()
+    result.title = proposal.title
+    result.content = proposal.content
+    result.locked = proposal.locked
+    return result

@@ -8,7 +8,9 @@
   "workspaceFolder": "/tests",
   "shutdownAction": "stopCompose",
   "appPort": 8080,
+  "postCreateCommand": "npm install",
   "extensions": [
-    "actboy168.tasks"
+    "actboy168.tasks",
+    "alexkrechik.cucumberautocomplete"
   ]
 }

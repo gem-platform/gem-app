@@ -14,8 +14,8 @@ services:
     ports:
       - 9000:9000
     depends_on:
-      - gem-db
-  gem-db:
+      - db
+  db:
     build: ./db
     restart: always
     env_file:

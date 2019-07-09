@@ -6,13 +6,13 @@
         {
             "label": "Run Migrations",
             "type": "shell",
-            "command": "alembic upgrade heads",
+            "command": "alembic upgrade head",
             "problemMatcher": []
         },
         {
             "label": "Run Tests",
             "type": "shell",
-            "command": "pytest",
+            "command": "pytest --cov-report xml:cov.xml --cov .",
             "problemMatcher": []
         },
         {
