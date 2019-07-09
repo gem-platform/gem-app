@@ -1,0 +1,8 @@
+{
+    "en": {
+        "value_error.missing": "Field is required"
+    },
+    "ru": {
+        "value_error.missing": "Не может быть пустым"
+    }
+}

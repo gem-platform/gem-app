@@ -1,8 +1,12 @@
 {
     "en": {
+        "Incorrect name or password": "Incorrect name or password",
+        "form.invalid": "Please correct errors",
         "server.offline": "Server is offline"
     }, 
     "ru": {
+        "Incorrect name or password": "Неверное имя или пароль",
+        "form.invalid": "Исправьте ошибки",
         "server.offline": "Сервер недоступен"
     }
 }
