@@ -119,7 +119,7 @@ export default class AuthModule extends VuexModule {
    * Authentication failed.
    * @param message Error message.
    */
-  @Mutation private authenticationFailed({ message, details = {} }) {
+  @Mutation private authenticationFailed({ message = "", details = {} }) {
     this.token = "";
     this.operations.login.fail(message, details);
     localStorage.removeItem("token");
@@ -129,7 +129,7 @@ export default class AuthModule extends VuexModule {
    * Authentication required.
    */
   @Mutation private authenticationRequired() {
-    // this.message = "Authentication required";
+    this.operations.login.fail("Authentication required");
   }
 
   /**
