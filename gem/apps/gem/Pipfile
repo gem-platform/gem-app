@@ -11,6 +11,7 @@ pytest = "*"
 starlette = "*"
 requests = "*"
 pytest-cov = "*"
+flake8 = "*"
 
 [packages]
 fastapi = "==0.20.0"

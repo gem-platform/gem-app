@@ -1,6 +1,7 @@
-from typing import List
-from enum import Enum
 from datetime import datetime
+from enum import Enum
+from typing import List
+
 from pydantic import BaseModel, Schema, validator
 
 
@@ -11,7 +12,6 @@ class EventType(str, Enum):
 
 
 class Event(BaseModel):
-    oid: int = 0
     type: EventType
     title: str = Schema(
         "",
@@ -28,3 +28,11 @@ class Event(BaseModel):
         if values["start"] > v:
             raise ValueError("End date should be greater than the start date")
         return v
+
+
+class EventIn(Event):
+    pass
+
+
+class EventOut(Event):
+    oid: int = 0

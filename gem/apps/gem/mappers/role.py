@@ -1,18 +1,15 @@
-from db import models
-from api.role import Role, RoleOut
+from db.models import Role
+from forms.role import RoleIn, RoleOut
 
 
-def model2role(model: models.Role) -> RoleOut:
+def model2role(model: Role) -> RoleOut:
     return RoleOut(
         oid=model.id,
         name=model.name
     )
 
 
-def role2model(role: Role) -> models.Role:
-    model = models.Role(
-        name=role.name,
-    )
-    if role.oid > 0:
-        model.id = role.oid
-    return model
+def role2model(role: RoleIn, model: Role = None) -> Role:
+    result = model if model else Role()
+    result.name = role.name
+    return result

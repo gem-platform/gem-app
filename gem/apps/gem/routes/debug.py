@@ -6,6 +6,6 @@ router = APIRouter()
 
 
 @router.post("/wipeout")
-async def debug_wipeout():
-    recreate_db()
+async def debug_wipeout(seed: bool = True):
+    recreate_db(seed)
     return {"done": True}

@@ -1,20 +1,17 @@
-from db import models
-from api.law import Law
+from db.models import Law
+from forms.law import LawIn, LawOut
 
 
-def map_model_to_law(model: models.Law) -> Law:
-    return Law(
+def model2law(model: Law) -> LawOut:
+    return LawOut(
         oid=model.id,
         title=model.title,
         content=model.content
     )
 
 
-def map_law_to_model(law: Law) -> models.Law:
-    model = models.Law(
-        title=law.title,
-        content=law.content
-    )
-    if law.oid > 0:
-        model.id = law.oid
-    return model
+def law2model(law: LawIn, model: Law = None) -> Law:
+    result = model if model else Law()
+    result.title = law.title
+    result.content = law.content
+    return result

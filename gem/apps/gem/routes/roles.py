@@ -1,18 +1,23 @@
+from typing import List
+
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from auth.role import AuthenticatedUser
-from db import get_db
-from db.models import User, Role
+from db import db_session
+from db.models import Role, User
+from forms.role import RoleOut
 from mappers.role import model2role
 
 router = APIRouter()
 user_with_roles_access = AuthenticatedUser(permissions=["user_list"])
 
 
-@router.get("/")
+@router.get(
+    "/",
+    response_model=List[RoleOut])
 async def fetch_roles_list(
-        current_user: User = Depends(user_with_roles_access),
-        session: Session = Depends(get_db)):
+        user: User = Depends(user_with_roles_access),
+        session: Session = Depends(db_session)):
     roles = session.query(Role).all()  # type: [Role]
     return list(map(model2role, roles))
