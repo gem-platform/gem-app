@@ -6,7 +6,7 @@
         {
             "label": "Run Migrations",
             "type": "shell",
-            "command": "alembic upgrade heads",
+            "command": "alembic upgrade head",
             "problemMatcher": []
         },
         {
