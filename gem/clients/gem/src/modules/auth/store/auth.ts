@@ -53,6 +53,11 @@ export default class AuthModule extends VuexModule {
       this.authenticationSucceeded(token);
       return true;
     } catch (err) {
+      if (!err.response) {
+        this.authenticationFailed("server.offline");
+        return false;
+      }
+
       const message = err.response.data.detail;
       this.authenticationFailed(message || "Unknown error");
       return false;

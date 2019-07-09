@@ -1,13 +1,20 @@
 import LoginForm from "@/modules/auth/components/LoginForm.vue";
 import { mount } from "@vue/test-utils";
 import Vue from "vue";
+import VueI18n from "vue-i18n";
 import Vuetify from "vuetify";
+// @ts-ignore
+import Fragment from "vue-fragment";
 
 Vue.use(Vuetify);
+Vue.use(VueI18n);
+Vue.use(Fragment.Plugin);
+
+const i18n = new VueI18n({ silentTranslationWarn: true });
 
 describe("LoginForm.vue", () => {
   document.body.setAttribute("data-app", "true");
-  const wrapper = mount(LoginForm);
+  const wrapper = mount(LoginForm, { i18n });
   const submit = wrapper.find({ ref: "submit" });
 
   it("renders props.message when passed", () => {

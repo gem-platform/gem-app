@@ -1,0 +1,8 @@
+{
+    "en": {
+        "server.offline": "Server is offline"
+    }, 
+    "ru": {
+        "server.offline": "Сервер недоступен"
+    }
+}
