@@ -24,6 +24,8 @@ cache:
     - $HOME/.npm
 
 before_install:
+  - ls $HOME/.npm
+
   # Enable user namespace cloning
   - sysctl kernel.unprivileged_userns_clone=1
 
