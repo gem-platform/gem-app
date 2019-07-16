@@ -9,8 +9,6 @@ RUN pip install pipenv --no-cache-dir && \
 # Install app
 COPY . /app
 COPY prestart.sh /app/prestart.sh
-ENV PORT=9000
-ENV SHELL=bash
 
 # Start application with hotreload
 CMD ["/start-reload.sh"]

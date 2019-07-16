@@ -1,3 +1,5 @@
+from os import getenv
+
 from uvicorn import run
 from starlette.middleware.cors import CORSMiddleware
 
@@ -38,7 +40,10 @@ async def db_session_middleware(request: Request, call_next):
 
 
 if __name__ == "__main__":
+    APP_HOST = getenv("GEM_APP_HOST", "0.0.0.0")
+    APP_PORT = getenv("GEM_APP_PORT", "9000")
+    
     # start app without hotreload. it's imposible to debug app
     # with hot reload enabled, because app starts in another thread
-    run(app, host="0.0.0.0", port=9000)
-    # run("main:app", host="0.0.0.0", port=9000, debug=True, reload=True)
+    run(app, host=APP_HOST, port=APP_PORT)
+    # run("main:app", host=APP_HOST, port=APP_PORT, debug=True, reload=True)

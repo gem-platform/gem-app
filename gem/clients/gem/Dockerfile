@@ -12,4 +12,4 @@ WORKDIR /workspaces/gem-client
 COPY . .
 
 # Run app
-CMD ["npm",  "run", "serve", "--port $GEM_CLIENT_PORT"]
+CMD ["sh", "entrypoint.sh"]

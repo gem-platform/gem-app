@@ -3,24 +3,26 @@ services:
   gem-client:
     restart: on-failure:5
     build: ./clients/gem
-    expose:
-      - 8080
     ports:
-      - 8080:8080
+      - ${GEM_CLIENT_PORT}:${GEM_CLIENT_PORT}
     depends_on:
       - gem-app
+    env_file:
+      - .env
   gem-app:
     build: ./apps/gem
     ports:
-      - 9000:9000
+      - ${GEM_APP_PORT}:${GEM_APP_PORT}
     depends_on:
       - db
+    env_file:
+      - .env
   db:
     build: ./db
     restart: always
     env_file:
-      - environment.env
+      - .env
     ports:
-      - 5432:5432
+      - ${GEM_DB_PORT}:${GEM_DB_PORT}
     volumes:
       - "../.data/db:/var/lib/postgresql/data"

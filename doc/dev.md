@@ -30,7 +30,7 @@ But sometimes it is required to start GEM application on a host machine (for deb
 
 ```bash
 cd gem
-export $(cat environment.env | xargs)
+export $(cat .env | xargs)
 ```
 
 ### Start gem-app
