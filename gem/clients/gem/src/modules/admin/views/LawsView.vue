@@ -8,7 +8,6 @@
         :operation="ops.save"
         @close="laws.closeEditDialog"
         @save="onSaveLawClicked"
-        @lock="onLockLaw"
       />
     </template>
 
