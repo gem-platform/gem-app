@@ -10,6 +10,7 @@ services:
     env_file:
       - .env
   gem-app:
+    restart: on-failure:5
     build: ./apps/gem
     ports:
       - ${GEM_APP_PORT}:${GEM_APP_PORT}
