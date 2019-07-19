@@ -2,13 +2,17 @@ import ConfirmDialog from "@/modules/admin/components/ConfirmDialog.vue";
 import { mount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
+import VueI18n from "vue-i18n";
 
 Vue.use(Vuetify);
+Vue.use(VueI18n);
+
+const i18n = new VueI18n({ silentTranslationWarn: true });
 
 describe("ConfirmDialog.vue", () => {
   function getContext() {
     document.body.setAttribute("data-app", "true");
-    const wrapper = mount(ConfirmDialog);
+    const wrapper = mount(ConfirmDialog, { i18n });
     return {
       cancel: wrapper.find({ ref: "cancel" }),
       card: wrapper.find({ ref: "card" }),

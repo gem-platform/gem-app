@@ -2,11 +2,15 @@ import EditLawDialog from "@/modules/admin/components/EditLawDialog.vue";
 import { ILaw } from "@/modules/types.ts";
 import { mount } from "@vue/test-utils";
 import Vue from "vue";
+import VueI18n from "vue-i18n";
 import Vuetify from "vuetify";
 
 import { Operation, OperationState } from "@/lib/operations";
 
 Vue.use(Vuetify);
+Vue.use(VueI18n);
+
+const i18n = new VueI18n({ silentTranslationWarn: true });
 
 describe("EditLawDialog.vue", () => {
   const law: ILaw = {
@@ -18,6 +22,7 @@ describe("EditLawDialog.vue", () => {
   function getContext() {
     document.body.setAttribute("data-app", "true");
     const wrapper = mount(EditLawDialog, {
+      i18n,
       propsData: { law },
       stubs: {
         ckeditor: "<div class='stub'>CKEditor stub</div>"

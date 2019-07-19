@@ -2,13 +2,17 @@ import ChangePasswordDialog from "@/modules/admin/components/ChangePasswordDialo
 import { mount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
+import VueI18n from "vue-i18n";
 
 Vue.use(Vuetify);
+Vue.use(VueI18n);
+
+const i18n = new VueI18n({ silentTranslationWarn: true });
 
 describe("ChangePasswordDialog.vue", () => {
   function getContext() {
     document.body.setAttribute("data-app", "true");
-    const wrapper = mount(ChangePasswordDialog);
+    const wrapper = mount(ChangePasswordDialog, { i18n });
 
     return {
       cancel: wrapper.find({ ref: "cancel" }),
