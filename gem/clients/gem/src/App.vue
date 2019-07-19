@@ -39,7 +39,7 @@ import { Auth } from "./modules/auth/store/auth";
 
 @Component
 export default class Home extends Vue {
-  @Watch("isAuthenticated", { immediate: true })
+  @Watch("isAuthenticated")
   private onAuthenticationChanged(
     isAuthenticated: boolean,
     wasAuthenticated: boolean
