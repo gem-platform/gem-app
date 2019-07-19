@@ -2,7 +2,9 @@ import store from "@/store";
 import axios from "axios";
 
 const port = process.env.VUE_APP_GEM_APP_PORT;
-if (!port) { throw Error("No port of a backend provided"); }
+if (!port) {
+  throw Error("No port of a backend provided");
+}
 axios.defaults.baseURL = "http://localhost:" + port;
 
 axios.interceptors.request.use(
