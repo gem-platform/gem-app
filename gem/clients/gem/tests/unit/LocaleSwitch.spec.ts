@@ -1,10 +1,10 @@
 import LocaleSwitch from "@/modules/auth/components/LocaleSwitch.vue";
 import { mount } from "@vue/test-utils";
 import Vue from "vue";
-import VueI18n from "vue-i18n";
-import Vuetify from "vuetify";
 // @ts-ignore
 import Fragment from "vue-fragment";
+import VueI18n from "vue-i18n";
+import Vuetify from "vuetify";
 
 Vue.use(Vuetify);
 Vue.use(VueI18n);
@@ -24,14 +24,14 @@ describe("LoginForm.vue", () => {
   it("click en", () => {
     const context = getContext();
     context.en.trigger("click");
-    expect(context.wrapper.emitted().localeChanged).toBeTruthy();
-    expect(context.wrapper.emitted().localeChanged[0][0]).toEqual("en");
+    expect(context.wrapper.emitted().changed).toBeTruthy();
+    expect(context.wrapper.emitted().changed[0][0]).toEqual("en");
   });
 
   it("click ru", () => {
     const context = getContext();
     context.ru.trigger("click");
-    expect(context.wrapper.emitted().localeChanged).toBeTruthy();
-    expect(context.wrapper.emitted().localeChanged[0][0]).toEqual("ru");
+    expect(context.wrapper.emitted().changed).toBeTruthy();
+    expect(context.wrapper.emitted().changed[0][0]).toEqual("ru");
   });
 });

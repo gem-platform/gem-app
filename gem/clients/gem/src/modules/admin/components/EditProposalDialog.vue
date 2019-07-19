@@ -1,6 +1,6 @@
 <template>
   <edit-dialog
-    title="Edit proposal"
+    :title="$t('proposal.edit')"
     :visible="visible"
     :operation="operation"
     :canSave="!isLocked"
@@ -11,24 +11,24 @@
       <v-btn
         light
         flat
-        @click="onLockClicked"
+        @click="lock"
         data-ref="lock"
         v-if="!isLocked && canLock"
       >
-        Lock
+        {{ $t("lock") }}
       </v-btn>
     </template>
 
     <v-flex xs12>
       <v-alert type="info" v-model="isLocked" ref="locked-alert">
-        This proposal is locked for modification
+        {{ $t("locked") }}
       </v-alert>
     </v-flex>
 
     <v-flex xs12>
       <v-text-field
         v-model="proposal.title"
-        label="Title"
+        :label="$t('title')"
         required
         ref="title"
       />
@@ -79,7 +79,7 @@ export default class EditUserDialog extends Vue {
     return this.proposal;
   }
 
-  @Emit("lock") private onLockClicked() {
+  @Emit() private lock() {
     return this.proposal;
   }
 
@@ -97,3 +97,16 @@ export default class EditUserDialog extends Vue {
   }
 }
 </script>
+
+<i18n>
+en:
+  proposal.edit: Edit proposal
+  title: Title
+  lock: Lock
+  locked: The proposal is locked for modification
+ru:
+  proposal.edit: Редактировать законопроект
+  title: Заголовок
+  Lock: Заблокировать
+  locked: Законопроект заблокирован для изменений
+</i18n>

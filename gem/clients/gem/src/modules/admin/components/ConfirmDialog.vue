@@ -7,11 +7,13 @@
   >
     <v-card ref="card">
       <!-- Header -->
-      <v-card-title class="headline">{{ title }}</v-card-title>
+      <v-card-title class="headline">
+        {{ title || $t("title") }}
+      </v-card-title>
 
       <!-- Content -->
       <v-card-text>
-        <slot :data="data">Would you like to do this?</slot>
+        <slot :data="data">{{ $t("question") }}</slot>
       </v-card-text>
 
       <!-- Actions -->
@@ -19,7 +21,9 @@
         <v-spacer></v-spacer>
 
         <!-- Cancel operation button -->
-        <v-btn flat v-if="canCancel" @click="cancel" ref="cancel">Cancel</v-btn>
+        <v-btn flat v-if="canCancel" @click="cancel" ref="cancel">
+          {{ $t("cancel") }}
+        </v-btn>
 
         <!-- Delete operation button -->
         <v-btn
@@ -30,7 +34,7 @@
           :disabled="busy"
           @click="confirm"
           data-ref="confirm"
-          >{{ action }}</v-btn
+          >{{ action || $t("action") }}</v-btn
         >
       </v-card-actions>
     </v-card>
@@ -44,10 +48,10 @@ import { Component, Emit, Model, Prop, Vue } from "vue-property-decorator";
 @Component
 export default class ConfirmDialog extends Vue {
   /** Title */
-  @Prop({ default: "Perform action?" }) public title!: string;
+  @Prop() public title!: string;
 
   /** Action name */
-  @Prop({ default: "Confirm" }) public action!: string;
+  @Prop() public action!: string;
 
   /** Is dialog visible? */
   @Prop({ default: false }) public visible!: boolean;
@@ -72,3 +76,16 @@ export default class ConfirmDialog extends Vue {
   }
 }
 </script>
+
+<i18n>
+en:
+  question: Would you like to do this?
+  action: Confirm
+  cancel: Cancel
+  title: Perform action?
+ru:
+  question: Вы действительно хотите сделать это?
+  action: Подтвердить
+  cancel: Отмена
+  title: Выполнить действие?
+</i18n>

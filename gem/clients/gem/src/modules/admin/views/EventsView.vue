@@ -49,7 +49,7 @@
     <!-- Delete entity dialog -->
     <template v-slot:delete-dialog>
       <confirm-dialog
-        action="Delete"
+        :action="$t('delete')"
         title="Delete event?"
         :data="ops.delete.data"
         :visible="ops.delete.isStarted"
@@ -59,7 +59,7 @@
         @confirm="onDeleteConfirmed"
       >
         <template v-slot:default="{ data = { title: '' } }">
-          <b>{{ data.title }}</b> will be deleted. Confirm?
+          {{ $t("confirm", { title: data.title }) }}
         </template>
       </confirm-dialog>
     </template>
@@ -125,3 +125,11 @@ export default class AdmineventsView extends Vue {
   }
 }
 </script>
+
+<i18n src="@/locales/common.json"></i18n>
+<i18n>
+en:
+  confirm: Event "{title}" will be deleted. Confirm?
+ru:
+  confirm: Событие "{title}" будет удалёно. Продолжить?
+</i18n>
