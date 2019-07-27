@@ -24,3 +24,11 @@ services:
       - 5432:5432
     volumes:
       - "../.data/db:/var/lib/postgresql/data"
+  search:
+    build: ./search
+    restart: on-failure:5
+    ports:
+      - "127.0.0.1:36307:36307" # bind to local interface only!
+    volumes:
+      - "../.data/sphinx:/opt/sphinx/index"
+      - "./search/sphinx.conf:/opt/sphinx/conf/sphinx.conf"
