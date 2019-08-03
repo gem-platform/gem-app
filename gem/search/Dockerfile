@@ -2,21 +2,24 @@ FROM python:3.7-alpine3.10
 
 ENV SPHINX_VERSION 3.1.1
 ENV SPHINX_REVISION 612d99f
-
+WORKDIR /app
 # Install pipenv and dependencies
 COPY Pipfile* /app/
-RUN pip install pipenv --no-cache-dir && \
-    pipenv install --system && \
-    pipenv install --dev --system
 
-RUN apk add --no-cache mariadb-connector-c-dev \
+
+RUN apk add --no-cache gcc libc-dev make \
+    mariadb-connector-c-dev \
 	postgresql-dev \
 	wget
 
-RUN mkdir -p /opt/sphinx/index && \
+RUN pip install pipenv --no-cache-dir && \
+    pipenv install  && \
+    pipenv install --dev
+
+RUN mkdir -p /opt/ && \
+    mkdir -p /opt/sphinx/index && \
     mkdir -p /opt/sphinx/log && \
-    mkdir -p /var/run/sphinx && \
-    chmod +x /usr/app/entrypoint.sh
+    mkdir -p /var/run/sphinx
 
 VOLUME /opt/sphinx/index
 
@@ -31,6 +34,7 @@ RUN indexer -v
 RUN ln -sv /dev/stdout /opt/sphinx/log/query.log
 RUN ln -sv /dev/stdout /opt/sphinx/log/searchd.log
 
+ENV SHELL=bash
 EXPOSE 36307
 
 VOLUME /opt/sphinx/conf
