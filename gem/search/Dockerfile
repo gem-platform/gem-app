@@ -5,9 +5,9 @@ ENV SPHINX_REVISION 612d99f
 WORKDIR /app
 # Install pipenv and dependencies
 COPY Pipfile* /app/
+COPY entrypoint.sh /app/entrypoint.sh
 
-
-RUN apk add --no-cache gcc libc-dev make \
+RUN apk add --no-cache bash gcc libc-dev make \
     mariadb-connector-c-dev \
 	postgresql-dev \
 	wget
@@ -21,8 +21,6 @@ RUN mkdir -p /opt/ && \
     mkdir -p /opt/sphinx/log && \
     mkdir -p /var/run/sphinx
 
-VOLUME /opt/sphinx/index
-
 # http://sphinxsearch.com/downloads/current/
 RUN wget http://sphinxsearch.com/files/sphinx-${SPHINX_VERSION}-${SPHINX_REVISION}-linux-amd64-musl.tar.gz -O /tmp/sphinxsearch.tar.gz
 RUN cd /opt/sphinx && tar -xf /tmp/sphinxsearch.tar.gz
@@ -35,8 +33,5 @@ RUN ln -sv /dev/stdout /opt/sphinx/log/query.log
 RUN ln -sv /dev/stdout /opt/sphinx/log/searchd.log
 
 ENV SHELL=bash
-EXPOSE 36307
 
-VOLUME /opt/sphinx/conf
-
-CMD searchd --nodetach --config /opt/sphinx/conf/sphinx.conf
+CMD ["/app/entrypoint.sh"]

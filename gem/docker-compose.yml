@@ -27,8 +27,13 @@ services:
   search:
     build: ./search
     restart: on-failure:5
+    env_file:
+      - environment.env
     ports:
-      - "127.0.0.1:36307:36307" # bind to local interface only!
+      - 9306:9306
+      - 9312:9312
+    depends_on:
+      - db
     volumes:
       - "../.data/sphinx:/opt/sphinx/index"
       - "./search/sphinx.conf:/opt/sphinx/conf/sphinx.conf"
