@@ -8,6 +8,7 @@ from db import db_session
 from db.models import Law, User
 from forms.law import LawIn, LawOut
 from mappers.law import law2model, model2law
+from MySQLdb import _mysql
 
 router = APIRouter()
 user_with_admin_access = AuthenticatedUser(permissions=["user_list"])
@@ -92,3 +93,13 @@ async def fetch_law(
     """Fetch list of laws"""
     law_db = __get_law(session, oid)
     return model2law(law_db)
+
+async def search_law(
+        match: str,
+        user: User = Depends(user_with_admin_access),
+        session: Session = Depends(db_session)):
+    """Search laws"""
+    db = _mysql.connect('search', port=9306)
+    db.query("""select * from law where MATCH('hello')""")
+    r = db.store_result()
+    return r.fetch_row()
