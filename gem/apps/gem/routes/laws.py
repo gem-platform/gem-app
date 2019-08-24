@@ -9,6 +9,7 @@ from db.models import Law, User
 from forms.law import LawIn, LawOut, LawSphinxOut
 from mappers.law import law2model, model2law
 import MySQLdb
+import logging
 
 router = APIRouter()
 user_with_admin_access = AuthenticatedUser(permissions=["user_list"])
@@ -115,7 +116,8 @@ async def search(
         c.execute("select * from law where MATCH(%s)", (match,))
         laws = c.fetchall()
         result = [LawSphinxOut(*law) for law in laws]
-    except MySQLdb.Error as e:
+    except Exception as e:
+        logging.error("Error: Law Search - %s", e)
         return []
     finally:
         c.close()
