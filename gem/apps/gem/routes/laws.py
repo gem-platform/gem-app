@@ -116,7 +116,7 @@ async def search(
         c.execute("select * from law where MATCH(%s)", (match,))
         laws = c.fetchall()
         result = [LawSphinxOut(*law) for law in laws]
-    except Exception as e:
+    except MySQLdb.Error as e:
         logging.error("Error: Law Search - %s", e)
         return []
     finally:
