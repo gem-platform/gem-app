@@ -6,9 +6,9 @@ from sqlalchemy.orm import Session
 from auth.role import AuthenticatedUser
 from db import db_session
 from db.models import Law, User
-from forms.law import LawIn, LawOut
+from forms.law import LawIn, LawOut, LawSphinxOut
 from mappers.law import law2model, model2law
-from MySQLdb import _mysql
+import MySQLdb
 
 router = APIRouter()
 user_with_admin_access = AuthenticatedUser(permissions=["user_list"])
@@ -84,7 +84,7 @@ async def fetch_laws_list(
 
 @router.get(
     "/{oid}",
-    summary="Fetch one proposal",
+    summary="Fetch one law",
     response_model=LawOut)
 async def fetch_law(
         oid: int,
@@ -94,12 +94,30 @@ async def fetch_law(
     law_db = __get_law(session, oid)
     return model2law(law_db)
 
-async def search_law(
+
+@router.get(
+    "/search/{match}",
+    summary="Search 'match' in law's title and content",
+    response_model=List[LawSphinxOut])
+async def search(
         match: str,
         user: User = Depends(user_with_admin_access),
-        session: Session = Depends(db_session)):
-    """Search laws"""
-    db = _mysql.connect('search', port=9306)
-    db.query("""select * from law where MATCH('hello')""")
-    r = db.store_result()
-    return r.fetch_row()
+):
+    """
+    Search in laws (title, content)
+    :param user:
+    :param match:
+    :return:
+    """
+    try:
+        conn = MySQLdb.connect('search', port=9306)
+        c = conn.cursor()
+        c.execute("select * from law where MATCH(%s)", (match,))
+        laws = c.fetchall()
+        result = [LawSphinxOut(*law) for law in laws]
+    except MySQLdb.Error as e:
+        return []
+    finally:
+        c.close()
+        conn.close()
+    return result
