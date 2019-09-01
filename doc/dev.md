@@ -28,6 +28,12 @@ But sometimes it is required to start GEM application on a host machine (for deb
 
 ### Import all the environment variables
 
+Change DB host in `gem/.env` file. 
+```
+GEM_DB_HOST=localhost
+```
+
+Import all environment varialbles
 ```bash
 cd gem
 export $(cat .env | xargs)
@@ -46,5 +52,5 @@ pipenv run uvicorn main:app --port $GEM_APP_PORT --reload
 ```bash
 cd gem/clients/gem
 npm install
-npm run serve -- --port $GEM_CLIENT_PORT
+./entrypoint.sh
 ```
