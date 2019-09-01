@@ -6,3 +6,6 @@ sleep 10
 
 # Migrate
 PYTHONPATH=. alembic upgrade head
+
+# Export PORT variable for uvicorn
+export PORT=${GEM_APP_PORT}

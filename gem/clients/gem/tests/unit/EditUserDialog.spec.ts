@@ -2,11 +2,15 @@ import EditUserDialog from "@/modules/admin/components/EditUserDialog.vue";
 import { IUser } from "@/modules/types.ts";
 import { mount } from "@vue/test-utils";
 import Vue from "vue";
+import VueI18n from "vue-i18n";
 import Vuetify from "vuetify";
 
 import { Operation, OperationState } from "@/lib/operations";
 
 Vue.use(Vuetify);
+Vue.use(VueI18n);
+
+const i18n = new VueI18n({ silentTranslationWarn: true });
 
 describe("EditUserDialog.vue", () => {
   const user: IUser = {
@@ -20,6 +24,7 @@ describe("EditUserDialog.vue", () => {
   function getContext() {
     document.body.setAttribute("data-app", "true");
     const wrapper = mount(EditUserDialog, {
+      i18n,
       propsData: { user }
     });
     const alert = wrapper.find(".v-alert");

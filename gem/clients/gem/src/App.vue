@@ -1,26 +1,32 @@
 <template>
   <v-app>
     <v-toolbar v-if="isNavbarVisible" color="amber" flat app>
+      <!-- Logo -->
       <v-toolbar-title class="headline text-uppercase">
         <span class="title ml-3 mr-5">
           GEM&nbsp;
           <span class="font-weight-light">Online</span>
         </span>
       </v-toolbar-title>
+
+      <!-- Search -->
       <v-text-field
         solo-inverted
         flat
         hide-details
-        label="Search"
+        :label="$t('search')"
         prepend-inner-icon="search"
       ></v-text-field>
-      <v-spacer></v-spacer>
+
+      <!-- Nav buttons -->
+      <v-spacer />
       <v-toolbar-items class="hidden-sm-and-down">
-        <v-btn to="/" exact flat>Home</v-btn>
-        <v-btn to="/admin" flat>Admin</v-btn>
+        <v-btn to="/" exact flat>{{ $t("home") }}</v-btn>
+        <v-btn to="/admin" flat>{{ $t("admin") }}</v-btn>
       </v-toolbar-items>
     </v-toolbar>
 
+    <!-- Content -->
     <v-content>
       <router-view></router-view>
     </v-content>
@@ -33,7 +39,8 @@ import { Auth } from "./modules/auth/store/auth";
 
 @Component
 export default class Home extends Vue {
-  @Watch("isAuthenticated") private onAuthenticationChanged(
+  @Watch("isAuthenticated")
+  private onAuthenticationChanged(
     isAuthenticated: boolean,
     wasAuthenticated: boolean
   ) {
@@ -57,3 +64,14 @@ export default class Home extends Vue {
   }
 }
 </script>
+
+<i18n>
+en:
+  search: Search
+  home: Home
+  admin: Admin
+ru:
+  search: Поиск
+  home: Домой
+  admin: Админ
+</i18n>

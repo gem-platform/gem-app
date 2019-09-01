@@ -1,9 +1,9 @@
 <template>
   <fragment>
-    <v-btn icon large @click="changeLocale('en')" ref="en">
+    <v-btn icon large @click="chnage('en')" ref="en">
       EN
     </v-btn>
-    <v-btn icon large @click="changeLocale('ru')" ref="ru">
+    <v-btn icon large @click="chnage('ru')" ref="ru">
       RU
     </v-btn>
   </fragment>
@@ -15,9 +15,9 @@ import { ICredentials } from "../types";
 
 @Component({})
 export default class LocaleSwitch extends Vue {
-  /** Sets locale of an applications. Emits 'localeChanged' event. */
-  @Emit("localeChanged")
-  private changeLocale(locale: string) {
+  /** Sets locale of an applications. Emits 'changed' event. */
+  @Emit("changed")
+  private chnage(locale: string) {
     this.$i18n.locale = locale;
     return locale;
   }

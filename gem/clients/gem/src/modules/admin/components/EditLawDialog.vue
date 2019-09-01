@@ -1,13 +1,18 @@
 <template>
   <edit-dialog
-    title="Edit law"
+    :title="$t('law.edit')"
     :visible="visible"
     :operation="operation"
     @close="close"
     @save="save"
   >
     <v-flex xs12>
-      <v-text-field v-model="law.title" label="Title" required ref="title" />
+      <v-text-field
+        v-model="law.title"
+        :label="$t('title')"
+        required
+        ref="title"
+      />
     </v-flex>
     <v-flex xs12>
       <ckeditor
@@ -35,7 +40,7 @@ import EditDialog from "./EditDialog.vue";
     EditDialog
   }
 })
-export default class EditUserDialog extends Vue {
+export default class EditLawDialog extends Vue {
   @Prop({ default: () => EmptyLaw }) public readonly law!: ILaw;
   @Prop({ default: false }) public visible!: boolean;
   @Prop({}) public readonly operation!: Operation;
@@ -47,13 +52,11 @@ export default class EditUserDialog extends Vue {
     };
   }
 
-  @Emit()
-  private close() {
+  @Emit() private close() {
     return;
   }
 
-  @Emit()
-  private save() {
+  @Emit() private save() {
     return this.law;
   }
 
@@ -62,3 +65,12 @@ export default class EditUserDialog extends Vue {
   }
 }
 </script>
+
+<i18n>
+en:
+  law.edit: Edit law
+  title: Title
+ru:
+  law.edit: Редактировать закон
+  title: Заголовок
+</i18n>

@@ -49,8 +49,7 @@
     <!-- Delete entity dialog -->
     <template v-slot:delete-dialog>
       <confirm-dialog
-        action="Delete"
-        title="Delete user?"
+        :action="$t('delete')"
         :data="ops.delete.data"
         :visible="ops.delete.isStarted"
         :busy="ops.delete.isInProgress"
@@ -59,7 +58,7 @@
         @confirm="onDeleteConfirmed"
       >
         <template v-slot:default="{ data = { fullName: '' } }">
-          <b>{{ data.fullName }}</b> will be deleted. Confirm?
+          {{ $t("confirm", { name: data.fullName }) }}
         </template>
       </confirm-dialog>
     </template>
@@ -171,3 +170,11 @@ export default class AdminUsersView extends Vue {
   }
 }
 </script>
+
+<i18n src="@/locales/common.json"></i18n>
+<i18n>
+en:
+  confirm: User "{name}" will be deleted. Confirm?
+ru:
+  confirm: Пользователь "{name}" будет удалён. Продолжить?
+</i18n>

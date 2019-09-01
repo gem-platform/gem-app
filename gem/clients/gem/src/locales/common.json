@@ -1,0 +1,12 @@
+{
+    "en": {
+        "cancel": "Cancel",
+        "delete": "Delete",
+        "delete.confirmation": "{} will be deleted. Confirm?"
+    }, 
+    "ru": {
+        "cancel": "Отмена",
+        "delete": "Удалить",
+        "delete.confirmation": "{} будет удалён. Продолжить??"
+    }
+}

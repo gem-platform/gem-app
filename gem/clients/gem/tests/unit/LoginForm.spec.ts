@@ -1,10 +1,10 @@
 import LoginForm from "@/modules/auth/components/LoginForm.vue";
 import { mount } from "@vue/test-utils";
 import Vue from "vue";
-import VueI18n from "vue-i18n";
-import Vuetify from "vuetify";
 // @ts-ignore
 import Fragment from "vue-fragment";
+import VueI18n from "vue-i18n";
+import Vuetify from "vuetify";
 
 Vue.use(Vuetify);
 Vue.use(VueI18n);

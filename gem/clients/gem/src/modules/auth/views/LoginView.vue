@@ -47,7 +47,7 @@ export default class LoginView extends Vue {
       return [];
     }
 
-    const errors = Auth.operations.login.response;
+    const errors = Auth.operations.login.response || [];
     return errors.map((x: any) => ({
       location: x.loc.join("."),
       message: this.$i18n.t(x.type)

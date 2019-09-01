@@ -5,11 +5,11 @@
       <v-btn
         block
         outline
-        @click="onCreateClicked"
+        @click="create"
         data-ref="create-new"
         ref="create-new"
       >
-        <v-icon dark>add</v-icon>Create
+        <v-icon dark>add</v-icon>{{ $t("create") }}
       </v-btn>
 
       <!-- Table -->
@@ -45,7 +45,7 @@ import { AdminStore } from "../store";
 @Component
 export default class AdminUsersView extends Vue {
   /** On create new entity button clicked. */
-  @Emit("create") private onCreateClicked() {
+  @Emit() private create() {
     return undefined;
   }
 
@@ -55,3 +55,10 @@ export default class AdminUsersView extends Vue {
   }
 }
 </script>
+
+<i18n>
+en:
+  create: "Create"
+ru:
+  create: "Создать"
+</i18n>

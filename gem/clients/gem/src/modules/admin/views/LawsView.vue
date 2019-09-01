@@ -8,7 +8,6 @@
         :operation="ops.save"
         @close="laws.closeEditDialog"
         @save="onSaveLawClicked"
-        @lock="onLockLaw"
       />
     </template>
 
@@ -51,7 +50,7 @@
     <!-- Delete entity dialog -->
     <template v-slot:delete-dialog>
       <confirm-dialog
-        action="Delete"
+        :action="$t('delete')"
         title="Delete law?"
         :data="ops.delete.data"
         :visible="ops.delete.isStarted"
@@ -61,7 +60,7 @@
         @confirm="onDeleteConfirmed"
       >
         <template v-slot:default="{ data = { title: '' } }">
-          <b>{{ data.title }}</b> will be deleted. Confirm?
+          {{ $t("confirm", { title: data.title }) }}
         </template>
       </confirm-dialog>
     </template>
@@ -129,3 +128,11 @@ export default class AdminLawsView extends Vue {
   }
 }
 </script>
+
+<i18n src="@/locales/common.json"></i18n>
+<i18n>
+en:
+  confirm: Law "{title}" will be deleted. Confirm?
+ru:
+  confirm: Закон "{title}" будет удалён. Продолжить?
+</i18n>

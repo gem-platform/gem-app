@@ -50,8 +50,7 @@
     <!-- Delete entity dialog -->
     <template v-slot:delete-dialog>
       <confirm-dialog
-        action="Delete"
-        title="Delete proposal?"
+        :action="$t('delete')"
         :data="ops.delete.data"
         :visible="ops.delete.isStarted"
         :busy="ops.delete.isInProgress"
@@ -60,7 +59,7 @@
         @confirm="onDeleteConfirmed"
       >
         <template v-slot:default="{ data = { title: '' } }">
-          <b>{{ data.title }}</b> will be deleted. Confirm?
+          {{ $t("confirm", { title: data.title }) }}
         </template>
       </confirm-dialog>
     </template>
@@ -132,3 +131,11 @@ export default class AdminProposalsView extends Vue {
   }
 }
 </script>
+
+<i18n src="@/locales/common.json"></i18n>
+<i18n>
+en:
+  confirm: Proposal "{title}" will be deleted. Confirm?
+ru:
+  confirm: Законопроект "{title}" будет удалён. Продолжить?
+</i18n>

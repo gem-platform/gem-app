@@ -6,9 +6,12 @@
         <v-btn icon light @click="cancel" data-ref="close">
           <v-icon>close</v-icon>
         </v-btn>
-        <v-toolbar-title>Change password</v-toolbar-title>
+        <v-toolbar-title>
+          {{ $t("password.change") }}
+        </v-toolbar-title>
         <v-spacer></v-spacer>
       </v-toolbar>
+
       <v-container grid-list-md>
         <v-layout wrap>
           <v-flex xs12>
@@ -18,7 +21,7 @@
           <v-flex xs12>
             <v-text-field
               v-model="password"
-              label="New Password"
+              :label="$t('password.new')"
               required
               type="password"
               ref="password"
@@ -38,10 +41,10 @@
           @click="cancel"
           ref="cancel"
           data-ref="cancel"
-          >Cancel</v-btn
+          >{{ $t("cancel") }}</v-btn
         >
 
-        <!-- Delete operation button -->
+        <!-- Change operation button -->
         <v-btn
           color="red"
           flat
@@ -50,7 +53,7 @@
           :disabled="busy"
           @click="confirm"
           data-ref="confirm"
-          >Change</v-btn
+          >{{ $t("change") }}</v-btn
         >
       </v-card-actions>
     </v-card>
@@ -69,7 +72,7 @@ import {
 } from "vue-property-decorator";
 
 @Component
-export default class ConfirmDialog extends Vue {
+export default class ChangePasswordDialog extends Vue {
   /** Is dialog visible? */
   @Prop({ default: true }) public visible!: boolean;
 
@@ -100,3 +103,16 @@ export default class ConfirmDialog extends Vue {
   }
 }
 </script>
+
+<i18n>
+en:
+  password.new: "New password"
+  password.change: "Change password"
+  change: "Change"
+  cancel: "Cancel"
+ru:
+  password.new: "Новый пароль"
+  password.change: "Сменить пароль"
+  change: "Сменить"
+  cancel: "Отмена"
+</i18n>

@@ -68,7 +68,6 @@ import LocaleSwitch from "./LocaleSwitch.vue";
 
 @Component({ components: { LocaleSwitch } })
 export default class LoginForm extends Vue {
-  /** Error message to display on top of form. */
   @Prop({ default: "" }) public message!: string;
   @Prop({ default: () => [] }) public errors!: [];
   @Prop({ default: false }) public busy!: boolean;
@@ -100,7 +99,7 @@ en:
   title: "GEM Online"
   login: "Login"
   password: "Password"
-  enter: "Login"
+  enter: "Log In"
 ru:
   title: "GEM Онлайн"
   login: "Логин"

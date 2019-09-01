@@ -23,7 +23,7 @@
             data-ref="save"
             :loading="isLoading"
             :disabled="!canSave || isLoading"
-            >Save</v-btn
+            >{{ $t("save") }}</v-btn
           >
         </v-toolbar-items>
       </v-toolbar>

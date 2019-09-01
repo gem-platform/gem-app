@@ -1,7 +1,7 @@
-
+from os import getenv
 from logging.config import fileConfig
 
-from sqlalchemy import engine_from_config
+from sqlalchemy import create_engine 
 from sqlalchemy import pool
 
 from alembic import context
@@ -25,6 +25,20 @@ target_metadata = None
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 
+def get_url():
+    # get connction string from environment variables
+    db_user = getenv("GEM_DB_USER")
+    db_pass = getenv("GEM_DB_PASSWORD")
+    db_host = getenv("GEM_DB_HOST")
+    db_port = getenv("GEM_DB_PORT")
+    db_name = getenv("GEM_DB_NAME")
+
+    if db_user and db_pass and db_host and db_port and db_name:
+        return f"postgresql://{db_user}:{db_pass}@{db_host}:{db_port}/{db_name}"
+
+    # no environment variables provided -> use connection string from config
+    return config.get_main_option("sqlalchemy.url")
+
 
 def run_migrations_offline():
     """Run migrations in 'offline' mode.
@@ -36,11 +50,9 @@ def run_migrations_offline():
 
     Calls to context.execute() here emit the given string to the
     script output.
-
     """
-    url = config.get_main_option("sqlalchemy.url")
     context.configure(
-        url=url, target_metadata=target_metadata, literal_binds=True
+        url=get_url(), target_metadata=target_metadata, literal_binds=True
     )
 
     with context.begin_transaction():
@@ -52,14 +64,14 @@ def run_migrations_online():
 
     In this scenario we need to create an Engine
     and associate a connection with the context.
-
     """
-    connectable = engine_from_config(
-        config.get_section(config.config_ini_section),
-        prefix="sqlalchemy.",
-        poolclass=pool.NullPool,
-    )
+    # connectable = engine_from_config(
+    #     config.get_section(config.config_ini_section),
+    #     prefix="sqlalchemy.",
+    #     poolclass=pool.NullPool,
+    # )
 
+    connectable = create_engine(get_url())
     with connectable.connect() as connection:
         context.configure(
             connection=connection, target_metadata=target_metadata
