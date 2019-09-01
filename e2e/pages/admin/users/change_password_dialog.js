@@ -3,7 +3,7 @@ const I = actor();
 module.exports = {
   root: "[data-ref='change-password-dialog']",
   fields: {
-    password: "[aria-label='New Password']"
+    password: "[aria-label='New password']"
   },
   buttons: {
     confirm: "[data-ref='confirm']",
