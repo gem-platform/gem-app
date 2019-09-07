@@ -11,7 +11,20 @@
         @lock="onLockLaw"
       />
     </template>
-
+    <v-text-field
+      flat
+      hide-details
+      label="Search"
+      v-model="match"
+      prepend-inner-icon="search"
+    >
+      <template v-slot:append>
+        <v-btn large flat color="primary" @click="searchMatch">
+          <v-icon left>mdi-target</v-icon>
+          Search
+        </v-btn>
+      </template>
+    </v-text-field>
     <!-- Table -->
     <template v-slot:table>
       <v-data-table
@@ -72,7 +85,7 @@
 import { formsOfAddress } from "@/modules/consts";
 
 import { Operation } from "@/lib/operations";
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 import { ILaw } from "../../types";
 import { AdminStore, LawsStore } from "../store";
 
@@ -88,6 +101,7 @@ export default class AdminLawsView extends Vue {
     { text: "Title", value: "title" },
     { text: "Actions", align: "right", sortable: false, name: "full_name" }
   ];
+  @Prop({ default: () => "" }) public match!: string;
 
   private mounted() {
     LawsStore.fetch();
@@ -126,6 +140,10 @@ export default class AdminLawsView extends Vue {
       color: res ? "success" : "error",
       message: res ? "Law deleted" : "Unable to delete law"
     });
+  }
+
+  private async searchMatch() {
+    const res = await LawsStore.search(this.match);
   }
 }
 </script>

@@ -19,3 +19,11 @@ class LawIn(Law):
 
 class LawOut(Law):
     oid: int = 0
+
+
+class LawSphinxOut(LawOut):
+    def __init__(self, oid, title, content):
+        super().__init__()
+        self.oid = oid
+        self.title = title
+        self.content = content

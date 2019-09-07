@@ -1,4 +1,4 @@
-FROM node:12.4.0-stretch-slim
+FROM node:12.7.0-stretch-slim
 
 # Install all the dependences
 WORKDIR /tmp/build

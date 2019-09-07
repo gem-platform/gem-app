@@ -17,4 +17,14 @@ export default class LawsService extends CrudService<ILaw> {
     const res = await Axios.post(url, {});
     return res.data;
   }
+
+  /**
+   * Fetches list of entities on search.
+   * @returns List of entities.
+   */
+  public async search(match: string): Promise<ILaw[]> {
+    const url = `${this.url}/search/${encodeURI(match)}`;
+    const entities = (await Axios.get(url)).data;
+    return entities.map((x: any) => this.transformIn(x));
+  }
 }

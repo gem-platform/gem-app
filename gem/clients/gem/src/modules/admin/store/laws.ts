@@ -68,7 +68,7 @@ export default class LawsStoreModule extends VuexModule {
   @Action
   public async fetch(): Promise<ILaw[] | undefined> {
     try {
-      this.fetcLawsStarted();
+      this.fetchLawsStarted();
       const laws = await service.fetch();
       this.fetchLawsSucceeded(laws);
       return laws;
@@ -81,7 +81,7 @@ export default class LawsStoreModule extends VuexModule {
 
   /** Laws has been fetched successfully. */
   @Mutation
-  private fetcLawsStarted() {
+  private fetchLawsStarted() {
     this.operations.fetch.start();
   }
 
@@ -188,6 +188,24 @@ export default class LawsStoreModule extends VuexModule {
   @Mutation
   private deleteLawFailed(message: string = "") {
     this.operations.delete.fail(message);
+  }
+
+  /**
+   * Request laws that match search
+   * @param match
+   */
+  @Action
+  public async search(match: string): Promise<ILaw[] | undefined> {
+    try {
+      this.fetchLawsStarted();
+      const laws = await service.search(match);
+      this.fetchLawsSucceeded(laws);
+      return laws;
+    } catch (err) {
+      const message = err.response.data.detail;
+      log({ message });
+      this.fetchLawsFailed(message);
+    }
   }
 
   /** Getters */
